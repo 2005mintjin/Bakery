@@ -1,7 +1,13 @@
 import http from 'node:http';
-import {readFile} from 'node:fs/promises';
+import {readFile,writeFile,mkdir,rename} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import path from 'node:path';
-const root=fileURLToPath(new URL('.',import.meta.url));
-const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css','.json':'application/json','.svg':'image/svg+xml'};
-http.createServer(async(req,res)=>{try{const name=decodeURIComponent(new URL(req.url,'http://localhost').pathname);const file=path.resolve(root,'.'+(name==='/'?'/index.html':name));if(!file.startsWith(root)||name.split('/').some(s=>s.startsWith('.')))throw Error();res.setHeader('Content-Type',types[path.extname(file)]||'application/octet-stream');res.setHeader('Cache-Control','no-store');res.end(await readFile(file));}catch{res.writeHead(404);res.end('Not found');}}).listen(5173,'127.0.0.1',()=>console.log('Bakery ready: http://127.0.0.1:5173'));
+import {validate} from './src/saveSystem.js';
+const root=path.resolve(fileURLToPath(new URL('.',import.meta.url)));
+const saveDir=path.join(root,'saves');
+const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css','.json':'application/json','.svg':'image/svg+xml','.png':'image/png'};
+let writes=Promise.resolve();
+async function body(req){let text='';for await(const chunk of req){text+=chunk;if(text.length>100000)throw Error('Too large')}return JSON.parse(text)}
+const server=http.createServer(async(req,res)=>{res.setHeader('Cache-Control','no-store');try{const name=decodeURIComponent(new URL(req.url,'http://localhost').pathname);if(name.startsWith('/api/saves')){res.setHeader('Content-Type','application/json');if(req.headers.origin&&!['http://127.0.0.1:5173','http://localhost:5173'].includes(req.headers.origin)){res.writeHead(403);return res.end('{}')}const match=name.match(/^\/api\/saves(?:\/([123]))?$/);if(!match){res.writeHead(404);return res.end('{}')}const id=match[1];await mkdir(saveDir,{recursive:true});if(!id&&req.method==='GET'){const list=[];for(let i=1;i<=3;i++){try{const s=validate(JSON.parse(await readFile(path.join(saveDir,`slot-${i}.json`),'utf8')));list.push({id:i,day:s.day,money:s.money,scene:s.scene})}catch(e){list.push({id:i,empty:e.code==='ENOENT',corrupt:e.code!=='ENOENT'})}}return res.end(JSON.stringify(list))}if(id&&req.method==='GET')return res.end(JSON.stringify(validate(JSON.parse(await readFile(path.join(saveDir,`slot-${id}.json`),'utf8')))));if(id&&req.method==='PUT'){const s=validate(await body(req));const job=writes.catch(()=>{}).then(async()=>{const dest=path.join(saveDir,`slot-${id}.json`);await writeFile(dest+'.tmp',JSON.stringify(s,null,2));await rename(dest+'.tmp',dest)});writes=job;await job;return res.end('{"saved":true}')}res.writeHead(405);return res.end('{}')}if(req.method!=='GET'){res.writeHead(405);return res.end()}const parts=name.split('/');if(parts.some(s=>s.startsWith('.'))||parts.includes('saves'))throw Error('private');const file=path.resolve(root,'.'+(name==='/'?'/index.html':name));if(!file.startsWith(root+path.sep))throw Error('path');res.setHeader('Content-Type',types[path.extname(file)]||'application/octet-stream');res.end(await readFile(file));}catch{res.writeHead(400);res.end('Request failed');}});
+server.on('error',e=>{console.error('Server could not start. Port 5173 may already be in use.',e.message);process.exitCode=1});
+server.listen(5173,'127.0.0.1',()=>console.log('Bakery ready: http://127.0.0.1:5173'));

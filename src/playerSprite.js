@@ -1,0 +1,7 @@
+// Default art is separate from the renderer. A supplied sheet can replace it at runtime.
+export class PlayerSprite{
+constructor(){this.image=new Image();this.image.src='assets/characters/player.svg';this.sheet=false;this.ready=false;this.image.onload=()=>this.ready=true;try{const saved=localStorage.getItem('hearth-player-sheet');if(saved)this.setSheet(saved)}catch{}}
+setSheet(src){const image=new Image();image.onload=()=>{this.image=image;this.sheet=true;this.ready=true};image.src=src}
+pick(ui){const input=document.createElement('input');input.type='file';input.accept='image/png,image/webp';input.onchange=()=>{const f=input.files[0];if(!f)return;if(f.size>8*1024*1024){ui.notify('8MB 이하의 이미지로 골라 주세요');return}const reader=new FileReader();reader.onload=()=>{this.setSheet(reader.result);try{localStorage.setItem('hearth-player-sheet',reader.result);ui.notify('플레이어 이미지를 적용했어요')}catch{ui.notify('이미지를 적용했어요. 용량 제한으로 다음 실행에는 다시 골라 주세요.')}};reader.readAsDataURL(f)};input.click()}
+draw(c,x,y,walking,t,direction){if(!this.ready)return false;const bob=walking?Math.sin(t*13)*1.2:0;c.save();c.translate(Math.round(x),Math.round(y+bob));if(direction==='left')c.scale(-1,1);if(this.sheet){const sw=this.image.width/9,sh=this.image.height*.23;const run=walking?Math.floor(t*10)%9:0;c.drawImage(this.image,run*sw,walking?this.image.height*.23:0,sw,walking?this.image.height*.19:sh,-29,-68,58,70)}else{c.drawImage(this.image,-28,-67,56,70)}c.restore();return true}
+}
