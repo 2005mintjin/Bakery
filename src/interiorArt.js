@@ -1,5 +1,6 @@
+import {drawRoom} from './roomArt.js';
 // Frontal first-person interiors. Coordinates stay in the same logical canvas as outdoors.
-export function drawInterior(r,scene){const c=r.c,post=scene==='post';
+export function drawInterior(r,scene){if(scene!=='post'){drawRoom(r,scene);return}const c=r.c,post=scene==='post';
 const polygon=(points,color)=>{c.fillStyle=color;c.beginPath();points.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.closePath();c.fill()};
 r.r(0,0,960,576,post?'#d8d9b9':'#ead3a3');r.r(150,65,660,300,post?'#e8e5c8':'#f4dfb3');polygon([[0,0],[150,65],[150,365],[0,576]],post?'#9aaf9a':'#c49c70');polygon([[960,0],[810,65],[810,365],[960,576]],post?'#a9bba3':'#d1af81');polygon([[0,0],[960,0],[810,65],[150,65]],'#80654b');polygon([[0,576],[150,365],[810,365],[960,576]],'#b3885e');
 for(let y=390;y<576;y+=34)r.r(0,y,960,2,'#92704f');for(const x of [0,150,300,480,660,810,960]){polygon([[480+(x-480)*.68,365],[x,576],[x+2,576],[482+(x-480)*.68,365]],'#987650')}

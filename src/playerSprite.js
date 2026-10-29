@@ -28,7 +28,8 @@ export class PlayerSprite{
   if(this.custom){const f=spriteFrame(this.atlas,this.custom.width,this.custom.height,walking,elapsed,direction);c.save();c.translate(Math.round(x),Math.round(y));if(f.flip)c.scale(-1,1);const h=70,w=h*f.w/f.h;c.drawImage(this.custom,f.x,f.y,f.w,f.h,-w/2,-h+3,w,h);c.restore();return true}
   const f=animationFrame(this.animations,walking,elapsed,direction),image=this.images.get(f.asset);if(!image)return false;
   const rect=spriteDrawRect(f,x,y);
-  c.drawImage(image,f.x,f.y,f.w,f.h,rect.x,rect.y,rect.w,rect.h);
+  c.save();if(f.flip){c.translate(2*x,0);c.scale(-1,1)}
+  c.drawImage(image,f.x,f.y,f.w,f.h,rect.x,rect.y,rect.w,rect.h);c.restore();
   return true;
  }
 }

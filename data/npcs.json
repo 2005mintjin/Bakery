@@ -1,1 +1,29 @@
-[{"id":"mira","name":"미라","personality":"다정하지만 손녀가 그리운 꽃집 주인","x":235,"y":300,"color":"#ae6880","quest":"delivery"},{"id":"jun","name":"준","personality":"말수가 적고 작은 약속을 소중히 하는 정원사","x":725,"y":345,"color":"#66845d","quest":"berries"},{"id":"sora","name":"소라","personality":"새로 이사 온 수줍은 우편배달부","x":550,"y":190,"color":"#668ca6","quest":"friend"}]
+[
+  {
+    "id": "mira",
+    "name": "미라",
+    "personality": "다정하지만 손녀가 그리운 꽃집 주인",
+    "x": 235,
+    "y": 300,
+    "color": "#ae6880",
+    "quest": "delivery"
+  },
+  {
+    "id": "jun",
+    "name": "준",
+    "personality": "말수가 적고 작은 약속을 소중히 하는 정원사",
+    "x": 725,
+    "y": 345,
+    "color": "#66845d",
+    "quest": "berries"
+  },
+  {
+    "id": "sora",
+    "name": "소라",
+    "personality": "새로 이사 온 수줍은 우편배달부",
+    "x": 814,
+    "y": 285,
+    "color": "#668ca6",
+    "quest": "friend"
+  }
+]

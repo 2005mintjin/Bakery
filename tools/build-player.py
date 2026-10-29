@@ -113,6 +113,9 @@ for row,direction in enumerate(['down','right','up','left']):
     reference=idle_image.crop((ref_col*CELL[0],0,(ref_col+1)*CELL[0],CELL[1]))
     histogram_match(strip,reference)
     walk_image.paste(strip,(0,row*CELL[1]))
+walking['left']=[{**frame,'flip':True} for frame in walking['right']]
+idle['left']=[{**frame,'flip':True} for frame in idle['right']]
+selected['left']=selected['right'][:]
 walk_image.save(DEST/'player-walk.png')
 config={'idle':{'asset':'assets/characters/player-idle.png','frames':idle,'scale':1},
         'walk':{'asset':'assets/characters/player-walk.png','frames':walking,'scale':1,'fps':10,'sourceFrames':selected,'paletteMatched':True},
