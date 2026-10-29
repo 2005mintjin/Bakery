@@ -14,5 +14,5 @@ export function drawCounter(r,s){
  }
  if(!customer)return;
  if(customer.phase==='knocking'){r.r(285,128,390,56,'#fff1cced');r.text('똑똑! 문을 두드리는 소리가 들려요.',480,162,'#75583b',17);return}
- const o=counterLayout.order;r.r(o.x,o.y,o.width,o.height,'#fff2d5f0');r.text(customer.name+' · '+names[customer.bread]+' 하나 부탁해요!',480,o.y+29,'#725333',15);r.text('진열대에서 주문한 빵을 건네주세요',480,o.y+51,'#8b7657',11);
+ const o=counterLayout.order;r.r(o.x,o.y,o.width,o.height,'#fff2d5f0');r.text(customer.name+' · 주문 대기 중',480,o.y+29,'#725333',15);r.text('손님과 대화하기 버튼으로 말을 걸어 주세요',480,o.y+51,'#8b7657',11);
 }

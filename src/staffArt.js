@@ -1,0 +1,3 @@
+import {loadScenery} from './scenery.js';
+export function loadStaffArt(staff){return loadScenery(Object.fromEntries(Object.entries(staff).map(([id,actor])=>[id,{asset:actor.portraitAsset}])))}
+export function drawStaff(r,s,staff){if(!staff)return;const img=r.staffArt?.get(staff.portraitAsset)||r.counterArt.get(staff.portrait);if(!img)return;r.c.drawImage(img,0,img.height*.1,img.width,img.height*.7,380,190,200,200*img.height*.7/img.width);const top=353;r.c.save();r.c.beginPath();r.c.rect(0,top,960,576-top);r.c.clip();r.c.drawImage(r.bg[s.scene],0,0,960,576);r.c.restore();r.r(380,155,200,27,'#fff0cbeb');r.text(staff.name+' · '+staff.role,480,174,'#70563b',13)}

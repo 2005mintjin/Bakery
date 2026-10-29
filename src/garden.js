@@ -1,5 +1,5 @@
 export const plotCount=6,growthMinutes=120,berryYield=8;
-export const plotPositions=Array.from({length:plotCount},(_,i)=>({x:215+(i%3)*235,y:i<3?160:405}));
+export const plotPositions=Array.from({length:plotCount},(_,i)=>({x:[228,471,719][i%3],y:i<3?166:409}));
 export const gameMinutes=s=>s.day*1440+s.minutes;
 export function plant(s,index){if(!Number.isInteger(index)||index<0||index>=plotCount||s.garden[index]||s.items.berrySeeds<1)return false;s.items.berrySeeds--;s.garden[index]={plantedAt:gameMinutes(s),wateredAt:null};return true}
 export function water(s,index){const p=s.garden[index];if(!p||p.wateredAt!==null)return false;p.wateredAt=gameMinutes(s);return true}

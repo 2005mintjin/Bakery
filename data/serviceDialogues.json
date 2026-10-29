@@ -1,0 +1,44 @@
+{
+  "customers": {
+    "mira": {
+      "order": "어머, 오늘은 {bread} 냄새가 참 좋구나. 하나만 챙겨 주겠니?",
+      "thanks": "아이고, 따뜻하구나. 잘 먹을게. 고맙다!",
+      "later": "괜찮단다. 천천히 준비하렴. 여기서 기다릴게.",
+      "decline": "아쉽지만 괜찮아. 그럼 다음에 다시 들를게."
+    },
+    "jun": {
+      "order": "{bread}, 하나 부탁해. 서두르지 않아도 돼.",
+      "thanks": "좋아. 잘 먹을게. 고마워.",
+      "later": "알겠어. 준비되면 불러 줘.",
+      "decline": "그렇구나. 그럼 오늘은 돌아갈게."
+    },
+    "sora": {
+      "order": "저, 혹시 {bread} 하나 살 수 있을까요? 괜찮으시면요.",
+      "thanks": "와, 감사합니다! 덕분에 오늘 배달길이 즐거울 것 같아요.",
+      "later": "아, 네! 괜찮아요. 저 여기서 조금 기다릴게요.",
+      "decline": "아… 알겠습니다. 다음에 다시 들를게요!"
+    }
+  },
+  "staff": {
+    "post": {
+      "name": "하나",
+      "role": "우체국 직원",
+      "portrait": "sora",
+      "greeting": "어서 오세요. 작은 화덕으로 온 소포를 찾으러 오셨나요? 오늘 도착한 우편을 확인해 드릴게요.",
+      "service": "소포를 받고 싶어요.",
+      "panel": "parcel",
+      "goodbye": "천천히 둘러보세요. 도움이 필요하면 다시 불러 주세요.",
+      "portraitAsset": "assets/characters/sora.svg"
+    },
+    "store": {
+      "name": "다온",
+      "role": "잡화점 직원",
+      "portrait": "jun",
+      "greeting": "어서 와요! 오늘은 어떤 빵을 구울 건가요? 밀가루와 이스트, 소금, 꿀, 텃밭 씨앗까지 준비해 뒀어요.",
+      "service": "재료와 씨앗을 사고 싶어요.",
+      "panel": "supplies",
+      "goodbye": "좋은 하루 보내요. 필요한 게 생기면 언제든 들러요!",
+      "portraitAsset": "assets/characters/jun.svg"
+    }
+  }
+}
