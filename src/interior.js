@@ -1,0 +1,7 @@
+export const isInterior=scene=>scene==='bakery'||scene==='post';
+export function leaveInterior(s){if(!isInterior(s.scene))return false;s.x=s.scene==='bakery'?208:767;s.y=295;s.scene='town';return true}
+export const interiorActions={bakery:[['oven','화덕 · 빵 굽기','따끈한 빵을 구워요'],['warehouse','빵 창고','보관한 빵을 꺼내요'],['shelf','진열대 · 손님 응대','진열하고 주문을 받아요'],['supplies','재료 주문','밀가루와 꿀을 준비해요'],['shop','영업 안내판','문을 열거나 닫아요']],post:[['parcel','소포 수령 창구','오늘 도착한 소포를 받아요']]};
+export class Interior{
+constructor(g){this.g=g;this.root=document.createElement('div');this.root.id='interior-actions';this.root.hidden=true;document.querySelector('.game').append(this.root);this.scene=null}
+update(){const g=this.g,scene=g.state.scene;this.root.hidden=!g.started||!isInterior(scene);if(this.scene!==scene){this.scene=scene;this.root.replaceChildren();for(const [type,label,help] of interiorActions[scene]||[]){const b=document.createElement('button');b.className='interior-hotspot spot-'+type;b.textContent=label;b.title=help;b.onclick=()=>{if(g.started&&!g.ui.open)g.ui.show(type)};this.root.append(b)}if(isInterior(scene)){const b=document.createElement('button');b.className='interior-exit';b.textContent='← 광장으로 나가기';b.onclick=()=>{if(!g.ui.open){leaveInterior(g.state);g.keys.clear()}};this.root.append(b)}}for(const b of this.root.querySelectorAll('button'))b.disabled=g.ui.open;this.root.setAttribute('aria-label',scene==='bakery'?'빵집 내부 기능':'우체국 내부 기능')}
+}
