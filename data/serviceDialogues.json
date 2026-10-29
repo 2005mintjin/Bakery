@@ -24,21 +24,15 @@
       "name": "하나",
       "role": "우체국 직원",
       "portrait": "sora",
-      "greeting": "어서 오세요. 작은 화덕으로 온 소포를 찾으러 오셨나요? 오늘 도착한 우편을 확인해 드릴게요.",
-      "service": "소포를 받고 싶어요.",
-      "panel": "parcel",
-      "goodbye": "천천히 둘러보세요. 도움이 필요하면 다시 불러 주세요.",
-      "portraitAsset": "assets/characters/sora.svg"
+      "portraitAsset": "assets/characters/clerks/post-clerk.png",
+      "embeddedInBackground": true
     },
     "store": {
-      "name": "다온",
+      "name": "고양이 세 자매",
       "role": "잡화점 직원",
       "portrait": "jun",
-      "greeting": "어서 와요! 오늘은 어떤 빵을 구울 건가요? 밀가루와 이스트, 소금, 꿀, 텃밭 씨앗까지 준비해 뒀어요.",
-      "service": "재료와 씨앗을 사고 싶어요.",
-      "panel": "supplies",
-      "goodbye": "좋은 하루 보내요. 필요한 게 생기면 언제든 들러요!",
-      "portraitAsset": "assets/characters/jun.svg"
+      "portraitAsset": "assets/characters/clerks/cat-sisters.png",
+      "embeddedInBackground": true
     }
   }
 }

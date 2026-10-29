@@ -1,4 +1,14 @@
 {
-  "bakery": {"asset":"assets/backgrounds/interiors/reference-1.png"},
-  "bakeryKitchen": {"asset":"assets/backgrounds/interiors/reference-2.png"}
+  "bakery": {
+    "asset": "assets/backgrounds/interiors/reference-1.png"
+  },
+  "bakeryKitchen": {
+    "asset": "assets/backgrounds/interiors/reference-2.png"
+  },
+  "post": {
+    "asset": "assets/backgrounds/services/post-office.png"
+  },
+  "store": {
+    "asset": "assets/backgrounds/services/general-store.png"
+  }
 }
