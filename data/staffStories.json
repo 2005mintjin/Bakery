@@ -122,11 +122,7 @@
   },
   "store": {
     "entry": "welcome",
-    "speakers": [
-      "첫째",
-      "둘째",
-      "에리나"
-    ],
+    "speakers": ["첫째", "둘째", "에리나"],
     "nodes": {
       "welcome": {
         "pages": [

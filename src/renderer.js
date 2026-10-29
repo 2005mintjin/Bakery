@@ -1,37 +1,91 @@
-import {drawStaff} from './staffArt.js';
-import {drawCounter} from './counterArt.js';
-import {drawGardenBase,drawGarden} from './gardenArt.js';
-import {drawScenery} from './scenery.js';
-import {isInterior} from './interior.js';
-import {drawInterior} from './interiorArt.js';
-import {residents} from './npc.js';
-const C={grass:'#99c865',dark:'#4f8c54',path:'#ead29a'};
-export class Renderer{
-constructor(canvas,city,scenery=new Map(),maps={},counterArt=new Map()){this.counterArt=counterArt;this.city=city;this.scenery=scenery;this.maps=maps;canvas.width=1920;canvas.height=1152;this.c=canvas.getContext('2d');this.c.setTransform(2,0,0,2,0,0);this.c.imageSmoothingEnabled=false;this.bg={};for(const scene of ['town','bakery','bakeryKitchen','post','city','store','field']){const b=document.createElement('canvas');b.width=1920;b.height=1152;const old=this.c;this.c=b.getContext('2d');this.c.setTransform(2,0,0,2,0,0);this.c.imageSmoothingEnabled=false;this.background(scene);this.bg[scene]=b;this.c=old}}
-r(x,y,w,h,color){this.c.fillStyle=color;this.c.fillRect(Math.round(x),Math.round(y),w,h)}
-text(t,x,y,color='#fff4d4',size=12){this.c.fillStyle=color;this.c.font=`${size}px sans-serif`;this.c.textAlign='center';this.c.fillText(t,x,y)}
-oval(x,y,w,h,color){for(let yy=0;yy<h;yy+=4){const half=Math.sqrt(Math.max(0,1-((yy-h/2)/(h/2))**2))*w/2;this.r(x+w/2-Math.floor(half/4)*4,y+yy,Math.floor(half/4)*8,4,color)}}
-tree(x,y){this.oval(x-35,y+26,76,18,'#598f4c55');this.r(x-8,y-12,16,54,'#795936');this.r(x-5,y-7,5,45,'#a17b43');this.r(x-15,y+33,12,8,'#795936');this.r(x+5,y+34,13,7,'#795936');this.oval(x-42,y-54,84,65,'#397548');this.oval(x-37,y-65,72,65,'#4c9550');this.oval(x-29,y-70,60,55,'#6bb255');this.oval(x-21,y-66,42,34,'#8cc864');for(let i=0;i<65;i++){const xx=((i*37)%77)-38,yy=((i*23)%67)-64;if(xx*xx/1450+(yy+28)*(yy+28)/1000<1)this.r(x+xx,y+yy,4+(i%3)*2,3,['#92cf6b','#74b75c','#4a8a49','#559d50'][i%4])}this.r(x+5,y+6,12,4,'#465f35')}
-house(x,y,w,name,roof){this.r(x+5,y+125,w,18,'#648052');this.r(x,y,w,130,'#e6d3a4');this.r(x,y+106,w,18,'#ba956c');for(let yy=y+18;yy<y+104;yy+=12){this.r(x+3,yy,w-6,1,'#cfb887')}this.r(x+6,y+16,6,90,'#f6e6ba');this.r(x+w-12,y+16,6,90,'#b89967');this.r(x-15,y-15,w+30,28,roof);this.r(x+w-54,y-79,20,30,'#a1876a');this.r(x+w-57,y-81,26,6,'#d0b18a');for(let row=0;row<4;row++){this.r(x-15+row*7,y-65+row*13,w+30-row*14,15,roof);for(let xx=x+row%2*13;xx<x+w;xx+=18){this.r(xx,y-61+row*13,14,2,'#ffffff30');this.r(xx+13,y-59+row*13,2,9,'#533b3b25')}}for(const xx of [x+26,x+w-62]){this.r(xx,y+34,38,42,'#816443');this.r(xx+4,y+38,30,31,'#9ebeb4');this.r(xx+18,y+38,3,32,'#efdfb2');this.r(xx,y+77,42,7,'#96754e');for(let i=0;i<4;i++){this.r(xx+4+i*9,y+73,5,6,'#b96d78')}}this.r(x+w/2-20,y+66,40,64,'#785c43');this.r(x+w/2-14,y+72,28,29,'#b9c2a0');this.r(x+w/2+9,y+108,4,4,'#e5c37c');this.r(x+w/2-48,y+11,96,21,'#f4e8c5');this.text(name,x+w/2,y+26,'#68523c',12)}
-background(scene){if(scene==='field'){const image=this.scenery.get(this.maps.field?.asset);if(image)drawScenery(this.c,image);else drawGardenBase(this);return}const sceneImage=this.scenery.get(this.maps[scene]?.asset);if(sceneImage){drawScenery(this.c,sceneImage);return}if(isInterior(scene)){drawInterior(this,scene);return}if(scene==='city'){this.cityBackground();return}if(scene==='post'){this.postBackground();return}if(scene==='town'){this.r(0,0,960,576,C.grass);let seed=91;const rand=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};for(let i=0;i<1500;i++){const x=rand()*960,y=rand()*576;this.r(x,y,2,3,i%3?'#b0d77c':'#83b85b')}this.r(335,0,290,576,C.path);this.r(0,275,960,125,C.path);this.r(175,235,66,90,C.path);for(let i=0;i<350;i++){const x=rand()*960,y=rand()*576;if((x>335&&x<625)||(y>275&&y<400))this.r(x,y,5,2,'#c5b68c')}
-this.house(80,130,250,'작은 화덕','#a4664f');this.house(655,130,225,'달빛 우체국','#7eabc1');this.r(435,278,90,67,'#9d9e86');this.r(443,285,74,45,'#7da5a0');this.r(449,288,62,31,'#9ec3b2');this.r(471,262,18,40,'#d7d2b2');this.r(458,259,44,10,'#e4dec3');this.r(476,272,7,15,'#a7d9ca');this.text('달빛마을',480,90,'#6e7755',16);
-this.gardenDetails();for(const [x,y] of [[30,115],[380,135],[600,130],[925,140],[35,490],[305,515],[650,530],[930,550]])this.tree(x,y);
-for(const [x,y] of [[70,380],[790,435]]){this.r(x,y,95,13,'#98774e');this.r(x,y+18,95,9,'#b28a59');this.r(x+8,y+27,7,13,'#715c43');this.r(x+80,y+27,7,13,'#715c43')}
-for(let i=0;i<7;i++){this.r(820+i*11,310+(i%2)*10,20,22,'#567c4e');this.r(825+i*11,313+(i%2)*10,4,4,'#bc6680')}
-for(let i=0;i<34;i++){const x=40+rand()*880,y=420+rand()*140;this.r(x,y,2,7,'#64824a');this.r(x-2,y-2,6,4,i%2?'#e8dba1':'#d09b9b')}
-}else{this.r(0,0,960,576,'#b38c60');for(let y=0;y<576;y+=32){this.r(0,y,960,2,'#93704d');for(let x=(y%64?0:48);x<960;x+=96)this.r(x,y,2,32,'#a17a53')}this.r(0,0,960,65,'#e2c99e');this.r(0,60,960,10,'#886748');this.r(0,0,25,576,'#765d43');this.r(935,0,25,576,'#765d43');this.r(0,555,420,21,'#765d43');this.r(540,555,420,21,'#765d43');this.r(420,530,120,46,'#d8bf91');this.text('광장으로 ↓',480,551,'#775d43');this.r(75,70,170,105,'#84796b');this.r(88,88,145,74,'#c0aa85');this.r(118,104,85,58,'#493e32');this.r(130,132,15,24,'#e39247');this.r(153,123,20,33,'#f1c46e');this.r(179,136,12,20,'#de733b');this.r(350,75,240,100,'#956a47');this.r(356,81,228,63,'#b9ccc0');for(let i=0;i<6;i++){this.r(370+i*34,115,25,16,'#daaa60');this.r(376+i*34,113,4,10,'#f6d596')}this.text('오늘의 빵',470,162);this.r(700,80,160,95,'#a58355');this.r(712,94,60,55,'#ebd7a2');this.text('밀',741,127,'#8e7450',20);this.r(790,105,42,45,'#c79c54');this.text('꿀',811,134,'#765537');this.r(95,310,200,80,'#8e6545');this.r(90,305,210,12,'#c99e67');this.r(670,305,170,90,'#a68157');this.r(680,315,150,65,'#d4b780');this.text('빵 창고',755,360,'#715434',15);this.text('영업 안내판',195,347,'#fff1c5',14);this.text('작은 화덕 · 편히 쉬어가세요',475,42,'#745a41',18);this.r(370,350,220,115,'#b98772');for(let i=0;i<8;i++)this.r(376+i*27,357,14,100,'#c69b80') }}
-gardenDetails(){
-this.r(23,520,180,7,'#f2dfad');for(let x=25;x<205;x+=18){this.r(x,506,7,35,'#b28b52');this.r(x+1,506,4,30,'#f2dfad')}
-for(let i=0;i<42;i++){let x=45+(i*67)%860,y=440+(i*29)%125;this.r(x,y,2,9,'#5c9b50');this.r(x-3,y-3,8,6,['#fff1ae','#f5a6b2','#c2aff1','#fff4d5'][i%4]);this.r(x,y-1,2,2,'#efc962')}
-this.r(760,253,16,23,'#527b87');this.r(757,250,22,8,'#7ca8b4');this.text('✉',768,267,'#fff3c6',12);
-this.r(888,363,60,22,'#9a7247');this.text('소도시 →',918,378,'#fff3d3',10);
-for(const x of [350,605]){this.r(x,399,5,56,'#796546');this.r(x-5,390,15,17,'#fff0ab');this.r(x-8,387,21,4,'#6b7757')}
-// Fine roof, wall and paving details keep the expanded palette readable.
-for(let x=90;x<325;x+=18){this.r(x,236,10,2,'#d2b88a');this.r(x,247,10,2,'#d2b88a')}
-for(let y=410;y<560;y+=20)for(let x=355;x<615;x+=27){this.r(x+(y%40?10:0),y,19,12,'#e2c897');this.r(x+2+(y%40?10:0),y+2,15,2,'#f5dfae')}
-}
-cityBackground(){this.r(0,0,960,576,'#a5cf78');this.r(0,275,960,125,'#ecd6a3');this.r(345,0,260,576,'#ecd6a3');for(let y=282;y<395;y+=20)for(let x=5;x<960;x+=30){this.r(x+(y%40?12:0),y,23,14,'#dfc48f');this.r(x+2+(y%40?12:0),y+2,19,2,'#f7e2b6')}for(const b of this.city.buildings)this.house(b.x,b.y,b.w,b.name,b.roof);for(const [x,y] of [[30,170],[320,120],[620,130],[930,155],[42,500],[570,535]])this.tree(x,y);this.text('← 달빛마을',70,350,'#74684f',13);this.text('해봄 소도시',480,45,'#4e7953',18);for(let i=0;i<22;i++){const x=30+(i*71)%900,y=420+(i*31)%140;this.r(x,y,4,6,'#e6a4b0')}}
-postBackground(){this.r(0,0,960,576,'#c9ae82');for(let y=70;y<576;y+=28){this.r(0,y,960,2,'#b69b75');for(let x=0;x<960;x+=70)this.r(x+(y%56?30:0),y,2,28,'#bda17a')}this.r(0,0,960,66,'#d8e7d6');this.r(0,60,960,10,'#7e9d8a');this.text('달빛 우체국 · 마음을 전합니다',480,40,'#527563',20);this.r(0,0,25,576,'#79947b');this.r(935,0,25,576,'#79947b');this.r(0,555,420,21,'#79947b');this.r(540,555,420,21,'#79947b');this.text('광장으로 ↓',480,550,'#6e795c');this.r(110,80,300,110,'#8b967c');for(let y=90;y<180;y+=26)for(let x=120;x<400;x+=40){this.r(x,y,33,20,'#e6cf9d');this.r(x+12,y+9,8,2,'#8d795b')}this.r(580,90,260,100,'#b08756');for(let i=0;i<5;i++){this.r(595+i*46,105,38,44,'#dcb77a');this.r(611+i*46,105,5,44,'#f5dfa7')}this.text('소포 수령 창구',710,180,'#fff0cc',15);this.r(160,310,200,100,'#a5825c');this.r(170,320,180,75,'#ecd9aa');this.text('마을 소식',260,350,'#796248',16)}
-character(x,y,color,walking,t){const bob=walking?Math.sin(t*12)*2:0;y+=bob;this.r(x-11,y+1,24,6,'#334d4533');this.r(x-8,y-10,7,14+(walking?Math.sin(t*12)*3:0),'#4a5147');this.r(x+2,y-10,7,14-(walking?Math.sin(t*12)*3:0),'#4a5147');this.r(x-12,y-32,24,24,color);this.r(x-15,y-27,5,16,'#e5bd95');this.r(x+11,y-27,5,16,'#e5bd95');this.r(x-10,y-49,20,21,'#eac6a1');this.r(x-12,y-51,24,9,'#5d4c3d');this.r(x-12,y-45,5,11,'#5d4c3d');this.r(x-5,y-39,3,3,'#3e4540');this.r(x+4,y-39,3,3,'#3e4540');this.r(x-8,y-20,16,10,'#f3e3bb')}
-draw(g,walking,t){const s=g.state;this.c.drawImage(this.bg[s.scene],0,0,960,576);if(isInterior(s.scene)){if(s.scene==='bakery')drawCounter(this,s);else if(s.scene==='post'||s.scene==='store')drawStaff(this,s,g.data.serviceDialogues.staff[s.scene]);return}if(s.scene==='field')drawGarden(this,s);const actors=[{...s,color:'#c48b59',player:true},...residents(g)].sort((a,b)=>a.y-b.y);for(const a of actors){if(!(a.player&&g.sprite?.draw(this.c,a.x,a.y,walking,t,g.direction)))this.character(a.x,a.y,a.color,false,t);if(!a.player){this.text(a.name,a.x,a.y-61,'#fff8dc');if(a.quest&&s.quests[a.quest]!=='done')this.text(s.quests[a.quest]==='active'?'⋯':'!',a.x,a.y-78,'#fff4b3',18)}}if(s.scene==='bakery'&&s.shop.open){this.text('OPEN · 영업 중',480,225,'#466f43',13);if(s.shop.customer){this.character(475,265,'#dc9679',false,t);this.text('주문이 있어요!',475,204,'#754e31',13)}}if(s.minutes>1080){this.r(0,0,960,576,'#283e6326')}}
+import { drawStaff } from "./staffArt.js";
+import { drawCounter } from "./counterArt.js";
+import { drawGarden } from "./gardenArt.js";
+import { isInterior } from "./interior.js";
+import { residents } from "./npc.js";
+import { PixelPainter } from "./render/pixelPainter.js";
+import { drawBackground } from "./render/backgrounds.js";
+import { drawCharacter } from "./render/characters.js";
+export class Renderer extends PixelPainter {
+  constructor(
+    canvas,
+    city,
+    scenery = new Map(),
+    maps = {},
+    counterArt = new Map(),
+  ) {
+    super();
+    this.counterArt = counterArt;
+    this.city = city;
+    this.scenery = scenery;
+    this.maps = maps;
+    canvas.width = 1920;
+    canvas.height = 1152;
+    this.c = canvas.getContext("2d");
+    this.c.setTransform(2, 0, 0, 2, 0, 0);
+    this.c.imageSmoothingEnabled = false;
+    this.bg = {};
+    for (const scene of [
+      "town",
+      "bakery",
+      "bakeryKitchen",
+      "post",
+      "city",
+      "store",
+      "field",
+    ]) {
+      const b = document.createElement("canvas");
+      b.width = 1920;
+      b.height = 1152;
+      const old = this.c;
+      this.c = b.getContext("2d");
+      this.c.setTransform(2, 0, 0, 2, 0, 0);
+      this.c.imageSmoothingEnabled = false;
+      drawBackground(this, scene);
+      this.bg[scene] = b;
+      this.c = old;
+    }
+  }
+  draw(g, walking, t) {
+    const s = g.state;
+    this.c.drawImage(this.bg[s.scene], 0, 0, 960, 576);
+    if (isInterior(s.scene)) {
+      if (s.scene === "bakery") drawCounter(this, s);
+      else if (s.scene === "post" || s.scene === "store")
+        drawStaff(this, s, g.data.serviceDialogues.staff[s.scene]);
+      return;
+    }
+    if (s.scene === "field") drawGarden(this, s);
+    const actors = [
+      { ...s, color: "#c48b59", player: true },
+      ...residents(g),
+    ].sort((a, b) => a.y - b.y);
+    for (const a of actors) {
+      if (!(
+        a.player && g.sprite?.draw(this.c, a.x, a.y, walking, t, g.direction)
+      ))
+        drawCharacter(this, a.x, a.y, a.color, false, t);
+      if (!a.player) {
+        this.text(a.name, a.x, a.y - 61, "#fff8dc");
+        if (a.quest && s.quests[a.quest] !== "done")
+          this.text(
+            s.quests[a.quest] === "active" ? "⋯" : "!",
+            a.x,
+            a.y - 78,
+            "#fff4b3",
+            18,
+          );
+      }
+    }
+    if (s.scene === "bakery" && s.shop.open) {
+      this.text("OPEN · 영업 중", 480, 225, "#466f43", 13);
+      if (s.shop.customer) {
+        drawCharacter(this, 475, 265, "#dc9679", false, t);
+        this.text("주문이 있어요!", 475, 204, "#754e31", 13);
+      }
+    }
+    if (s.minutes > 1080) {
+      this.r(0, 0, 960, 576, "#283e6326");
+    }
+  }
 }

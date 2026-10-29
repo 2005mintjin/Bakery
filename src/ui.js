@@ -1,31 +1,70 @@
-import {presentDialogue} from './dialogueView.js';
-import {openCustomerDialogue,openStaffDialogue,hasStaffAccess} from './serviceDialogue.js';
-import {showBaking} from './bakingUI.js';
-import {repairPosition} from './sceneManager.js';
-import {names} from './inventory.js';
-import {buyItem,display} from './bakery.js';
-import {saveSlot,loadSlot} from './saveSystem.js';
-import {breadIds,takeBread,storeBread,serve,receiveParcel} from './shop.js';
-import {title} from './title.js';
-export class UI{
-constructor(g){this.g=g;this.overlay=document.querySelector('#overlay');this.timer=0}
-get open(){return !this.overlay.hidden}
-say(actor,pages,actions=[],options={}){return presentDialogue(this,actor,pages,actions,options)}
-close(){if(!this.g.started)return;this.dialogueController?.dispose();this.dialogueController=null;this.overlay.hidden=true;this.currentPanel=null;this.serviceAccess=null;this.g.keys.clear()}
-notify(t){document.querySelector('#toast').textContent=t;clearTimeout(this.timer);this.timer=setTimeout(()=>document.querySelector('#toast').textContent='',3500)}
-panel(html,actions=[]){this.dialogueController?.dispose();this.dialogueController=null;this.g.keys.clear();this.overlay.hidden=false;this.overlay.innerHTML='<section class="panel">'+html+'<div class="actions panel-actions"></div></section>';for(const [label,fn] of [...actions,...(this.g.started?[['닫기 · ESC',()=>this.close()]]:[])]){const b=document.createElement('button');b.textContent=label;if(label==='닫기 · ESC')b.classList.add('panel-close');b.onclick=fn;this.overlay.querySelector('.panel-actions').append(b)}this.overlay.querySelector('button')?.focus()}
-show(type){if(!['parcel','supplies'].includes(type))this.serviceAccess=null;if(type==='parcel'||type==='supplies'){const scene=type==='parcel'?'post':'store';if(!hasStaffAccess(this.g,type)){openStaffDialogue(this.g,scene);return}}this.currentPanel=type;const s=this.g.state,d=this.g.data;if(type==='audio'){const music=this.g.music;this.panel('<h2>배경음악</h2><p id="music-title"></p><label class="volume-label">음량 <input id="music-volume" aria-label="배경음악 음량" type="range" min="0" max="100" step="1"><output id="music-value"></output></label><p class="muted">마을: Sunlight on Cobblestones / 빵집: Midnight at the Parlour<br>판매실과 작업실 사이에서는 같은 곡이 이어집니다.</p>',[[music.muted?'음소거 해제':'음소거',()=>{music.setMuted(!music.muted);this.show('audio')}],['음악 재생',()=>{music.start(s.scene);this.notify(this.g.started?'음악을 재생합니다':'타이틀 미리듣기 · 게임을 시작하면 장소에 맞춰 바뀝니다')}]]);this.overlay.querySelector('#music-title').textContent=music.title;const slider=this.overlay.querySelector('#music-volume'),output=this.overlay.querySelector('#music-value');slider.value=Math.round(music.volume*100);output.textContent=slider.value+'%';slider.oninput=()=>{music.setVolume(Number(slider.value)/100);output.textContent=slider.value+'%'};if(!this.g.started){const b=document.createElement('button');b.textContent='타이틀로 돌아가기';b.onclick=()=>title(this.g);this.overlay.querySelector('.panel-actions').append(b)}};if(type==='inventory')this.panel('<h2>나의 가방</h2>'+Object.entries(s.items).map(([k,v])=>`<div class="row"><span>${names[k]}</span><b>${v}개</b></div>`).join(''));
-if(type==='journal')this.panel('<h2>부탁 수첩</h2>'+d.quests.map(q=>`<div class="row"><div><b>${q.name}</b><p>${q.description}</p></div><span>${s.quests[q.id]==='done'?'완료 ✓':s.quests[q.id]==='active'?'진행 중':'주민과 대화'}</span></div>`).join(''));
-if(type==='menu')this.panel('<h2>잠깐 쉬어가기</h2><p>현재 세이브 '+this.g.slot+' · 게임 폴더 saves에 저장됩니다.</p>',[['저장',async()=>{try{await saveSlot(this.g.slot,s);this.notify('파일에 저장했어요');this.close()}catch{this.notify('저장 실패: 서버와 폴더 쓰기 권한을 확인하세요')}}],['불러오기',async()=>{try{this.g.state=repairPosition(await loadSlot(this.g.slot));this.close()}catch{this.notify('저장 파일을 읽지 못했어요')}}],['타이틀로 돌아가기',()=>this.panel('<h2>타이틀로 돌아갈까요?</h2><p>저장하지 않은 진행은 사라집니다.</p>',[['돌아가기',()=>title(this.g)]])],['다음 날 아침',()=>{s.day++;s.minutes=540;s.shop.open=false;s.shop.customer=null;this.close()}],['음악 설정',()=>this.show('audio')],['플레이어 이미지 불러오기',()=>this.g.spritePicker()],['기본 캐릭터로 복원',()=>{this.g.sprite.useDefault();this.notify('첨부 원본 캐릭터로 복원했어요');this.close()}]]);
-if(type==='customerTalk')openCustomerDialogue(this.g);
-if(type==='postTalk')openStaffDialogue(this.g,'post');
-if(type==='storeTalk')openStaffDialogue(this.g,'store');
-if(type==='oven')showBaking(this);
-if(type==='warehouse')this.panel('<h2>빵 창고</h2><p>구운 빵은 창고에 보관됩니다. 먼저 꺼낸 뒤 진열하세요.</p>'+d.recipes.map(r=>`<p>${r.name} · 창고 ${s.warehouse[r.id]} / 가방 ${s.items[r.id]}</p>`).join(''),d.recipes.flatMap(r=>[[r.name+' 꺼내기',()=>{this.notify(takeBread(s,r.id)?'가방에 담았어요':'창고에 빵이 없어요');this.show(type)}],[r.name+' 보관',()=>{this.notify(storeBread(s,r.id)?'창고에 넣었어요':'가방에 빵이 없어요');this.show(type)}]]));
-if(type==='shop')this.panel('<h2>작은 화덕 영업 안내</h2><p>개점하면 플레이 시간 12초마다 손님 한 명이 옵니다. 주문은 진열대에서 응대하세요. 메뉴에서는 시간이 멈춥니다.</p>',[[s.shop.open?'폐점하기':'개점하기',()=>{s.shop.open=!s.shop.open;s.shop.elapsed=0;if(!s.shop.open)s.shop.customer=null;this.close();this.notify(s.shop.open?'문을 열었어요!':'오늘 영업을 마쳤어요')}]]);
-if(type==='shelf')this.panel('<h2>빵 진열대</h2><p>'+ (s.shop.customer?s.shop.customer.name+'의 주문: '+names[s.shop.customer.bread]:s.shop.open?'손님을 기다리고 있어요.':'영업 안내판에서 먼저 개점하세요.')+'</p>'+d.recipes.map(r=>`<p>${r.name}: 가방 ${s.items[r.id]} / 진열 ${s.display[r.id]||0}</p>`).join('')+`<p>누적 수익 ${s.revenue}G</p>`,[...d.recipes.map(r=>[r.name+' 진열',()=>{this.notify(display(s,r.id)?'진열했어요':'창고에서 빵을 먼저 꺼내세요');this.show(type)}]),...(s.shop.customer?.phase==='waiting'?[['손님과 대화하기',()=>this.show('customerTalk')]]:[])]);
-if(type==='parcel')this.panel('<h2>달빛 우체국 · 소포 수령</h2><p>마을 조합이 하루 한 번 밀가루 4개와 꿀 1개를 보내옵니다.</p><p>받은 소포: '+s.parcels.length+'개</p>',[['소포 받기',()=>{this.notify(receiveParcel(s)?'소포를 받았어요! 재료를 가방에 넣었습니다.':'오늘 소포는 이미 받았어요');this.show(type)}]]);
-if(type==='supplies')this.panel('<h2>해봄 잡화점 · 재료와 씨앗</h2>'+d.storeItems.map(item=>`<div class="row"><span>${item.name} · 보유 ${s.items[item.id]||0}개</span><b>${item.price}G / 1개</b></div>`).join(''),d.storeItems.map(item=>[item.name+' 1개 구매 · '+item.price+'G',()=>{this.notify(buyItem(s,item)?item.name+'을 샀어요':'돈이 부족해요');this.show('supplies')}]));
-}
-update(hint){const s=this.g.state;if(this.currentPanel==='oven'&&s.baking?.phase==='baking'){const progress=this.overlay.querySelector('#bake-progress'),label=this.overlay.querySelector('#bake-seconds');if(progress)progress.value=s.baking.seconds;if(label)label.textContent='완성까지 '+Math.max(0,Math.ceil(5-s.baking.seconds))+'초'}document.querySelector('#status').textContent=`${s.day}일째 · ${String(Math.floor(s.minutes/60)).padStart(2,'0')}:${String(Math.floor(s.minutes%60)).padStart(2,'0')}　☀　${s.money} G`;document.querySelector('#location').textContent=({town:'❀ 달빛마을 · 사거리',bakery:'♨ 작은 화덕 · 빵집',post:'✉ 달빛 우체국',bakeryKitchen:'♨ 작은 화덕 · 작업실',store:'✦ 해봄 잡화점',city:'❀ 해봄 소도시 · 상점 거리',field:'❀ 서쪽 베리 텃밭'})[s.scene];document.querySelector('#hint').textContent=hint}
+import { presentDialogue } from "./dialogueView.js";
+import { hasStaffAccess, openStaffDialogue } from "./serviceDialogue.js";
+import { screens } from "./ui/screens.js";
+import { updateHud } from "./ui/hud.js";
+export class UI {
+  constructor(g) {
+    this.g = g;
+    this.overlay = document.querySelector("#overlay");
+    this.timer = 0;
+  }
+  get open() {
+    return !this.overlay.hidden;
+  }
+  say(actor, pages, actions = [], options = {}) {
+    return presentDialogue(this, actor, pages, actions, options);
+  }
+  close() {
+    if (!this.g.started) return;
+    this.dialogueController?.dispose();
+    this.dialogueController = null;
+    this.overlay.hidden = true;
+    this.currentPanel = null;
+    this.serviceAccess = null;
+    this.g.keys.clear();
+  }
+  notify(t) {
+    document.querySelector("#toast").textContent = t;
+    clearTimeout(this.timer);
+    this.timer = setTimeout(
+      () => (document.querySelector("#toast").textContent = ""),
+      3500,
+    );
+  }
+  panel(html, actions = []) {
+    this.dialogueController?.dispose();
+    this.dialogueController = null;
+    this.g.keys.clear();
+    this.overlay.hidden = false;
+    this.overlay.innerHTML =
+      '<section class="panel">' +
+      html +
+      '<div class="actions panel-actions"></div></section>';
+    for (const [label, fn] of [
+      ...actions,
+      ...(this.g.started ? [["닫기 · ESC", () => this.close()]] : []),
+    ]) {
+      const b = document.createElement("button");
+      b.textContent = label;
+      if (label === "닫기 · ESC") b.classList.add("panel-close");
+      b.onclick = fn;
+      this.overlay.querySelector(".panel-actions").append(b);
+    }
+    this.overlay.querySelector("button")?.focus();
+  }
+  show(type) {
+    if (!["parcel", "supplies"].includes(type)) this.serviceAccess = null;
+    if (type === "parcel" || type === "supplies") {
+      const scene = type === "parcel" ? "post" : "store";
+      if (!hasStaffAccess(this.g, type)) {
+        openStaffDialogue(this.g, scene);
+        return;
+      }
+    }
+    this.currentPanel = type;
+    screens[type]?.(this);
+  }
+  update(hint) {
+    updateHud(this, hint);
+  }
 }

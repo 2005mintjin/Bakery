@@ -1,1 +1,14 @@
-{"name":"little-hearth-bakery","version":"0.1.0","private":true,"type":"module","scripts":{"start":"node server.js","test":"node --test"},"engines":{"node":">=20"}}
+{
+  "name": "little-hearth-bakery",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test",
+    "check": "node tools/check-source.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

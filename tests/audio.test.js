@@ -1,13 +1,154 @@
-import test from 'node:test';
-import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
-import {Music,trackForScene} from '../src/audio.js';
-import {byteRange} from '../src/httpRange.js';
-const config=JSON.parse(readFileSync(new URL('../data/music.json',import.meta.url)));
-const tick=()=>new Promise(resolve=>setImmediate(resolve));
-function setup(play){const records={};const audio={paused:true,plays:0,loads:0,currentTime:0,pause(){this.paused=true},load(){this.loads++;this.currentTime=0},play(){this.plays++;this.paused=false;return play?play(this):Promise.resolve()}};const storage={getItem:k=>records[k]||null,setItem:(k,v)=>records[k]=v};return {audio,storage,records,music:new Music(config,{createAudio:()=>audio,storage})}}
-test('scene music switches once and continues through both bakery rooms',async()=>{const {music,audio}=setup();assert.equal(audio.plays,0);music.update('town');assert.equal(audio.plays,0);music.start('town');await tick();assert.ok(audio.src.endsWith('Sunlight_on_Cobblestones.mp3'));assert.equal(audio.loop,true);music.update('city');music.update('post');assert.equal(audio.loads,1);audio.currentTime=31;music.start('bakery');await tick();assert.ok(audio.src.endsWith('Midnight_at_the_Parlour.mp3'));assert.equal(audio.loads,2);audio.currentTime=42;music.update('bakeryKitchen');assert.equal(audio.currentTime,42);assert.equal(audio.loads,2);music.setSuspended(true);assert.equal(audio.paused,true);music.setSuspended(false);await tick();assert.equal(audio.paused,false);music.stop();music.update('town');assert.equal(audio.paused,true)});
-test('volume and mute persist, and autoplay denial waits for an explicit retry',async()=>{let fail=true;const {music,audio,records}=setup(()=>fail?Promise.reject(Object.assign(Error('gesture'),{name:'NotAllowedError'})):Promise.resolve());music.setVolume(2);assert.equal(audio.volume,1);music.setVolume(-1);assert.equal(audio.volume,0);music.setVolume(.4);music.setMuted(true);assert.equal(audio.muted,true);assert.deepEqual(JSON.parse(records['hearth-audio']),{volume:.4,muted:true});music.start('town');await tick();assert.equal(music.blocked,true);const count=audio.plays;music.update('town');assert.equal(audio.plays,count);fail=false;audio.paused=true;music.start('town');await tick();assert.equal(music.blocked,false)});
-test('late play rejection from a previous scene cannot stop the new track',async()=>{let reject;const {music}=setup(audio=>audio.plays===1?new Promise((_,r)=>reject=r):Promise.resolve());music.start('town');music.start('bakery');reject(Error('old request'));await tick();assert.equal(music.failed,false);assert.equal(music.currentKey,'bakery');assert.equal(music.pending,false)});
-test('MP3 byte ranges support seeking, suffixes and unsatisfiable requests',()=>{assert.equal(byteRange(undefined,100),null);assert.deepEqual(byteRange('bytes=0-9',100),{start:0,end:9});assert.deepEqual(byteRange('bytes=90-',100),{start:90,end:99});assert.deepEqual(byteRange('bytes=-10',100),{start:90,end:99});assert.deepEqual(byteRange('bytes=95-999',100),{start:95,end:99});for(const value of ['bytes=100-','bytes=-0','bytes=8-2','bytes=0-1,5-6','bytes=-','bad'])assert.equal(byteRange(value,100).invalid,true)});
-test('supplied interiors and soundtrack assets are bundled at the configured paths',()=>{for(const t of Object.values(config.tracks)){const bytes=readFileSync(new URL('../'+t.asset,import.meta.url));assert.ok(bytes.length>1000000)}for(const scene of ['town','city','post','store','field'])assert.equal(trackForScene(config,scene),'village');for(const scene of ['bakery','bakeryKitchen'])assert.equal(trackForScene(config,scene),'bakery');const backgrounds=JSON.parse(readFileSync(new URL('../data/interiorBackgrounds.json',import.meta.url)));const a=readFileSync(new URL('../'+backgrounds.bakery.asset,import.meta.url)),b=readFileSync(new URL('../'+backgrounds.bakeryKitchen.asset,import.meta.url));assert.equal(a.readUInt32BE(16),1671);assert.equal(a.readUInt32BE(20),941);assert.equal(b.readUInt32BE(16),1536);assert.equal(b.readUInt32BE(20),1024)});
+import test from "node:test";
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { Music, trackForScene } from "../src/audio.js";
+import { byteRange } from "../src/httpRange.js";
+const config = JSON.parse(
+  readFileSync(new URL("../data/music.json", import.meta.url)),
+);
+const tick = () => new Promise((resolve) => setImmediate(resolve));
+function setup(play) {
+  const records = {};
+  const audio = {
+    paused: true,
+    plays: 0,
+    loads: 0,
+    currentTime: 0,
+    pause() {
+      this.paused = true;
+    },
+    load() {
+      this.loads++;
+      this.currentTime = 0;
+    },
+    play() {
+      this.plays++;
+      this.paused = false;
+      return play ? play(this) : Promise.resolve();
+    },
+  };
+  const storage = {
+    getItem: (k) => records[k] || null,
+    setItem: (k, v) => (records[k] = v),
+  };
+  return {
+    audio,
+    storage,
+    records,
+    music: new Music(config, { createAudio: () => audio, storage }),
+  };
+}
+test("scene music switches once and continues through both bakery rooms", async () => {
+  const { music, audio } = setup();
+  assert.equal(audio.plays, 0);
+  music.update("town");
+  assert.equal(audio.plays, 0);
+  music.start("town");
+  await tick();
+  assert.ok(audio.src.endsWith("Sunlight_on_Cobblestones.mp3"));
+  assert.equal(audio.loop, true);
+  music.update("city");
+  music.update("post");
+  assert.equal(audio.loads, 1);
+  audio.currentTime = 31;
+  music.start("bakery");
+  await tick();
+  assert.ok(audio.src.endsWith("Midnight_at_the_Parlour.mp3"));
+  assert.equal(audio.loads, 2);
+  audio.currentTime = 42;
+  music.update("bakeryKitchen");
+  assert.equal(audio.currentTime, 42);
+  assert.equal(audio.loads, 2);
+  music.setSuspended(true);
+  assert.equal(audio.paused, true);
+  music.setSuspended(false);
+  await tick();
+  assert.equal(audio.paused, false);
+  music.stop();
+  music.update("town");
+  assert.equal(audio.paused, true);
+});
+test("volume and mute persist, and autoplay denial waits for an explicit retry", async () => {
+  let fail = true;
+  const { music, audio, records } = setup(() =>
+    fail
+      ? Promise.reject(
+          Object.assign(Error("gesture"), { name: "NotAllowedError" }),
+        )
+      : Promise.resolve(),
+  );
+  music.setVolume(2);
+  assert.equal(audio.volume, 1);
+  music.setVolume(-1);
+  assert.equal(audio.volume, 0);
+  music.setVolume(0.4);
+  music.setMuted(true);
+  assert.equal(audio.muted, true);
+  assert.deepEqual(JSON.parse(records["hearth-audio"]), {
+    volume: 0.4,
+    muted: true,
+  });
+  music.start("town");
+  await tick();
+  assert.equal(music.blocked, true);
+  const count = audio.plays;
+  music.update("town");
+  assert.equal(audio.plays, count);
+  fail = false;
+  audio.paused = true;
+  music.start("town");
+  await tick();
+  assert.equal(music.blocked, false);
+});
+test("late play rejection from a previous scene cannot stop the new track", async () => {
+  let reject;
+  const { music } = setup((audio) =>
+    audio.plays === 1 ? new Promise((_, r) => (reject = r)) : Promise.resolve(),
+  );
+  music.start("town");
+  music.start("bakery");
+  reject(Error("old request"));
+  await tick();
+  assert.equal(music.failed, false);
+  assert.equal(music.currentKey, "bakery");
+  assert.equal(music.pending, false);
+});
+test("MP3 byte ranges support seeking, suffixes and unsatisfiable requests", () => {
+  assert.equal(byteRange(undefined, 100), null);
+  assert.deepEqual(byteRange("bytes=0-9", 100), { start: 0, end: 9 });
+  assert.deepEqual(byteRange("bytes=90-", 100), { start: 90, end: 99 });
+  assert.deepEqual(byteRange("bytes=-10", 100), { start: 90, end: 99 });
+  assert.deepEqual(byteRange("bytes=95-999", 100), { start: 95, end: 99 });
+  for (const value of [
+    "bytes=100-",
+    "bytes=-0",
+    "bytes=8-2",
+    "bytes=0-1,5-6",
+    "bytes=-",
+    "bad",
+  ])
+    assert.equal(byteRange(value, 100).invalid, true);
+});
+test("supplied interiors and soundtrack assets are bundled at the configured paths", () => {
+  for (const t of Object.values(config.tracks)) {
+    const bytes = readFileSync(new URL("../" + t.asset, import.meta.url));
+    assert.ok(bytes.length > 1000000);
+  }
+  for (const scene of ["town", "city", "post", "store", "field"])
+    assert.equal(trackForScene(config, scene), "village");
+  for (const scene of ["bakery", "bakeryKitchen"])
+    assert.equal(trackForScene(config, scene), "bakery");
+  const backgrounds = JSON.parse(
+    readFileSync(new URL("../data/interiorBackgrounds.json", import.meta.url)),
+  );
+  const a = readFileSync(
+      new URL("../" + backgrounds.bakery.asset, import.meta.url),
+    ),
+    b = readFileSync(
+      new URL("../" + backgrounds.bakeryKitchen.asset, import.meta.url),
+    );
+  assert.equal(a.readUInt32BE(16), 1671);
+  assert.equal(a.readUInt32BE(20), 941);
+  assert.equal(b.readUInt32BE(16), 1536);
+  assert.equal(b.readUInt32BE(20), 1024);
+});

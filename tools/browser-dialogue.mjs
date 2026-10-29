@@ -1,1 +1,9 @@
-export async function advanceDialogue(page,limit=24){for(let i=0;i<limit;i++){const next=page.locator('#dialogue-next');if(!await next.isVisible())return;await next.click();await page.waitForTimeout(20)}throw Error('Too many dialogue pages')}
+export async function advanceDialogue(page, limit = 24) {
+  for (let i = 0; i < limit; i++) {
+    const next = page.locator("#dialogue-next");
+    if (!(await next.isVisible())) return;
+    await next.click();
+    await page.waitForTimeout(20);
+  }
+  throw Error("Too many dialogue pages");
+}

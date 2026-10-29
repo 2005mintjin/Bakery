@@ -1,0 +1,110 @@
+#interior-actions {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+#interior-actions[hidden] {
+  display: none;
+}
+#interior-actions button {
+  pointer-events: auto;
+  position: absolute;
+  font-size: clamp(9px, 1.1vw, 14px);
+  padding: 8px 12px;
+  background: #fff7dcf2;
+  box-shadow: 0 3px 0 #846b4644;
+  border-color: #d4bc87;
+}
+#interior-actions button:disabled {
+  pointer-events: none;
+}
+.spot-oven {
+  left: 8%;
+  top: 55%;
+}
+.spot-warehouse {
+  right: 8%;
+  top: 58%;
+}
+.spot-shelf {
+  left: 38%;
+  top: 70%;
+}
+.spot-supplies {
+  left: 3%;
+  top: 87%;
+}
+.spot-shop {
+  left: 18%;
+  top: 27%;
+}
+.spot-parcel {
+  left: 41%;
+  top: 71%;
+}
+#interior-actions .interior-exit {
+  right: 2%;
+  bottom: 3%;
+  background: #546c50;
+  color: #fff5d8;
+  border-color: #849a6b;
+}
+.game #hint {
+  pointer-events: none;
+}
+#interior-actions button:focus-visible {
+  outline: 3px solid #e4b855;
+  outline-offset: 3px;
+}
+#interior-actions .room-arrow {
+  right: 2%;
+  top: 44%;
+  font-size: clamp(11px, 1.4vw, 18px);
+  background: #f2db9d;
+  border-color: #b59a5b;
+}
+#interior-actions[data-scene="bakeryKitchen"] .room-arrow {
+  left: 1.5%;
+  right: auto;
+  top: 21%;
+}
+#interior-actions[data-scene="bakeryKitchen"] .spot-oven {
+  left: 16%;
+  top: 65%;
+}
+#interior-actions[data-scene="bakeryKitchen"] .spot-warehouse {
+  right: 11%;
+  top: 65%;
+}
+#interior-actions[data-scene="store"] .spot-supplies {
+  left: 39%;
+  top: 68%;
+}
+#interior-actions[data-scene="bakery"] .spot-shop {
+  left: 72%;
+  top: 40%;
+}
+/* Hotspots follow the supplied counter and kitchen artwork. */
+#interior-actions[data-scene="bakery"] .spot-shelf {
+  left: 42%;
+  top: 62%;
+}
+#interior-actions[data-scene="bakery"] .spot-shop {
+  left: 60%;
+  top: 23%;
+}
+#interior-actions[data-scene="bakeryKitchen"] .spot-oven {
+  left: 72%;
+  top: 45%;
+}
+#interior-actions[data-scene="bakeryKitchen"] .spot-warehouse {
+  right: 2%;
+  top: 66%;
+}
+#interior-actions[data-scene="bakeryKitchen"] .room-arrow {
+  top: 24%;
+}
+#interior-actions[data-scene="bakery"] .spot-shelf {
+  left: 10%;
+  top: 74%;
+}

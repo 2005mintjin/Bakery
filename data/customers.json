@@ -1,1 +1,5 @@
-[{"name":"미라","portrait":"mira"},{"name":"준","portrait":"jun"},{"name":"소라","portrait":"sora"}]
+[
+  { "name": "미라", "portrait": "mira" },
+  { "name": "준", "portrait": "jun" },
+  { "name": "소라", "portrait": "sora" }
+]

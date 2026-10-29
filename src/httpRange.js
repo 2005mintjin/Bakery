@@ -1,1 +1,24 @@
-export function byteRange(header,size){if(!header)return null;const m=/^bytes=(\d*)-(\d*)$/.exec(header);if(!m||(!m[1]&&!m[2])||size<=0)return {invalid:true};let start,end;if(!m[1]){const count=Number(m[2]);if(!Number.isSafeInteger(count)||count<=0)return {invalid:true};start=Math.max(0,size-count);end=size-1}else{start=Number(m[1]);end=m[2]?Number(m[2]):size-1;if(!Number.isSafeInteger(start)||!Number.isSafeInteger(end)||start>=size||end<start)return {invalid:true};end=Math.min(end,size-1)}return {start,end}}
+export function byteRange(header, size) {
+  if (!header) return null;
+  const m = /^bytes=(\d*)-(\d*)$/.exec(header);
+  if (!m || (!m[1] && !m[2]) || size <= 0) return { invalid: true };
+  let start, end;
+  if (!m[1]) {
+    const count = Number(m[2]);
+    if (!Number.isSafeInteger(count) || count <= 0) return { invalid: true };
+    start = Math.max(0, size - count);
+    end = size - 1;
+  } else {
+    start = Number(m[1]);
+    end = m[2] ? Number(m[2]) : size - 1;
+    if (
+      !Number.isSafeInteger(start) ||
+      !Number.isSafeInteger(end) ||
+      start >= size ||
+      end < start
+    )
+      return { invalid: true };
+    end = Math.min(end, size - 1);
+  }
+  return { start, end };
+}

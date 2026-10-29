@@ -1,10 +1,134 @@
 // Optional browser regression check; requires Playwright and a running npm start server.
-const {chromium}=await import(process.env.BAKERY_PLAYWRIGHT_MODULE||'playwright');import assert from 'node:assert/strict';
-const b=await chromium.launch({...(process.env.BAKERY_BROWSER?{executablePath:process.env.BAKERY_BROWSER}:{}),args:['--no-sandbox']});
-try{const p=await b.newPage({viewport:{width:1200,height:1000}}),errors=[];p.on('pageerror',e=>errors.push(e.message));await p.goto('http://127.0.0.1:5173');
-const stats=await p.evaluate(async()=>{const {PlayerSprite}=await import('/src/playerSprite.js'),config=await(await fetch('/data/playerAnimations.json')).json(),legacy=await(await fetch('/data/playerAtlas.json')).json();const sprite=new PlayerSprite(legacy,config);await sprite.loading;sprite.useDefault();const canvas=document.createElement('canvas');canvas.width=200;canvas.height=160;const c=canvas.getContext('2d');c.imageSmoothingEnabled=false;const out={};function sample(walking,time,direction){c.clearRect(0,0,200,160);sprite.draw(c,100,140,walking,time,direction);const d=c.getImageData(0,0,200,160).data;let minX=200,maxX=0,minY=160,maxY=0,sum=[0,0,0],count=0;for(let y=0;y<160;y++)for(let x=0;x<200;x++){const i=(y*200+x)*4;if(d[i+3]>128){minX=Math.min(minX,x);maxX=Math.max(maxX,x);minY=Math.min(minY,y);maxY=Math.max(maxY,y);sum=sum.map((v,j)=>v+d[i+j]);count++}}let headMin=200,headMax=0;for(let y=minY+11;y<minY+22;y++)for(let x=0;x<200;x++)if(d[(y*200+x)*4+3]>128){headMin=Math.min(headMin,x);headMax=Math.max(headMax,x)}return{height:maxY-minY+1,head:(headMin+headMax)/2,width:maxX-minX+1,mean:sum.map(v=>v/count)}}for(const dir of ['up','down','left','right']){const idle=sample(false,0,dir),walk=[];sample(true,0,dir);for(let i=0;i<4;i++)walk.push(sample(true,(i+.1)/10,dir));out[dir]={idle,walk}}return out});
-for(const {idle,walk} of Object.values(stats)){for(const f of walk){assert.ok(Math.abs(f.height-idle.height)<=2,'Walking body height changed');for(let channel=0;channel<3;channel++)assert.ok(Math.abs(f.mean[channel]-idle.mean[channel])<=3,'Standing/walking palette mismatch');}const centers=walk.map(f=>f.head);assert.ok(Math.max(...centers)-Math.min(...centers)<=2)}
-const exactMirror=await p.evaluate(async()=>{const {PlayerSprite}=await import('/src/playerSprite.js');const conf=await(await fetch('/data/playerAnimations.json')).json(),old=await(await fetch('/data/playerAtlas.json')).json(),sprite=new PlayerSprite(old,conf);await sprite.loading;sprite.useDefault();const c=document.createElement('canvas');c.width=200;c.height=160;const ctx=c.getContext('2d');ctx.imageSmoothingEnabled=false;for(const walking of [false,true])for(let i=0;i<4;i++){const sample=dir=>{ctx.clearRect(0,0,200,160);sprite.draw(ctx,100,140,walking,0,dir);sprite.draw(ctx,100,140,walking,(i+.1)/10,dir);return ctx.getImageData(0,0,200,160).data};const right=sample('right'),left=sample('left');for(let y=0;y<160;y++)for(let x=0;x<200;x++)for(let ch=0;ch<4;ch++)if(right[(y*200+x)*4+ch]!==left[(y*200+199-x)*4+ch])return false}return true});
-assert.ok(exactMirror,'Left frames must be exact pixel reflections of right frames');
-assert.deepEqual(errors,[]);console.log('PASS: all 16 rendered frames retain idle height within 2px and head alignment within 2px; RGB averages remain within 3 levels; left/right pixel reflections match; no JS errors');
-}finally{await b.close()}
+const { chromium } = await import(
+  process.env.BAKERY_PLAYWRIGHT_MODULE || "playwright"
+);
+import assert from "node:assert/strict";
+const b = await chromium.launch({
+  ...(process.env.BAKERY_BROWSER
+    ? { executablePath: process.env.BAKERY_BROWSER }
+    : {}),
+  args: ["--no-sandbox"],
+});
+try {
+  const p = await b.newPage({ viewport: { width: 1200, height: 1000 } }),
+    errors = [];
+  p.on("pageerror", (e) => errors.push(e.message));
+  await p.goto("http://127.0.0.1:5173");
+  const stats = await p.evaluate(async () => {
+    const { PlayerSprite } = await import("/src/playerSprite.js"),
+      config = await (await fetch("/data/playerAnimations.json")).json(),
+      legacy = await (await fetch("/data/playerAtlas.json")).json();
+    const sprite = new PlayerSprite(legacy, config);
+    await sprite.loading;
+    sprite.useDefault();
+    const canvas = document.createElement("canvas");
+    canvas.width = 200;
+    canvas.height = 160;
+    const c = canvas.getContext("2d");
+    c.imageSmoothingEnabled = false;
+    const out = {};
+    function sample(walking, time, direction) {
+      c.clearRect(0, 0, 200, 160);
+      sprite.draw(c, 100, 140, walking, time, direction);
+      const d = c.getImageData(0, 0, 200, 160).data;
+      let minX = 200,
+        maxX = 0,
+        minY = 160,
+        maxY = 0,
+        sum = [0, 0, 0],
+        count = 0;
+      for (let y = 0; y < 160; y++)
+        for (let x = 0; x < 200; x++) {
+          const i = (y * 200 + x) * 4;
+          if (d[i + 3] > 128) {
+            minX = Math.min(minX, x);
+            maxX = Math.max(maxX, x);
+            minY = Math.min(minY, y);
+            maxY = Math.max(maxY, y);
+            sum = sum.map((v, j) => v + d[i + j]);
+            count++;
+          }
+        }
+      let headMin = 200,
+        headMax = 0;
+      for (let y = minY + 11; y < minY + 22; y++)
+        for (let x = 0; x < 200; x++)
+          if (d[(y * 200 + x) * 4 + 3] > 128) {
+            headMin = Math.min(headMin, x);
+            headMax = Math.max(headMax, x);
+          }
+      return {
+        height: maxY - minY + 1,
+        head: (headMin + headMax) / 2,
+        width: maxX - minX + 1,
+        mean: sum.map((v) => v / count),
+      };
+    }
+    for (const dir of ["up", "down", "left", "right"]) {
+      const idle = sample(false, 0, dir),
+        walk = [];
+      sample(true, 0, dir);
+      for (let i = 0; i < 4; i++) walk.push(sample(true, (i + 0.1) / 10, dir));
+      out[dir] = { idle, walk };
+    }
+    return out;
+  });
+  for (const { idle, walk } of Object.values(stats)) {
+    for (const f of walk) {
+      assert.ok(
+        Math.abs(f.height - idle.height) <= 2,
+        "Walking body height changed",
+      );
+      for (let channel = 0; channel < 3; channel++)
+        assert.ok(
+          Math.abs(f.mean[channel] - idle.mean[channel]) <= 3,
+          "Standing/walking palette mismatch",
+        );
+    }
+    const centers = walk.map((f) => f.head);
+    assert.ok(Math.max(...centers) - Math.min(...centers) <= 2);
+  }
+  const exactMirror = await p.evaluate(async () => {
+    const { PlayerSprite } = await import("/src/playerSprite.js");
+    const conf = await (await fetch("/data/playerAnimations.json")).json(),
+      old = await (await fetch("/data/playerAtlas.json")).json(),
+      sprite = new PlayerSprite(old, conf);
+    await sprite.loading;
+    sprite.useDefault();
+    const c = document.createElement("canvas");
+    c.width = 200;
+    c.height = 160;
+    const ctx = c.getContext("2d");
+    ctx.imageSmoothingEnabled = false;
+    for (const walking of [false, true])
+      for (let i = 0; i < 4; i++) {
+        const sample = (dir) => {
+          ctx.clearRect(0, 0, 200, 160);
+          sprite.draw(ctx, 100, 140, walking, 0, dir);
+          sprite.draw(ctx, 100, 140, walking, (i + 0.1) / 10, dir);
+          return ctx.getImageData(0, 0, 200, 160).data;
+        };
+        const right = sample("right"),
+          left = sample("left");
+        for (let y = 0; y < 160; y++)
+          for (let x = 0; x < 200; x++)
+            for (let ch = 0; ch < 4; ch++)
+              if (
+                right[(y * 200 + x) * 4 + ch] !==
+                left[(y * 200 + 199 - x) * 4 + ch]
+              )
+                return false;
+      }
+    return true;
+  });
+  assert.ok(
+    exactMirror,
+    "Left frames must be exact pixel reflections of right frames",
+  );
+  assert.deepEqual(errors, []);
+  console.log(
+    "PASS: all 16 rendered frames retain idle height within 2px and head alignment within 2px; RGB averages remain within 3 levels; left/right pixel reflections match; no JS errors",
+  );
+} finally {
+  await b.close();
+}

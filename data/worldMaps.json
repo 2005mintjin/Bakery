@@ -1,10 +1,7 @@
 {
   "town": {
     "asset": "assets/backgrounds/reference/reference-2.png",
-    "sourceSize": [
-      1536,
-      1024
-    ],
+    "sourceSize": [1536, 1024],
     "obstacles": [
       {
         "x": 65,
@@ -51,17 +48,11 @@
         "h": 40
       }
     ],
-    "safeSpawn": [
-      480,
-      310
-    ]
+    "safeSpawn": [480, 310]
   },
   "city": {
     "asset": "assets/backgrounds/reference/reference-1.png",
-    "sourceSize": [
-      1536,
-      1024
-    ],
+    "sourceSize": [1536, 1024],
     "obstacles": [
       {
         "x": 50,
@@ -99,10 +90,7 @@
         "h": 44
       }
     ],
-    "safeSpawn": [
-      480,
-      285
-    ]
+    "safeSpawn": [480, 285]
   },
   "field": {
     "obstacles": [
@@ -144,14 +132,8 @@
       }
     ],
     "doors": [],
-    "safeSpawn": [
-      880,
-      310
-    ],
+    "safeSpawn": [880, 310],
     "asset": "assets/backgrounds/berry-garden.png",
-    "sourceSize": [
-      1619,
-      971
-    ]
+    "sourceSize": [1619, 971]
   }
 }

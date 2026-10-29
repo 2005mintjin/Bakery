@@ -1,1 +1,24 @@
-{"referenceSize":[1536,1024],"idle":{"y":0,"height":228,"columns":9,"directions":{"down":1,"up":3,"left":2,"right":4}},"walk":{"y":228,"height":192,"columns":9,"fps":10,"facing":"right"},"reservedBread":{"y":612,"height":224,"columns":10,"enabled":false,"description":"넷째 줄 원본 영역을 보존합니다. 현재 게임에서는 사용하지 않습니다."},"skipJump":true}
+{
+  "referenceSize": [1536, 1024],
+  "idle": {
+    "y": 0,
+    "height": 228,
+    "columns": 9,
+    "directions": { "down": 1, "up": 3, "left": 2, "right": 4 }
+  },
+  "walk": {
+    "y": 228,
+    "height": 192,
+    "columns": 9,
+    "fps": 10,
+    "facing": "right"
+  },
+  "reservedBread": {
+    "y": 612,
+    "height": 224,
+    "columns": 10,
+    "enabled": false,
+    "description": "넷째 줄 원본 영역을 보존합니다. 현재 게임에서는 사용하지 않습니다."
+  },
+  "skipJump": true
+}

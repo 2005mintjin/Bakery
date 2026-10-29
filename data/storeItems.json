@@ -1,1 +1,7 @@
-[{"id":"flour","name":"밀가루","price":2,"quantity":1},{"id":"yeast","name":"이스트","price":3,"quantity":1},{"id":"salt","name":"소금","price":1,"quantity":1},{"id":"honey","name":"꿀","price":5,"quantity":1},{"id":"berrySeeds","name":"베리 씨앗","price":8,"quantity":1}]
+[
+  { "id": "flour", "name": "밀가루", "price": 2, "quantity": 1 },
+  { "id": "yeast", "name": "이스트", "price": 3, "quantity": 1 },
+  { "id": "salt", "name": "소금", "price": 1, "quantity": 1 },
+  { "id": "honey", "name": "꿀", "price": 5, "quantity": 1 },
+  { "id": "berrySeeds", "name": "베리 씨앗", "price": 8, "quantity": 1 }
+]
