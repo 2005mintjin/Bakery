@@ -1,0 +1,2 @@
+export const obstacles={town:[{x:80,y:100,w:250,h:160},{x:655,y:100,w:225,h:160},{x:428,y:265,w:104,h:80},{x:70,y:380,w:95,h:35},{x:790,y:435,w:90,h:35}],bakery:[{x:75,y:70,w:170,h:105},{x:350,y:75,w:240,h:100},{x:700,y:80,w:160,h:95},{x:95,y:310,w:200,h:80},{x:670,y:305,w:170,h:90}]};
+export function transition(s){if(s.scene==='town'&&s.x>170&&s.x<245&&s.y>251&&s.y<282){s.scene='bakery';s.x=480;s.y=500;return true}if(s.scene==='bakery'&&s.y>535&&s.x>420&&s.x<540){s.scene='town';s.x=208;s.y=295;return true}return false}

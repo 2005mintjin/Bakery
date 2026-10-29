@@ -1,0 +1,2 @@
+import {nearby} from './npc.js';
+export function target(g){const s=g.state,n=nearby(s,g.data.npcs);if(n)return {label:n.name+'와 이야기하기',npc:n};if(s.scene==='town'){if(Math.hypot(s.x-864,s.y-325)<65)return {label:'익은 베리 수확하기',type:'berry'}}else{for(const o of [{x:160,y:205,type:'oven',label:'빵 굽기'},{x:475,y:205,type:'shelf',label:'진열·판매'},{x:780,y:205,type:'supplies',label:'재료 주문'}])if(Math.hypot(s.x-o.x,s.y-o.y)<75)return o}return null}

@@ -1,0 +1,1 @@
+[{"id":"loaf","name":"밀빵","cost":{"flour":2},"price":16},{"id":"honeybread","name":"꿀빵","cost":{"flour":2,"honey":1},"price":25},{"id":"berrybread","name":"베리빵","cost":{"flour":2,"berry":2},"price":30}]

@@ -1,0 +1,11 @@
+import {fresh} from './saveSystem.js';
+import {move} from './player.js';
+import {transition} from './sceneManager.js';
+import {target} from './exploration.js';
+import {talk} from './dialogue.js';
+import {UI} from './ui.js';
+import {Renderer} from './renderer.js';
+async function boot(){const data={};for(const key of ['npcs','quests','recipes','dialogues']){const r=await fetch(`data/${key}.json`);if(!r.ok)throw Error(key);data[key]=await r.json()}const g={state:fresh(),keys:new Set(),data};g.ui=new UI(g);const renderer=new Renderer(document.querySelector('canvas'));
+function interact(){const o=target(g);if(!o)return;if(o.npc)talk(g,o.npc);else if(o.type==='berry'){const s=g.state,now=s.day*1440+s.minutes;if(now<s.harvestAt)g.ui.notify('열매가 다시 익고 있어요. 잠시 뒤 돌아오세요.');else{s.items.berry+=3;s.harvestAt=now+30;g.ui.notify('베리 3개를 모았어요')}}else g.ui.show(o.type)}
+document.querySelectorAll('[data-panel]').forEach(b=>b.onclick=()=>g.ui.show(b.dataset.panel));addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(['arrowup','arrowdown','arrowleft','arrowright',' '].includes(k))e.preventDefault();if(e.repeat)return;if(k==='escape'){if(g.ui.open)g.ui.close();else g.ui.show('menu');return}if(g.ui.open){if((k==='e'||k===' ')&&e.target.tagName!=='BUTTON')document.querySelector('#overlay button')?.click();return}if(k==='e')interact();else if(k==='i')g.ui.show('inventory');else if(k==='j')g.ui.show('journal');else g.keys.add(k)});addEventListener('keyup',e=>g.keys.delete(e.key.toLowerCase()));addEventListener('blur',()=>g.keys.clear());document.addEventListener('visibilitychange',()=>g.keys.clear());let prev=performance.now();function frame(now){const dt=Math.min((now-prev)/1000,.05);prev=now;let walking=false;if(!g.ui.open&&!document.hidden){walking=move(g.state,g.keys,dt,data.npcs);transition(g.state);g.state.minutes+=dt*2;if(g.state.minutes>=1440){g.state.minutes=360;g.state.day++}}renderer.draw(g,walking,now/1000);const o=target(g);g.ui.update(o?'E · '+o.label:g.state.scene==='bakery'?'화덕·진열대·재료 상자 가까이에서 E':'빵집 문으로 걸어 들어가 보세요');requestAnimationFrame(frame)}requestAnimationFrame(frame);g.ui.notify('달빛마을에 오신 것을 환영해요. E로 이웃과 인사해요.')}
+boot().catch(e=>{document.querySelector('#hint').textContent='게임 데이터를 읽지 못했습니다. npm start로 실행해 주세요.';console.error(e)});
