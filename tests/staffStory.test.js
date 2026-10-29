@@ -81,7 +81,7 @@ test("grouped sisters greeting remains one page; no choices are revealed by typi
   s.tick(99999);
   assert.equal(s.phase, "ready");
   assert.equal(s.index, 0);
-  assert.ok(s.text.includes("첫째: 어서오세요!"));
+  assert.ok(s.text.includes("아리엔: 어서오세요!"));
   assert.ok(s.text.includes("에리나: ... 하세요."));
   s.advance();
   assert.equal(s.phase, "choices");
@@ -169,6 +169,8 @@ test("store conversation gates shopping and handles every Erina branch and retur
   assert.equal(t.shown.pages[0].text, "....");
   t.choose("에리나한테 말을 걸어본다.");
   assert.equal(t.shown.pages.length, 4);
+  t.choose("에리나한테 말을 걸어본다.");
+  assert.equal(t.shown.pages[1].text, "아..안녕하세요...");
   t.choose("에리나를 쓰다듬는다.");
   assert.equal(t.shown.pages.length, 3);
   t.finish();

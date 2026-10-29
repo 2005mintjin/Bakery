@@ -1,3 +1,4 @@
+import { drawResident } from "./residentArt.js";
 import { drawStaff } from "./staffArt.js";
 import { drawCounter } from "./counterArt.js";
 import { drawGarden } from "./gardenArt.js";
@@ -62,16 +63,18 @@ export class Renderer extends PixelPainter {
     ].sort((a, b) => a.y - b.y);
     for (const a of actors) {
       if (!(
-        a.player && g.sprite?.draw(this.c, a.x, a.y, walking, t, g.direction)
+        (a.player &&
+          g.sprite?.draw(this.c, a.x, a.y, walking, t, g.direction)) ||
+        (!a.player && drawResident(this, a))
       ))
         drawCharacter(this, a.x, a.y, a.color, false, t);
       if (!a.player) {
-        this.text(a.name, a.x, a.y - 61, "#fff8dc");
+        this.text(a.name, a.x, a.y - (a.spriteHeight || 53) - 8, "#fff8dc");
         if (a.quest && s.quests[a.quest] !== "done")
           this.text(
             s.quests[a.quest] === "active" ? "⋯" : "!",
             a.x,
-            a.y - 78,
+            a.y - (a.spriteHeight || 53) - 25,
             "#fff4b3",
             18,
           );

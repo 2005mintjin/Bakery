@@ -1,3 +1,4 @@
+import { loadResidentArt } from "../residentArt.js";
 import { loadStaffArt } from "../staffArt.js";
 import { gardenAssets } from "../gardenArt.js";
 import { loadCounterArt } from "../counterArt.js";
@@ -23,12 +24,14 @@ export async function createGame(data) {
 
   configureWorld(data.worldMaps);
   const backgrounds = { ...data.worldMaps, ...data.interiorBackgrounds };
-  const [scenery, counterArt, gardenSprites, staffArt] = await Promise.all([
-    loadScenery(backgrounds),
-    loadCounterArt(),
-    loadScenery(gardenAssets),
-    loadStaffArt(data.serviceDialogues.staff),
-  ]);
+  const [scenery, counterArt, gardenSprites, staffArt, residentArt] =
+    await Promise.all([
+      loadScenery(backgrounds),
+      loadCounterArt(data.npcs),
+      loadScenery(gardenAssets),
+      loadStaffArt(data.serviceDialogues.staff),
+      loadResidentArt(data.npcs),
+    ]);
   const renderer = new Renderer(
     document.querySelector("canvas"),
     data.city,
@@ -38,6 +41,7 @@ export async function createGame(data) {
   );
   renderer.gardenSprites = gardenSprites;
   renderer.staffArt = staffArt;
+  renderer.residentArt = residentArt;
   g.interior = new Interior(g);
   g.sprite = new PlayerSprite(data.playerAtlas, data.playerAnimations);
   g.sprite.loading.catch(() =>

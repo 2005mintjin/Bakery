@@ -1,5 +1,11 @@
+import { TownStory } from "./townStory.js";
 import { accept, complete } from "./quest.js";
 export function talk(game, n) {
+  if (game.data.townStories?.[n.id]) {
+    const story = new TownStory(game, n);
+    story.start();
+    return story;
+  }
   const { state: s, data: d, ui } = game;
   const q = d.quests.find((q) => q.id === n.quest),
     lines = d.dialogues[n.id];

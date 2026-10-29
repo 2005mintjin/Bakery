@@ -36,7 +36,7 @@ export function tickShop(s, dt, customers = []) {
   s.shop.elapsed = 0;
   const i = s.shop.sequence++,
     person = customers[i % Math.max(1, customers.length)] || {
-      name: ["미라", "준", "소라"][i % 3],
+      name: ["미라", "이시도로", "마리아"][i % 3],
       portrait: ["mira", "jun", "sora"][i % 3],
     };
   s.shop.customer = {

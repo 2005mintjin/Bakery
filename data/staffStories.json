@@ -122,12 +122,12 @@
   },
   "store": {
     "entry": "welcome",
-    "speakers": ["첫째", "둘째", "에리나"],
+    "speakers": ["아리엔", "사샤", "에리나"],
     "nodes": {
       "welcome": {
         "pages": [
           {
-            "text": "첫째: 어서오세요!\n둘째: 안녕하세요...\n에리나: ... 하세요.",
+            "text": "아리엔: 어서오세요!\n사샤: 안녕하세요...\n에리나: ... 하세요.",
             "speaker": "고양이 세 자매",
             "activeSpeaker": "all"
           }
@@ -172,7 +172,7 @@
       "talk": {
         "pages": [
           {
-            "text": "첫째: 흐응, 심심하신가 보네요!\n둘째: ... 물건 안 살 건가요.\n에리나: ...",
+            "text": "아리엔: 흐응, 심심하신가 보네요!\n사샤: ... 물건 안 살 건가요.\n에리나: ...",
             "speaker": "고양이 세 자매",
             "activeSpeaker": "all"
           }
@@ -211,7 +211,7 @@
       "parents": {
         "pages": [
           {
-            "text": "첫째: 할머니 돌보러 가셨죠!\n둘째: 되게 아프시대요.\n에리나: 힝....",
+            "text": "아리엔: 엄마가 아프셔서 아빠랑 같이 병원에 계세요..\n사샤: 되게 아프시대요.\n에리나: 힝....",
             "speaker": "고양이 세 자매",
             "activeSpeaker": "all"
           }
@@ -221,7 +221,7 @@
       "recognize": {
         "pages": [
           {
-            "text": "첫째: 당연하죠, 우린 얼마나 다른데!\n둘째: 그냥 목소리 듣고 알아봐요...\n에리나: ....",
+            "text": "아리엔: 당연하죠, 우린 얼마나 다른데!\n사샤: 그냥 목소리 듣고 알아봐요...\n에리나: ....",
             "speaker": "고양이 세 자매",
             "activeSpeaker": "all"
           }
@@ -273,8 +273,8 @@
         ],
         "choices": [
           {
-            "label": "에리나를 쓰다듬는다.",
-            "next": "erina-pet"
+            "label": "에리나한테 말을 걸어본다.",
+            "next": "erina-greeting"
           },
           {
             "label": "...미안.",
@@ -296,12 +296,47 @@
             "activeSpeaker": "에리나"
           },
           {
-            "text": "으으, 건들지 말라니까..",
+            "text": "으으, 말 없이 쓰다듬지 마요..",
             "speaker": "에리나",
             "activeSpeaker": "에리나"
           }
         ],
         "next": "main"
+      },
+      "erina-greeting": {
+        "pages": [
+          {
+            "text": "........",
+            "speaker": "에리나",
+            "activeSpeaker": "에리나"
+          },
+          {
+            "text": "아..안녕하세요...",
+            "speaker": "에리나",
+            "activeSpeaker": "에리나"
+          },
+          {
+            "text": "...",
+            "speaker": "에리나",
+            "activeSpeaker": "에리나"
+          },
+          {
+            "text": "여전히 시선을 피하고 있다.",
+            "speaker": "이야기",
+            "activeSpeaker": "에리나",
+            "kind": "narration"
+          }
+        ],
+        "choices": [
+          {
+            "label": "에리나를 쓰다듬는다.",
+            "next": "erina-pet"
+          },
+          {
+            "label": "...미안.",
+            "next": "main"
+          }
+        ]
       }
     }
   }

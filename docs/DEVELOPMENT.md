@@ -16,6 +16,7 @@
 | 캐릭터 방향·걷기 | `src/playerSprite.js`, `data/playerAnimations.json` |
 | 화면 레이어 조합 | `src/renderer.js` |
 | 배경 이미지·대체 배경 | `src/render/backgrounds.js`, `data/worldMaps.json`, `data/interiorBackgrounds.json` |
+| 주민 SD PNG·그리기 | `src/residentArt.js`, `data/npcs.json` |
 | 기본 픽셀 도형·임시 주민 | `src/render/pixelPainter.js`, `src/render/characters.js` |
 | 실내 클릭 위치·손님 가림·직원 그림 | `src/interior.js`, `src/counterArt.js`, `src/staffArt.js` |
 | 패널 공통 생성·닫기·알림 | `src/ui.js` |
@@ -28,6 +29,7 @@
 | 대화 글자 출력·페이지·선택지 표시 | `src/dialogueSequence.js`, `src/dialogueView.js` |
 | 직원 이야기와 분기 | `data/staffStories.json`, `src/staffStory.js` |
 | 손님 주문·거절·대화 후 거래 조건 | `data/serviceDialogues.json`, `src/serviceDialogue.js` |
+| 주민 분기 대화·부탁·재방문 | `src/townStory.js`, `data/townStories.json` |
 | 마을 주민·퀘스트 | `data/npcs.json`, `data/dialogues.json`, `data/quests.json`, `src/dialogue.js`, `src/quest.js` |
 | 제빵 규칙·반죽 화면 | `src/baking.js`, `src/bakingUI.js`, `data/recipes.json` |
 | 재고·손님·판매·구매 규칙 | `src/shop.js`, `src/bakery.js`, `src/inventory.js`, `data/storeItems.json` |
@@ -71,12 +73,13 @@ node --test tests/server.test.js
 
 | 수정 영역 | 실제 브라우저 검사 |
 | --- | --- |
+| 마리아·이시도로 이미지/부탁/취소/재방문·저장 | `node tools/check-town-browser.mjs` |
 | 대화·상점·소포·주민 퀘스트·좁은 화면 | `node tools/check-service-browser.mjs` |
 | 반죽·3종 제빵·재고·판매·농사·저장 | `node tools/check-production-browser.mjs` |
 | 캐릭터 크기·색감·좌우 반전 | `node tools/check-player-browser.mjs` |
 | 손님 상반신·계산대 가림·진열 그림 | `node tools/check-counter-browser.mjs` |
 
-별도 설치된 도구는 `BAKERY_PLAYWRIGHT_MODULE`에 Playwright 모듈 URL, `BAKERY_BROWSER`에 Chromium 실행 경로를 지정할 수 있습니다. 서비스/제작 검사는 슬롯 3을 잠시 사용하고 원본을 복원합니다. 두 검사는 동시에 실행하지 않고, 다른 플레이어가 슬롯 3을 사용하는 중에도 실행하지 않습니다. 서버 API 테스트는 임시 폴더와 임시 포트를 사용하며 개인 세이브를 건드리지 않습니다.
+별도 설치된 도구는 `BAKERY_PLAYWRIGHT_MODULE`에 Playwright 모듈 URL, `BAKERY_BROWSER`에 Chromium 실행 경로를 지정할 수 있습니다. 주민/서비스/제작 검사는 슬롯 3을 잠시 사용하고 원본을 복원합니다. 이 검사들은 동시에 실행하지 않고, 다른 플레이어가 슬롯 3을 사용하는 중에도 실행하지 않습니다. 서버 API 테스트는 임시 폴더와 임시 포트를 사용하며 개인 세이브를 건드리지 않습니다.
 
 ## 패치와 저장 호환
 

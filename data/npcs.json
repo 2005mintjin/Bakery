@@ -10,20 +10,28 @@
   },
   {
     "id": "jun",
-    "name": "준",
-    "personality": "말수가 적고 작은 약속을 소중히 하는 정원사",
+    "name": "이시도로",
+    "personality": "호탕한 사투리로 농사를 가르치는 정원사",
     "x": 725,
     "y": 345,
     "color": "#66845d",
-    "quest": "berries"
+    "quest": "berries",
+    "portraitAsset": "assets/characters/residents/isidoro-portrait.png",
+    "spriteAsset": "assets/characters/residents/isidoro-sd.png",
+    "spriteBounds": [73, 12, 1149, 1261],
+    "spriteHeight": 64
   },
   {
     "id": "sora",
-    "name": "소라",
-    "personality": "새로 이사 온 수줍은 우편배달부",
+    "name": "마리아",
+    "personality": "무심한 듯 다정한 우편배달부",
     "x": 814,
     "y": 285,
     "color": "#668ca6",
-    "quest": "friend"
+    "quest": "friend",
+    "portraitAsset": "assets/characters/residents/maria-portrait.png",
+    "spriteAsset": "assets/characters/residents/maria-sd.png",
+    "spriteBounds": [0, 16, 1210, 1262],
+    "spriteHeight": 64
   }
 ]

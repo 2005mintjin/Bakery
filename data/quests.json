@@ -10,17 +10,17 @@
   {
     "id": "berries",
     "name": "정원사의 작은 부탁",
-    "description": "동쪽 덤불에서 베리 3개를 모아 준에게 전해 주세요.",
+    "description": "텃밭을 가꿔 베리 3개를 모아 이시도로에게 전해 주세요.",
     "item": "berry",
     "count": 3,
-    "reward": 25
+    "reward": 20
   },
   {
     "id": "friend",
-    "name": "낯선 마을의 첫 친구",
-    "description": "소라의 이야기를 듣고 따뜻한 말을 건네 주세요.",
-    "item": null,
-    "count": 0,
+    "name": "남편이 좋아하는 꿀빵",
+    "description": "마리아에게 가방에 든 꿀빵 1개를 전해 주세요.",
+    "item": "honeybread",
+    "count": 1,
     "reward": 20
   }
 ]

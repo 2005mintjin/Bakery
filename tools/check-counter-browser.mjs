@@ -33,7 +33,7 @@ try {
     const maps = await (await fetch("/data/interiorBackgrounds.json")).json();
     const [scenery, art] = await Promise.all([
       loadScenery(maps),
-      loadCounterArt(),
+      loadCounterArt(await (await fetch("/data/npcs.json")).json()),
     ]);
     const canvas = document.createElement("canvas");
     for (const child of [...document.body.children])

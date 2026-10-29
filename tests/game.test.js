@@ -73,7 +73,7 @@ test("all three quests require acceptance and pay rewards only once", () => {
     assert.equal(complete(s, q), false);
     assert.equal(accept(s, q), false);
   }
-  assert.equal(s.money, 140);
+  assert.equal(s.money, 135);
 });
 test("save roundtrip retains quest, position and economy; rejects invalid saves", () => {
   let value;

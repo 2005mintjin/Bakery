@@ -179,6 +179,8 @@ try {
     assert.equal(await p.locator(".dialogue-choice").count(), 0);
     await p.keyboard.press("Space");
   }
+  await choose("에리나한테 말을 걸어본다.");
+  await advanceDialogue(p);
   await choose("에리나를 쓰다듬는다.");
   await advanceDialogue(p);
   await choose("상점을 둘러본다.");

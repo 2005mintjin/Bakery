@@ -1,5 +1,14 @@
 [
-  { "name": "미라", "portrait": "mira" },
-  { "name": "준", "portrait": "jun" },
-  { "name": "소라", "portrait": "sora" }
+  {
+    "name": "미라",
+    "portrait": "mira"
+  },
+  {
+    "name": "이시도로",
+    "portrait": "jun"
+  },
+  {
+    "name": "마리아",
+    "portrait": "sora"
+  }
 ]

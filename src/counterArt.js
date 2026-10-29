@@ -4,7 +4,7 @@ export const counterLayout = {
   customer: { x: 288, y: 210, width: 384 },
   order: { x: 320, y: 160, width: 320, height: 63 },
 };
-export async function loadCounterArt() {
+export async function loadCounterArt(npcs = []) {
   const images = new Map();
   await Promise.all(
     ["mira", "jun", "sora", "loaf", "honeybread", "berrybread"].map(
@@ -16,9 +16,13 @@ export async function loadCounterArt() {
             resolve();
           };
           image.onerror = reject;
-          image.src = ["mira", "jun", "sora"].includes(id)
-            ? "assets/characters/" + id + ".svg"
-            : "assets/food/" + id + ".svg";
+          const portrait = npcs.find((n) => n.id === id)?.portraitAsset;
+          image.isPortrait = !!portrait;
+          image.src =
+            portrait ||
+            (["mira", "jun", "sora"].includes(id)
+              ? "assets/characters/" + id + ".svg"
+              : "assets/food/" + id + ".svg");
         }),
     ),
   );
@@ -48,13 +52,13 @@ export function drawCounter(r, s) {
       r.c.drawImage(
         img,
         0,
-        img.height * 0.14,
+        img.isPortrait ? 0 : img.height * 0.14,
         img.width,
-        img.height * 0.62,
+        img.height * (img.isPortrait ? 1 : 0.62),
         p.x,
         p.y,
         p.width,
-        (p.width * img.height * 0.62) / img.width,
+        (p.width * img.height * (img.isPortrait ? 1 : 0.62)) / img.width,
       );
     // Restore the foreground checkout counter OVER the customer; the bread case stays behind.
     // The original photo countertop starts at logical Y=459. It hides the lower torso.

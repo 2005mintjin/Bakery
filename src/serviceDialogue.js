@@ -54,10 +54,15 @@ export function openCustomerDialogue(g) {
     return;
   }
   const words = customerWords(g.data.serviceDialogues, c);
+  const npc = g.data.npcs?.find((n) => n.id === c.portrait);
+  const actor = {
+    ...c,
+    ...(npc ? { name: npc.name, portraitAsset: npc.portraitAsset } : {}),
+  };
   const render = (text = orderText(g.data.serviceDialogues, c)) =>
     dialoguePanel(
       g.ui,
-      c,
+      actor,
       text,
       customerChoices.map(([action, label]) => [
         label,
@@ -70,7 +75,7 @@ export function openCustomerDialogue(g) {
           if (result === "served")
             dialoguePanel(
               g.ui,
-              c,
+              actor,
               words.thanks,
               [["대화 마치기", () => g.ui.close()]],
               "손님",
@@ -88,7 +93,7 @@ export function openCustomerDialogue(g) {
           } else if (result === "dismissed")
             dialoguePanel(
               g.ui,
-              c,
+              actor,
               words.decline,
               [["안녕히 가세요.", () => g.ui.close()]],
               "손님",

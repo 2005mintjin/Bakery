@@ -1,3 +1,4 @@
+import { validateTownStories } from "../townStory.js";
 import { validateStaffStories } from "../staffStory.js";
 export async function loadGameData() {
   const data = {};
@@ -16,11 +17,13 @@ export async function loadGameData() {
     "customers",
     "serviceDialogues",
     "staffStories",
+    "townStories",
   ]) {
     const r = await fetch(`data/${key}.json`);
     if (!r.ok) throw Error(key);
     data[key] = await r.json();
   }
   validateStaffStories(data.staffStories);
+  validateTownStories(data.townStories);
   return data;
 }
