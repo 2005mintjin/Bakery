@@ -1,7 +1,21 @@
 {
   "tracks": {
-    "village": {"title":"Sunlight on Cobblestones","asset":"assets/audio/Sunlight_on_Cobblestones.mp3"},
-    "bakery": {"title":"Midnight at the Parlour","asset":"assets/audio/Midnight_at_the_Parlour.mp3"}
+    "village": {
+      "title": "Sunlight on Cobblestones",
+      "asset": "assets/audio/Sunlight_on_Cobblestones.mp3"
+    },
+    "bakery": {
+      "title": "Midnight at the Parlour",
+      "asset": "assets/audio/Midnight_at_the_Parlour.mp3"
+    }
   },
-  "scenes": {"town":"village","city":"village","post":"village","store":"village","bakery":"bakery","bakeryKitchen":"bakery"}
+  "scenes": {
+    "town": "village",
+    "city": "village",
+    "post": "village",
+    "store": "village",
+    "bakery": "bakery",
+    "bakeryKitchen": "bakery",
+    "field": "village"
+  }
 }
