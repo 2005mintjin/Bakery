@@ -10,6 +10,10 @@ export function animationFrame(config,walking,time,direction='down'){
  const index=walking?Math.floor(Math.max(0,time)*group.fps)%frames.length:0;
  return {...frames[index],asset:group.asset,scale:group.scale,index};
 }
+export function spriteDrawRect(frame,x,y){
+ const base=70/205*(frame.scale??1),sx=base*(frame.scaleX??1),sy=base*(frame.scaleY??1);
+ return {x:Math.round(x-frame.anchorX*sx),y:Math.round(y-frame.anchorY*sy+3),w:frame.w*sx,h:frame.h*sy};
+}
 function imageFrom(src){return new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>resolve(image);image.onerror=()=>reject(Error('이미지 로딩 실패'));image.src=src})}
 export class PlayerSprite{
  constructor(atlas,animations){this.atlas=atlas;this.animations=animations;this.custom=null;this.images=new Map();this.startTime=0;this.lastAction=null;this.lastDirection=null;this.loading=this.loadDefault()}
@@ -23,8 +27,8 @@ export class PlayerSprite{
   const elapsed=t-this.startTime;
   if(this.custom){const f=spriteFrame(this.atlas,this.custom.width,this.custom.height,walking,elapsed,direction);c.save();c.translate(Math.round(x),Math.round(y));if(f.flip)c.scale(-1,1);const h=70,w=h*f.w/f.h;c.drawImage(this.custom,f.x,f.y,f.w,f.h,-w/2,-h+3,w,h);c.restore();return true}
   const f=animationFrame(this.animations,walking,elapsed,direction),image=this.images.get(f.asset);if(!image)return false;
-  const scale=70/205*f.scale;
-  c.drawImage(image,f.x,f.y,f.w,f.h,Math.round(x-f.anchorX*scale),Math.round(y-f.anchorY*scale+3),f.w*scale,f.h*scale);
+  const rect=spriteDrawRect(f,x,y);
+  c.drawImage(image,f.x,f.y,f.w,f.h,rect.x,rect.y,rect.w,rect.h);
   return true;
  }
 }
