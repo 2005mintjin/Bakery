@@ -162,7 +162,7 @@ test("v1 migration and malformed shop rejection", () => {
   s.version = 1;
   delete s.shop;
   delete s.warehouse;
-  assert.equal(validate(s).version, 4);
+  assert.equal(validate(s).version, 5);
   assert.deepEqual(validate(s).warehouse, {
     loaf: 0,
     honeybread: 0,

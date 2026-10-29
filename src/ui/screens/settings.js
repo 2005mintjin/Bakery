@@ -85,16 +85,7 @@ export function showMenu(ui) {
             [["돌아가기", () => title(ui.g)]],
           ),
       ],
-      [
-        "다음 날 아침",
-        () => {
-          s.day++;
-          s.minutes = 540;
-          s.shop.open = false;
-          s.shop.customer = null;
-          ui.close();
-        },
-      ],
+      ["퇴근·잠자기", () => ui.show("sleep")],
       ["음악 설정", () => ui.show("audio")],
       ["플레이어 이미지 불러오기", () => ui.g.spritePicker()],
       [

@@ -4,7 +4,7 @@ export function validate(input) {
   const s = structuredClone(input),
     base = fresh();
   if (
-    ![1, 2, 3, 4].includes(s.version) ||
+    ![1, 2, 3, 4, 5].includes(s.version) ||
     ![
       "town",
       "bakery",
@@ -13,6 +13,7 @@ export function validate(input) {
       "city",
       "store",
       "field",
+      "cafe",
     ].includes(s.scene)
   )
     throw Error("지원하지 않는 저장 파일");
@@ -127,5 +128,8 @@ export function validate(input) {
     )
       throw Error("손상된 대화 방문 기록");
   } else s.dialogueVisits = { postDay: 0 };
-  return { ...base, ...s, version: 4, items: { ...base.items, ...s.items } };
+  if (s.version < 5) s.stamina = base.stamina;
+  else if (!nonnegative(s.stamina) || s.stamina > 100)
+    throw Error("손상된 기력");
+  return { ...base, ...s, version: 5, items: { ...base.items, ...s.items } };
 }

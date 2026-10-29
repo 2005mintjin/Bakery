@@ -1,3 +1,4 @@
+import { doughStaminaCost } from "./stamina.js";
 import { names } from "./inventory.js";
 import {
   baseDough,
@@ -18,12 +19,17 @@ export function showBaking(ui) {
         Object.keys(baseDough)
           .map((k) => `${names[k]} ${s.items[k]}`)
           .join(" / ") +
-        "</p><p>반죽을 마우스로 치대고, 꿀이나 베리를 넣은 뒤 구워 보세요.</p>",
+        `</p><p>반죽 1회에 기력 ${doughStaminaCost} 소모 · 현재 ${s.stamina}</p><p>반죽을 마우스로 치대고, 꿀이나 베리를 넣은 뒤 구워 보세요.</p>`,
       [
         [
           "재료 섞어 반죽 시작",
           () => {
-            if (!beginDough(s)) ui.notify("밀가루·이스트·소금이 부족해요");
+            if (!beginDough(s))
+              ui.notify(
+                s.stamina < doughStaminaCost
+                  ? "기력이 부족해요. 잠을 자거나 카페에서 쉬어 주세요."
+                  : "밀가루·이스트·소금이 부족해요",
+              );
             ui.show("oven");
           },
         ],

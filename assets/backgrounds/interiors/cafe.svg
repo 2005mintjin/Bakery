@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="576" viewBox="0 0 320 192" shape-rendering="crispEdges">
+<defs>
+ <pattern id="wood" width="32" height="12" patternUnits="userSpaceOnUse"><path fill="#a57950" d="M0 0h32v12H0z"/><path fill="#805b3e" d="M0 0h32v1H0zM0 0h1v12H0z"/><path fill="#be9362" d="M3 3h19v1H3zM12 8h17v1H12z"/></pattern>
+ <g id="cup"><path fill="#543d31" d="M0 8h17v2H0z"/><path fill="#f4e6c4" d="M2 0h10v7H2zM12 1h4v5h-4z"/><path fill="#65462e" d="M3 1h8v2H3zM13 2h2v2h-2z"/><path fill="#fff5dd" d="M3 3h2v3H3z"/></g>
+ <g id="cake"><path fill="#c39755" d="M0 6h17v2H0z"/><path fill="#f6dfb5" d="M1 0h15v6H1z"/><path fill="#b96774" d="M1 2h15v2H1z"/><path fill="#fff2d5" d="M0 0h17v2H0z"/><path fill="#a44154" d="M7-3h4v3H7z"/></g>
+ <g id="plant"><path fill="#b77c50" d="M1 16h16v3H1zM3 19h12v13H3z"/><path fill="#80563c" d="M5 27h8v4H5z"/><path fill="#547648" d="M7 0h4v21H7zM0 5h7v4H0zM11 7h8v4h-8z"/><path fill="#799958" d="M3 1h4v9H3zM11 0h5v7h-5zM0 11h7v4H0zM11 13h6v5h-6z"/></g>
+</defs>
+<path fill="#dbcba3" d="M0 0h320v192H0z"/>
+<path fill="#a97952" d="M0 0h320v7H0zM0 0h7v135H0zM313 0h7v135h-7z"/>
+<path fill="#ead9ad" d="M8 8h304v112H8z"/><path fill="#c0ac7b" d="M8 116h304v4H8z"/>
+<path fill="url(#wood)" d="M0 120h320v72H0z"/>
+<!-- Sunlit window and its wooden crossbars. -->
+<path fill="#765139" d="M21 22h76v81H21z"/><path fill="#d0dbad" d="M25 26h68v73H25z"/>
+<path fill="#aac686" d="M25 63h68v36H25z"/><path fill="#7f9e64" d="M26 56h13v32H26zM76 50h15v39H76z"/>
+<path fill="#e9d89d" d="M57 26h4v73h-4zM25 61h68v4H25z"/><path fill="#b68c57" d="M18 102h82v5H18z"/>
+<path fill="#f5e8c6" d="M18 20h13v40H18zM87 20h13v40H87z"/><path fill="#b96956" d="M18 58h13v5H18zM87 58h13v5H87z"/>
+<!-- Coffee shelves, jars and counter. -->
+<path fill="#76563d" d="M116 36h91v4h-91zM116 61h91v4h-91z"/>
+<path fill="#a07750" d="M119 40h3v21h-3zM201 40h3v21h-3z"/>
+<g fill="#aeb59a"><path d="M123 22h13v14h-13zM145 19h14v17h-14zM167 23h12v13h-12z"/></g>
+<g fill="#694d3a"><path d="M123 20h13v3h-13zM145 17h14v3h-14zM167 21h12v3h-12z"/></g>
+<use href="#cup" x="124" y="50"/><use href="#cup" x="150" y="50"/><use href="#cup" x="176" y="50"/>
+<path fill="#77573f" d="M225 25h70v62h-70z"/><path fill="#354c3d" d="M229 29h62v54h-62z"/>
+<g fill="#ead8ae"><path d="M239 38h43v2h-43zM236 48h33v2h-33zM275 48h8v2h-8zM236 57h35v2h-35zM275 57h8v2h-8zM240 71h40v1h-40z"/></g>
+<text x="260" y="42" text-anchor="middle" fill="#fff2ca" font-size="7" font-family="monospace">CAFE</text>
+<path fill="#946544" d="M104 100h202v46H104z"/><path fill="#d1a36b" d="M99 96h212v7H99z"/><path fill="#614733" d="M105 104h201v3H105z"/>
+<path fill="#b18052" d="M112 112h49v28h-49zM167 112h49v28h-49zM222 112h74v28h-74z"/>
+<path fill="#404b46" d="M116 73h42v23h-42z"/><path fill="#adb6a5" d="M120 75h34v9h-34z"/><path fill="#252e2a" d="M122 86h28v8h-28z"/>
+<use href="#cup" x="128" y="87"/><use href="#cup" x="173" y="87"/>
+<path fill="#957650" d="M213 85h81v11h-81z"/><path fill="#c4d2be" d="M215 76h77v17h-77z"/>
+<use href="#cake" x="221" y="84"/><use href="#cake" x="243" y="84"/><use href="#cake" x="267" y="84"/>
+<!-- Foreground cafe table and chairs. -->
+<path fill="#6b5038" d="M36 141h6v37h-6zM86 141h6v37h-6zM32 151h13v5H32zM83 151h14v5H83z"/>
+<path fill="#bf8c58" d="M26 137h23v8H26zM81 137h23v8H81z"/>
+<path fill="#624735" d="M60 151h7v33h-7zM48 181h31v4H48z"/><path fill="#b18352" d="M43 136h42v17H43z"/>
+<path fill="#d5af76" d="M39 134h50v12H39z"/><path fill="#a2764d" d="M43 147h42v3H43z"/>
+<use href="#cup" x="47" y="133"/><use href="#cake" x="67" y="135"/>
+<use href="#plant" x="13" y="101"/><use href="#plant" x="286" y="133"/>
+<!-- Pendant and woven rug. -->
+<path fill="#614732" d="M184 7h2v15h-2zM176 22h18v3h-18zM172 25h26v4h-26z"/><path fill="#f8d47f" d="M177 29h16v3h-16z"/>
+<path fill="#b07b60" d="M140 155h112v28H140z"/><path fill="#e2be85" d="M144 159h104v20H144z"/><path fill="#bc9363" d="M150 163h92v2h-92zM150 173h92v2h-92z"/>
+</svg>

@@ -1,3 +1,4 @@
+import { closeShop } from "../../wellbeing.js";
 import { names } from "../../inventory.js";
 import { display } from "../../bakery.js";
 import { takeBread, storeBread } from "../../shop.js";
@@ -47,9 +48,16 @@ export function showShop(ui) {
         () => {
           s.shop.open = !s.shop.open;
           s.shop.elapsed = 0;
-          if (!s.shop.open) s.shop.customer = null;
+          if (!s.shop.open) closeShop(s);
           ui.close();
           ui.notify(s.shop.open ? "문을 열었어요!" : "오늘 영업을 마쳤어요");
+        },
+      ],
+      [
+        "가게 닫고 퇴근하기",
+        () => {
+          closeShop(s);
+          ui.show("sleep");
         },
       ],
     ],

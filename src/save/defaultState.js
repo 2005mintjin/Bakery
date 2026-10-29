@@ -1,13 +1,14 @@
 export function fresh() {
   return {
-    version: 4,
+    version: 5,
     scene: "town",
     x: 480,
     y: 430,
     money: 60,
     revenue: 0,
     day: 1,
-    minutes: 540,
+    minutes: 360,
+    stamina: 100,
     items: {
       flour: 12,
       yeast: 6,

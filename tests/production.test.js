@@ -106,7 +106,7 @@ test("v2 migration keeps old progress and adds starters once", () => {
   old.warehouse.loaf = 4;
   old.shop.customer = { name: "이웃", bread: "loaf" };
   let s = validate(old);
-  assert.equal(s.version, 4);
+  assert.equal(s.version, 5);
   assert.equal(s.money, 123);
   assert.equal(s.quests.delivery, "done");
   assert.equal(s.warehouse.loaf, 4);

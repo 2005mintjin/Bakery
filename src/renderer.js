@@ -1,3 +1,4 @@
+import { drawDaylight } from "./render/daylight.js";
 import { drawResident } from "./residentArt.js";
 import { drawStaff } from "./staffArt.js";
 import { drawCounter } from "./counterArt.js";
@@ -34,6 +35,7 @@ export class Renderer extends PixelPainter {
       "city",
       "store",
       "field",
+      "cafe",
     ]) {
       const b = document.createElement("canvas");
       b.width = 1920;
@@ -80,15 +82,6 @@ export class Renderer extends PixelPainter {
           );
       }
     }
-    if (s.scene === "bakery" && s.shop.open) {
-      this.text("OPEN · 영업 중", 480, 225, "#466f43", 13);
-      if (s.shop.customer) {
-        drawCharacter(this, 475, 265, "#dc9679", false, t);
-        this.text("주문이 있어요!", 475, 204, "#754e31", 13);
-      }
-    }
-    if (s.minutes > 1080) {
-      this.r(0, 0, 960, 576, "#283e6326");
-    }
+    drawDaylight(this.c, s.minutes);
   }
 }

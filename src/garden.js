@@ -81,7 +81,7 @@ export function showGarden(ui, index) {
           if (!ok)
             ui.notify(
               stage === "growing"
-                ? "조금 더 기다려 주세요. 메뉴의 다음 날 아침으로 시간을 넘길 수도 있어요."
+                ? "조금 더 기다려 주세요. 빵집에서 잠을 자고 다음 날 수확해도 좋아요."
                 : "씨앗이 부족하거나 아직 수확할 수 없어요",
             );
           showGarden(ui, index);

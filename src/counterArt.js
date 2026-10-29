@@ -2,6 +2,7 @@ import { names } from "./inventory.js";
 export const counterLayout = {
   frontY: 459,
   customer: { x: 288, y: 210, width: 384 },
+  sdCustomer: { centerX: 480, y: 230, height: 300 },
   order: { x: 320, y: 160, width: 320, height: 63 },
 };
 export async function loadCounterArt(npcs = []) {
@@ -16,10 +17,11 @@ export async function loadCounterArt(npcs = []) {
             resolve();
           };
           image.onerror = reject;
-          const portrait = npcs.find((n) => n.id === id)?.portraitAsset;
-          image.isPortrait = !!portrait;
+          const npc = npcs.find((n) => n.id === id);
+          const visitorAsset = npc?.spriteAsset;
+          image.sdBounds = visitorAsset ? npc.spriteBounds : null;
           image.src =
-            portrait ||
+            visitorAsset ||
             (["mira", "jun", "sora"].includes(id)
               ? "assets/characters/" + id + ".svg"
               : "assets/food/" + id + ".svg");
@@ -48,17 +50,32 @@ export function drawCounter(r, s) {
   if (customer?.phase === "waiting") {
     const img = r.counterArt?.get(customer.portrait),
       p = counterLayout.customer;
-    if (img)
+    if (img?.sdBounds) {
+      const [sx, sy, sw, sh] = img.sdBounds,
+        sd = counterLayout.sdCustomer;
+      const width = (sd.height * sw) / sh;
+      r.c.drawImage(
+        img,
+        sx,
+        sy,
+        sw,
+        sh,
+        sd.centerX - width / 2,
+        sd.y,
+        width,
+        sd.height,
+      );
+    } else if (img)
       r.c.drawImage(
         img,
         0,
-        img.isPortrait ? 0 : img.height * 0.14,
+        img.height * 0.14,
         img.width,
-        img.height * (img.isPortrait ? 1 : 0.62),
+        img.height * 0.62,
         p.x,
         p.y,
         p.width,
-        (p.width * img.height * (img.isPortrait ? 1 : 0.62)) / img.width,
+        (p.width * img.height * 0.62) / img.width,
       );
     // Restore the foreground checkout counter OVER the customer; the bread case stays behind.
     // The original photo countertop starts at logical Y=459. It hides the lower torso.

@@ -10,5 +10,8 @@
   },
   "store": {
     "asset": "assets/backgrounds/services/general-store.png"
+  },
+  "cafe": {
+    "asset": "assets/backgrounds/interiors/cafe.svg"
   }
 }

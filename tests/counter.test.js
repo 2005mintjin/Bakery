@@ -52,3 +52,36 @@ test("customer is behind the checkout foreground with bread visible in the case"
   drawCounter(r, { shop: { customer: { phase: "knocking" } }, display: {} });
   assert.equal(calls.length, 0);
 });
+test("custom visitors draw SD bounds at the counter while keeping the foreground mask", () => {
+  const sd = { sdBounds: [10, 20, 200, 300] },
+    background = {},
+    calls = [];
+  const r = {
+    counterArt: new Map([["sora", sd]]),
+    bg: { bakery: background },
+    c: {
+      drawImage: (...a) => calls.push(a),
+      save() {},
+      restore() {},
+      beginPath() {},
+      rect() {},
+      clip() {},
+    },
+    r() {},
+    text() {},
+  };
+  drawCounter(r, {
+    display: {},
+    shop: {
+      customer: {
+        phase: "waiting",
+        portrait: "sora",
+        name: "마리아",
+        bread: "loaf",
+      },
+    },
+  });
+  assert.deepEqual(calls[0].slice(1, 5), sd.sdBounds);
+  assert.equal(calls[0].at(-1), counterLayout.sdCustomer.height);
+  assert.equal(calls[1][0], background);
+});

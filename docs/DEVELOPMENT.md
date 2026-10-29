@@ -31,6 +31,9 @@
 | 손님 주문·거절·대화 후 거래 조건 | `data/serviceDialogues.json`, `src/serviceDialogue.js` |
 | 주민 분기 대화·부탁·재방문 | `src/townStory.js`, `data/townStories.json` |
 | 마을 주민·퀘스트 | `data/npcs.json`, `data/dialogues.json`, `data/quests.json`, `src/dialogue.js`, `src/quest.js` |
+| 기력·수면·폐점·시계 경과 | `src/stamina.js`, `src/wellbeing.js`, `src/ui/screens/rest.js` |
+| 시간별 노을·밤·새벽 | `src/render/daylight.js` |
+| 카페 상품·기력 회복 화면 | `data/cafeItems.json`, `src/ui/screens/cafe.js` |
 | 제빵 규칙·반죽 화면 | `src/baking.js`, `src/bakingUI.js`, `data/recipes.json` |
 | 재고·손님·판매·구매 규칙 | `src/shop.js`, `src/bakery.js`, `src/inventory.js`, `data/storeItems.json` |
 | 텃밭 성장·표시 | `src/garden.js`, `src/gardenArt.js` |
@@ -73,18 +76,19 @@ node --test tests/server.test.js
 
 | 수정 영역 | 실제 브라우저 검사 |
 | --- | --- |
+| 시간대·기력·퇴근/수면·카페·손님 SD/초상 | `node tools/check-wellbeing-browser.mjs` |
 | 마리아·이시도로 이미지/부탁/취소/재방문·저장 | `node tools/check-town-browser.mjs` |
 | 대화·상점·소포·주민 퀘스트·좁은 화면 | `node tools/check-service-browser.mjs` |
 | 반죽·3종 제빵·재고·판매·농사·저장 | `node tools/check-production-browser.mjs` |
 | 캐릭터 크기·색감·좌우 반전 | `node tools/check-player-browser.mjs` |
 | 손님 상반신·계산대 가림·진열 그림 | `node tools/check-counter-browser.mjs` |
 
-별도 설치된 도구는 `BAKERY_PLAYWRIGHT_MODULE`에 Playwright 모듈 URL, `BAKERY_BROWSER`에 Chromium 실행 경로를 지정할 수 있습니다. 주민/서비스/제작 검사는 슬롯 3을 잠시 사용하고 원본을 복원합니다. 이 검사들은 동시에 실행하지 않고, 다른 플레이어가 슬롯 3을 사용하는 중에도 실행하지 않습니다. 서버 API 테스트는 임시 폴더와 임시 포트를 사용하며 개인 세이브를 건드리지 않습니다.
+별도 설치된 도구는 `BAKERY_PLAYWRIGHT_MODULE`에 Playwright 모듈 URL, `BAKERY_BROWSER`에 Chromium 실행 경로를 지정할 수 있습니다. 기력/주민/서비스/제작 검사는 슬롯 3을 잠시 사용하고 원본을 복원합니다. 이 검사들은 동시에 실행하지 않고, 다른 플레이어가 슬롯 3을 사용하는 중에도 실행하지 않습니다. 서버 API 테스트는 임시 폴더와 임시 포트를 사용하며 개인 세이브를 건드리지 않습니다.
 
 ## 패치와 저장 호환
 
 - 실행 파일의 이름·ASCII/CRLF 인코딩·실행 명령을 유지합니다. 런타임 의존성을 추가하지 않습니다.
-- 세이브 버전은 현재 4이며 버전 1~3 이관을 지원합니다. 이번 구조 정리에서는 형식을 바꾸지 않았습니다.
+- 세이브 버전은 현재 5이며 버전 1~4 이관을 지원합니다. 버전 5부터 기력을 저장합니다. 구버전 기력은 100으로 한 번 초기화하며 기존 시간·재고·퀘스트를 보존합니다.
 - 저장 형식 변경 시 초기값·검증·이관·관련 테스트를 함께 검토합니다. 가져온 값에 새 기본값을 매번 중복 지급하지 않습니다.
 - 파일 저장은 임시 파일 작성 후 교체하며, 세이브와 사용자 이미지 쓰기는 하나의 서버 큐로 직렬화합니다.
 - 패치는 변경한 파일을 Git으로 관리합니다. 새 배포 폴더에서는 기존 `saves/`를 복사해 이어 합니다. 사용자 세이브를 Git에 넣거나 초기화하지 않습니다.

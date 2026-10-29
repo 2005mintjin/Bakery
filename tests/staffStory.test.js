@@ -195,7 +195,7 @@ test("v3 saves migrate visit records while keeping dough, crop and money; v4 pre
   s.baking = { phase: "kneading", progress: 25, topping: null, seconds: 0 };
   s.garden[2] = { plantedAt: 100, wateredAt: 200 };
   const migrated = validate(s);
-  assert.equal(migrated.version, 4);
+  assert.equal(migrated.version, 5);
   assert.deepEqual(migrated.dialogueVisits, { postDay: 0 });
   assert.equal(migrated.money, 88);
   assert.equal(migrated.baking.progress, 25);

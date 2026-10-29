@@ -1,3 +1,5 @@
+import { showSleep } from "./screens/rest.js";
+import { showCafe } from "./screens/cafe.js";
 import { showBaking } from "../bakingUI.js";
 import { openCustomerDialogue, openStaffDialogue } from "../serviceDialogue.js";
 import { showAudio, showMenu } from "./screens/settings.js";
@@ -6,6 +8,8 @@ import { showWarehouse, showShop, showShelf } from "./screens/bakery.js";
 import { showParcel, showSupplies } from "./screens/services.js";
 
 export const screens = {
+  sleep: showSleep,
+  cafe: showCafe,
   audio: showAudio,
   menu: showMenu,
   inventory: showInventory,

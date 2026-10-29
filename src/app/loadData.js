@@ -18,6 +18,7 @@ export async function loadGameData() {
     "serviceDialogues",
     "staffStories",
     "townStories",
+    "cafeItems",
   ]) {
     const r = await fetch(`data/${key}.json`);
     if (!r.ok) throw Error(key);

@@ -6,6 +6,7 @@ export const obstacles = {
   bakeryKitchen: [],
   post: [],
   store: [],
+  cafe: [],
 };
 export let worldMaps = {};
 export function configureWorld(maps) {

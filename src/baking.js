@@ -1,3 +1,4 @@
+import { doughStaminaCost } from "./stamina.js";
 import { spend } from "./inventory.js";
 export const baseDough = { flour: 2, yeast: 1, salt: 1 };
 export const toppings = { none: {}, honey: { honey: 1 }, berry: { berry: 2 } };
@@ -8,7 +9,9 @@ export const breadForTopping = {
 };
 export const bakeSeconds = 5;
 export function beginDough(s) {
-  if (s.baking || !spend(s, baseDough)) return false;
+  if (s.baking || s.stamina < doughStaminaCost || !spend(s, baseDough))
+    return false;
+  s.stamina -= doughStaminaCost;
   s.baking = { phase: "kneading", progress: 0, topping: null, seconds: 0 };
   return true;
 }

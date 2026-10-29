@@ -119,7 +119,7 @@ try {
   await kneadOneCycle();
   await close();
   let state = await save();
-  assert.equal(state.version, 4);
+  assert.equal(state.version, 5);
   assert.equal(state.baking.phase, "kneading");
   assert.ok(state.baking.progress > 0 && state.baking.progress < 100);
   await p.keyboard.press("Escape");
@@ -220,9 +220,17 @@ try {
   assert.ok(state.garden[2].wateredAt !== null);
   const berry = state.items.berry;
   await p.screenshot({ path: path.join(tmpdir(), "hearth-berry-field.png") });
-  await p.keyboard.press("Escape");
-  await p.getByRole("button", { name: "다음 날 아침", exact: true }).click();
+  const fieldPosition = { x: state.x, y: state.y };
+  await relocate("bakery", 480, 500);
+  await p.locator(".spot-shop").click();
+  await p
+    .getByRole("button", { name: "가게 닫고 퇴근하기", exact: true })
+    .click();
+  await p
+    .getByRole("button", { name: "잠자기 · 오전 6시에 기상", exact: true })
+    .click();
   await hidden();
+  await relocate("field", fieldPosition.x, fieldPosition.y);
   await p.keyboard.press("e");
   await p.getByRole("button", { name: "베리 수확", exact: true }).click();
   await close();

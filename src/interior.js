@@ -1,9 +1,9 @@
 import { worldMaps } from "./sceneManager.js";
 export const isInterior = (scene) =>
-  ["bakery", "bakeryKitchen", "post", "store"].includes(scene);
+  ["bakery", "bakeryKitchen", "post", "store", "cafe"].includes(scene);
 export function leaveInterior(s) {
   if (!isInterior(s.scene)) return false;
-  const origin = s.scene === "store" ? "city" : "town",
+  const origin = ["store", "cafe"].includes(s.scene) ? "city" : "town",
     dest = s.scene === "bakeryKitchen" ? "bakery" : s.scene;
   const door = worldMaps[origin]?.doors.find((d) => d.scene === dest);
   s.scene = origin;
@@ -23,6 +23,7 @@ export function changeBakeryRoom(s) {
   return false;
 }
 export const interiorActions = {
+  cafe: [["cafe", "커피·디저트 주문하기", "잠깐 쉬며 기력을 회복해요"]],
   bakery: [
     ["shelf", "빵 진열대", "빵을 진열하거나 꺼낸 빵을 확인해요"],
     ["shop", "영업 안내판", "문을 열거나 닫아요"],
@@ -90,8 +91,9 @@ export class Interior {
       if (isInterior(scene)) {
         const b = document.createElement("button");
         b.className = "interior-exit";
-        b.textContent =
-          scene === "store" ? "← 소도시로 나가기" : "← 광장으로 나가기";
+        b.textContent = ["store", "cafe"].includes(scene)
+          ? "← 소도시로 나가기"
+          : "← 광장으로 나가기";
         b.onclick = () => {
           if (!g.ui.open) {
             leaveInterior(g.state);
@@ -122,6 +124,7 @@ export class Interior {
         bakeryKitchen: "빵집 작업실",
         post: "우체국",
         store: "잡화점",
+        cafe: "햇살 카페",
       }[scene] || "실내 기능",
     );
   }
