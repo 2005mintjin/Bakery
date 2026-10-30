@@ -17,6 +17,7 @@ function memory() {
     data,
     getItem: (k) => (data.has(k) ? data.get(k) : null),
     setItem: (k, v) => data.set(k, v),
+    removeItem: (k) => data.delete(k),
   };
 }
 test("web slots isolate games/slots and persist all v8 progression, without overwriting legacy storage", async () => {
@@ -125,4 +126,23 @@ test("static build includes game assets and browser mode, and excludes local sav
   } finally {
     await rm(dir, { recursive: true, force: true });
   }
+});
+
+test("web deletion removes exactly the chosen slot, including corruption, without touching legacy or other games", async () => {
+  const storage = memory(),
+    store = createBrowserSlots(storage, "demo:");
+  await store.saveSlot(1, fresh());
+  await store.saveSlot(2, { ...fresh(), money: 222 });
+  storage.setItem("little-hearth-v1", "legacy");
+  storage.setItem("other:1", "other");
+  await store.deleteSlot(1);
+  assert.equal((await store.slots())[0].empty, true);
+  assert.equal((await store.loadSlot(2)).money, 222);
+  await store.deleteSlot(1);
+  await assert.rejects(store.deleteSlot(4));
+  storage.setItem("demo:3", "bad");
+  await store.deleteSlot(3);
+  assert.equal((await store.slots())[2].empty, true);
+  assert.equal(storage.getItem("little-hearth-v1"), "legacy");
+  assert.equal(storage.getItem("other:1"), "other");
 });

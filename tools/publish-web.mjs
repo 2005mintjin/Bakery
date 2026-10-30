@@ -1,3 +1,8 @@
+import { demoEdition } from "../src/edition.js";
+if (demoEdition)
+  throw Error(
+    "데모판은 정식 사이트에 배포하지 않습니다. 검토 후 정식 버전에서 배포하세요.",
+  );
 // Publish only the static build using a temporary index; preserve the working branch/index.
 import { execFileSync } from "node:child_process";
 import { mkdtemp, rm } from "node:fs/promises";

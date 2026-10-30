@@ -1,5 +1,3 @@
-import { browserMode } from "./save/mode.js";
-import { savedSheet } from "./save/customSheet.js";
 export function spriteFrame(
   atlas,
   width,
@@ -54,7 +52,6 @@ export class PlayerSprite {
   constructor(atlas, animations) {
     this.atlas = atlas;
     this.animations = animations;
-    this.custom = null;
     this.images = new Map();
     this.startTime = 0;
     this.lastAction = null;
@@ -69,78 +66,6 @@ export class PlayerSprite {
         },
       ),
     );
-    try {
-      if (browserMode) {
-        const data = await savedSheet();
-        if (data) await this.setSheet(data);
-      } else if (
-        localStorage.getItem("hearth-custom-sheet-enabled-v2") === "yes"
-      )
-        await this.trySaved();
-    } catch {}
-  }
-  async trySaved() {
-    const r = await fetch("/api/player-sheet");
-    if (r.ok && r.headers.get("Content-Type")?.startsWith("image/")) {
-      const url = URL.createObjectURL(await r.blob());
-      try {
-        await this.setSheet(url);
-      } finally {
-        URL.revokeObjectURL(url);
-      }
-    }
-  }
-  async setSheet(src) {
-    const image = await imageFrom(src);
-    if (image.width < 450 || image.height < 300) throw Error("작은 이미지");
-    this.custom = image;
-  }
-  useDefault() {
-    this.custom = null;
-    if (browserMode) savedSheet(null).catch(() => {});
-    try {
-      localStorage.removeItem("hearth-custom-sheet-enabled-v2");
-    } catch {}
-  }
-  pick(ui) {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "image/png";
-    input.onchange = async () => {
-      const f = input.files[0];
-      if (!f) return;
-      if (f.size > 8 * 1024 * 1024) {
-        ui.notify("8MB 이하 PNG를 선택하세요");
-        return;
-      }
-      try {
-        const data = await new Promise((resolve, reject) => {
-          const r = new FileReader();
-          r.onload = () => resolve(r.result);
-          r.onerror = reject;
-          r.readAsDataURL(f);
-        });
-        await this.setSheet(data);
-        if (browserMode) await savedSheet(data);
-        else {
-          const r = await fetch("/api/player-sheet", {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ data }),
-          });
-          if (!r.ok) throw Error("서버 저장 실패");
-        }
-        try {
-          localStorage.setItem("hearth-custom-sheet-enabled-v2", "yes");
-        } catch {}
-        ui.notify(
-          "사용자 지정 시트를 저장했어요. 기본 캐릭터로 복원할 수도 있어요.",
-        );
-      } catch {
-        ui.notify("이미지 읽기 또는 파일 저장에 실패했어요.");
-      }
-    };
-    input.click();
   }
   draw(c, x, y, walking, t, direction = "down") {
     if (this.lastAction !== walking || this.lastDirection !== direction) {
@@ -149,24 +74,6 @@ export class PlayerSprite {
       this.lastDirection = direction;
     }
     const elapsed = t - this.startTime;
-    if (this.custom) {
-      const f = spriteFrame(
-        this.atlas,
-        this.custom.width,
-        this.custom.height,
-        walking,
-        elapsed,
-        direction,
-      );
-      c.save();
-      c.translate(Math.round(x), Math.round(y));
-      if (f.flip) c.scale(-1, 1);
-      const h = 70,
-        w = (h * f.w) / f.h;
-      c.drawImage(this.custom, f.x, f.y, f.w, f.h, -w / 2, -h + 3, w, h);
-      c.restore();
-      return true;
-    }
     const f = animationFrame(this.animations, walking, elapsed, direction),
       image = this.images.get(f.asset);
     if (!image) return false;

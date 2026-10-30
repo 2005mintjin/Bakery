@@ -1,3 +1,4 @@
+import { showSaveDelete } from "../saveDelete.js";
 import { title } from "../../title.js";
 import { saveSlot, loadSlot } from "../../saveSystem.js";
 import { repairPosition } from "../../sceneManager.js";
@@ -95,19 +96,11 @@ export function showMenu(ui) {
             [["돌아가기", () => title(ui.g)]],
           ),
       ],
+      ["세이브 삭제", () => showSaveDelete(ui, () => title(ui.g))],
       ["세이브 파일 내보내기", () => exportSave(ui)],
       ["세이브 파일 가져오기", () => importSave(ui, () => title(ui.g))],
       ["퇴근·잠자기", () => ui.show("sleep")],
       ["음악 설정", () => ui.show("audio")],
-      ["플레이어 이미지 불러오기", () => ui.g.spritePicker()],
-      [
-        "기본 캐릭터로 복원",
-        () => {
-          ui.g.sprite.useDefault();
-          ui.notify("첨부 원본 캐릭터로 복원했어요");
-          ui.close();
-        },
-      ],
     ],
   );
 }

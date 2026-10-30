@@ -1,8 +1,8 @@
-import { writeFile, rename } from "node:fs/promises";
+import { writeFile, rename, unlink } from "node:fs/promises";
 import path from "node:path";
 // One queue per server serializes save and sprite writes, including failed jobs.
-export function createStorage(root) {
-  const saveDir = path.join(root, "saves");
+export function createStorage(root, { saveDirectory = "saves" } = {}) {
+  const saveDir = path.join(root, saveDirectory);
   let writes = Promise.resolve();
   function atomicWrite(dest, content) {
     const job = writes
@@ -14,5 +14,18 @@ export function createStorage(root) {
     writes = job;
     return job;
   }
-  return { saveDir, atomicWrite };
+  function removeSave(dest) {
+    const job = writes
+      .catch(() => {})
+      .then(async () => {
+        try {
+          await unlink(dest);
+        } catch (e) {
+          if (e.code !== "ENOENT") throw e;
+        }
+      });
+    writes = job;
+    return job;
+  }
+  return { saveDir, atomicWrite, removeSave };
 }

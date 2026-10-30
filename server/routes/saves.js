@@ -1,15 +1,15 @@
 import { readFile, mkdir } from "node:fs/promises";
 import path from "node:path";
-import { body } from "../http.js";
+import { body, localOrigin } from "../http.js";
 import { validate } from "../../src/saveSystem.js";
-export async function saves(req, res, name, { saveDir, atomicWrite }) {
+export async function saves(
+  req,
+  res,
+  name,
+  { saveDir, atomicWrite, removeSave },
+) {
   res.setHeader("Content-Type", "application/json");
-  if (
-    req.headers.origin &&
-    !["http://127.0.0.1:5173", "http://localhost:5173"].includes(
-      req.headers.origin,
-    )
-  ) {
+  if (!localOrigin(req)) {
     res.writeHead(403);
     return res.end("{}");
   }
@@ -57,6 +57,10 @@ export async function saves(req, res, name, { saveDir, atomicWrite }) {
       JSON.stringify(s, null, 2),
     );
     return res.end('{"saved":true}');
+  }
+  if (id && req.method === "DELETE") {
+    await removeSave(path.join(saveDir, `slot-${id}.json`));
+    return res.end('{"deleted":true}');
   }
   res.writeHead(405);
   return res.end("{}");

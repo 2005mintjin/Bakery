@@ -6,3 +6,13 @@ export async function body(req, limit = 100000) {
   }
   return JSON.parse(text);
 }
+
+export function localOrigin(req) {
+  return (
+    !req.headers.origin ||
+    [
+      `http://127.0.0.1:${req.socket.localPort}`,
+      `http://localhost:${req.socket.localPort}`,
+    ].includes(req.headers.origin)
+  );
+}

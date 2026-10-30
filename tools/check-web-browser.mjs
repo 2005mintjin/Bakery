@@ -2,7 +2,6 @@
 import assert from "node:assert/strict";
 import http from "node:http";
 import { readFile } from "node:fs/promises";
-import { fileURLToPath } from "node:url";
 import { buildWeb } from "./build-web.mjs";
 import { staticFiles } from "../server/staticFiles.js";
 const { chromium } = await import(
@@ -94,7 +93,7 @@ try {
   await choose("저장");
   await p.locator("#overlay").waitFor({ state: "hidden" });
   const raw = await p.evaluate(() =>
-    localStorage.getItem("little-hearth:web:/Bakery/1"),
+    localStorage.getItem("little-hearth:demo:web:/Bakery/1"),
   );
   assert.equal(JSON.parse(raw).oven.batch.loaf, 9);
   await menu();
@@ -140,7 +139,9 @@ try {
   await choose("1번에 가져오기 · 기존 저장 있음");
   await p.getByRole("heading", { name: "1번 저장을 덮어쓸까요?" }).waitFor();
   assert.equal(
-    await p.evaluate(() => localStorage.getItem("little-hearth:web:/Bakery/1")),
+    await p.evaluate(() =>
+      localStorage.getItem("little-hearth:demo:web:/Bakery/1"),
+    ),
     raw,
   );
   await choose("취소");
@@ -160,33 +161,54 @@ try {
     document.querySelector("#toast").textContent.includes("유효한"),
   );
   assert.equal(
-    await p.evaluate(() => localStorage.getItem("little-hearth:web:/Bakery/1")),
+    await p.evaluate(() =>
+      localStorage.getItem("little-hearth:demo:web:/Bakery/1"),
+    ),
     raw,
   );
-  // Personal character sheets are stored with IndexedDB instead of POSTing to a server.
-  picker = p.waitForEvent("filechooser");
-  await choose("플레이어 이미지 불러오기");
-  await (
-    await picker
-  ).setFiles(
-    fileURLToPath(
-      new URL("../assets/characters/source/sheet-1.png", import.meta.url),
+  assert.equal(
+    await p
+      .getByRole("button", { name: "플레이어 이미지 불러오기", exact: true })
+      .count(),
+    0,
+  );
+  assert.equal(
+    await p
+      .getByRole("button", { name: "기본 캐릭터로 복원", exact: true })
+      .count(),
+    0,
+  );
+  assert.equal(
+    await p.evaluate(() => typeof window.webUI.g.sprite.pick),
+    "undefined",
+  );
+  await choose("세이브 삭제");
+  await choose("1번 세이브 삭제");
+  await choose("취소");
+  assert.equal(
+    await p.evaluate(() =>
+      localStorage.getItem("little-hearth:demo:web:/Bakery/1"),
     ),
+    raw,
   );
-  await p.waitForFunction(() =>
-    document
-      .querySelector("#toast")
-      .textContent.includes("사용자 지정 시트를 저장"),
+  await choose("1번 세이브 삭제");
+  await choose("삭제하기");
+  assert.equal(
+    await p.evaluate(() =>
+      localStorage.getItem("little-hearth:demo:web:/Bakery/1"),
+    ),
+    null,
   );
-  await choose("닫기 · ESC");
-  await p.reload();
-  await p.getByRole("button", { name: /^2번 ·/ }).waitFor();
-  await install();
+  assert.equal(await p.evaluate(() => window.webUI.g.slot), 2);
+  await choose("2번 세이브 삭제");
+  await choose("삭제하기");
+  await p
+    .getByRole("button", { name: "2번 · 새로운 이야기", exact: true })
+    .waitFor();
   await start(2);
-  await p.waitForFunction(() => window.webUI.g.sprite.custom !== null);
+  assert.equal(await p.evaluate(() => window.webUI.g.state.money), 60);
   await menu();
-  await choose("기본 캐릭터로 복원");
-  await p.waitForFunction(() => window.webUI.g.sprite.custom === null);
+  await choose("닫기 · ESC");
   const other = await browser.newContext(),
     guest = await other.newPage();
   await guest.goto(address);
@@ -207,7 +229,7 @@ try {
   assert.deepEqual(bad, []);
   await p.screenshot({ path: "/tmp/bakery-web-play.png", fullPage: true });
   console.log(
-    "PASS: static /Bakery/ load, movement, upgraded oven, browser save/reload, JSON export/import, overwrite confirmation, invalid import, IndexedDB character and visitor isolation; no save/player API calls or JS errors.",
+    "PASS: static /Bakery/ load, movement, upgraded oven, browser save/reload, JSON export/import, overwrite confirmation, invalid import, delete cancel/other/active slot, fixed character and visitor isolation; no save/player API calls or JS errors.",
   );
 } finally {
   await browser?.close();

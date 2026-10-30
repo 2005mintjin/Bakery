@@ -7,3 +7,5 @@ saves/*.tmp
 saves/*.png
 
 dist/
+
+saves-demo/

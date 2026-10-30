@@ -16,7 +16,11 @@ export async function staticFiles(req, res, name, root) {
     return res.end();
   }
   const parts = name.split("/");
-  if (parts.some((s) => s.startsWith(".")) || parts.includes("saves"))
+  if (
+    parts.some((s) => s.startsWith(".")) ||
+    parts.includes("saves") ||
+    parts.includes("saves-demo")
+  )
     throw Error("private");
   const file = path.resolve(root, "." + (name === "/" ? "/index.html" : name));
   if (!file.startsWith(root + path.sep)) throw Error("path");

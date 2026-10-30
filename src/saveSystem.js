@@ -2,4 +2,4 @@
 export { fresh } from "./save/defaultState.js";
 export { validate } from "./save/validate.js";
 export { save, load } from "./save/localStorage.js";
-export { slots, loadSlot, saveSlot } from "./save/api.js";
+export { slots, loadSlot, saveSlot, deleteSlot } from "./save/api.js";

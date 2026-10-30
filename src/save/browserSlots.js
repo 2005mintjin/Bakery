@@ -14,6 +14,10 @@ export function createBrowserSlots(
   };
   return {
     loadSlot,
+    async deleteSlot(id) {
+      storage.removeItem(key(id));
+      return { deleted: true };
+    },
     async saveSlot(id, state) {
       const text = JSON.stringify(validate(state));
       storage.setItem(key(id), text);

@@ -82,7 +82,7 @@ test("server keeps origin, private file, route and method restrictions", async (
         headers: { Origin: "https://example.com" },
       })
     ).status,
-    403,
+    404,
   );
   assert.equal((await request("/api/saves/4")).status, 404);
   assert.equal((await request("/saves/slot-1.json")).status, 400);
@@ -112,31 +112,55 @@ test("static modules and MP3 ranges retain content types and byte boundaries", a
   );
 });
 
-test("player sheet API validates PNG and shares safe file storage", async (t) => {
+test("retired player sheet API never loads or changes stored images", async (t) => {
   const { root, request } = await fixture(t);
-  assert.equal(await (await request("/api/player-sheet")).json(), null);
-  assert.equal(
-    (await request("/api/player-sheet", put({ data: "invalid" }))).status,
-    400,
-  );
-  const png = Buffer.from(
-    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=",
-    "base64",
-  );
+  for (const method of ["GET", "PUT", "DELETE"]) {
+    assert.equal((await request("/api/player-sheet", { method })).status, 404);
+  }
+});
+test("save deletion is scoped, idempotent and serialized with pending writes", async (t) => {
+  const { root, request } = await fixture(t);
+  const s = fresh();
+  await request("/api/saves/1", put(s));
+  await request("/api/saves/2", put({ ...s, money: 222 }));
   assert.equal(
     (
-      await request(
-        "/api/player-sheet",
-        put({ data: "data:image/png;base64," + png.toString("base64") }),
-      )
+      await request("/api/saves/1", {
+        method: "DELETE",
+        headers: { Origin: "https://example.com" },
+      })
     ).status,
+    403,
+  );
+  assert.equal(
+    (await request("/api/saves/4", { method: "DELETE" })).status,
+    404,
+  );
+  assert.equal(
+    (await request("/api/saves/1", { method: "DELETE" })).status,
     200,
   );
-  const response = await request("/api/player-sheet");
-  assert.equal(response.headers.get("Content-Type"), "image/png");
-  assert.deepEqual(Buffer.from(await response.arrayBuffer()), png);
-  assert.deepEqual(
-    await readFile(path.join(root, "saves/player-sheet.png")),
-    png,
+  assert.equal((await (await request("/api/saves")).json())[0].empty, true);
+  assert.equal((await (await request("/api/saves/2")).json()).money, 222);
+  assert.equal(
+    (await request("/api/saves/1", { method: "DELETE" })).status,
+    200,
   );
+  await writeFile(path.join(root, "saves/slot-3.json"), "bad");
+  assert.equal(
+    (await request("/api/saves/3", { method: "DELETE" })).status,
+    200,
+  );
+  const { createStorage } = await import("../server/storage.js");
+  const storage = createStorage(root);
+  await Promise.all([
+    storage.atomicWrite(
+      path.join(root, "saves/slot-1.json"),
+      JSON.stringify(s),
+    ),
+    storage.removeSave(path.join(root, "saves/slot-1.json")),
+  ]);
+  await assert.rejects(readFile(path.join(root, "saves/slot-1.json")), {
+    code: "ENOENT",
+  });
 });

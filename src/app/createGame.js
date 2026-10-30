@@ -55,6 +55,5 @@ export async function createGame(data) {
   g.sprite.loading.catch(() =>
     g.ui.notify("캐릭터 이미지를 불러오지 못했어요. 새로고침해 주세요."),
   );
-  g.spritePicker = () => g.sprite.pick(g.ui);
   return { game: g, renderer };
 }

@@ -24,7 +24,9 @@
 | 웹/PC 저장 선택 | `src/save/mode.js`, `src/save/api.js` |
 | 웹 슬롯 3개 저장 | `src/save/browserSlots.js` |
 | JSON 파일 이식·가져오기/내보내기 UI | `src/save/transfer.js`, `src/ui/saveTransfer.js` |
-| 웹 개인 캐릭터 보관 | `src/save/customSheet.js` |
+| 데모 채널·로컬 포트·저장 폴더 | `src/edition.js`, `server.js`, `launch.bat` |
+| 세이브 삭제 확인 UI | `src/ui/saveDelete.js` |
+| 확대 글자·줄바꿈 | `src/styles/readability.css` |
 | 정적 사이트 빌드/gh-pages 배포 | `tools/build-web.mjs`, `tools/publish-web.mjs` |
 | 저장 메뉴·음악 설정 화면 | `src/ui/screens/settings.js` |
 | 가방·물건 상세 | `src/ui/screens/inventory.js` |
@@ -64,7 +66,7 @@
 | 세이브 파일 API·옛 브라우저 저장 | `src/save/api.js`, `src/save/localStorage.js` |
 | 타이틀·3개 슬롯 선택 | `src/title.js` |
 | 서버 시작·요청 분배 | `server.js`, `server/app.js` |
-| 파일 저장·캐릭터 이미지 업로드 | `server/routes/saves.js`, `server/routes/playerSheet.js`, `server/storage.js` |
+| 파일 저장·슬롯 삭제·직렬화 | `server/routes/saves.js`, `server/storage.js` |
 | 정적 파일·음원 부분 요청·요청 본문 | `server/staticFiles.js`, `src/httpRange.js`, `server/http.js` |
 | 기본 화면·실내 버튼·반죽·대화 스타일 | `src/styles/base.css`, `interiors.css`, `baking.css`, `dialogue.css` |
 | 음원·음악 제어·노크 | `data/music.json`, `src/audio.js`, `src/effects.js` |
@@ -99,7 +101,7 @@ node --test tests/server.test.js
 
 | 수정 영역 | 실제 브라우저 검사 |
 | --- | --- |
-| 정적 /Bakery/·웹 저장/JSON 이동·개인 캐릭터·사용자별 격리 | `node tools/check-web-browser.mjs` |
+| 정적 /Bakery/·웹 저장/JSON 이동·슬롯 삭제·사용자별 격리 | `node tools/check-web-browser.mjs` |
 | 공방·도구 잠금·9개/45초·메뉴 주문·저장·8명 가림 | `node tools/check-equipment-browser.mjs` |
 | 새 UI·탭/키보드·혼합 선택 유지/제한·좁은 화면 반죽 | `node tools/check-ui-browser.mjs` |
 | 파이·쿠키·건조·8명 방문·수량 판매·진열 배경/UI | `node tools/check-expansion-browser.mjs` |
@@ -166,3 +168,10 @@ node --test tests/server.test.js
 `npm run publish:web`은 별도 임시 Git 인덱스로 정적 트리를 커밋해 `gh-pages`에 push합니다. 기존 `main`/작업 인덱스를 변경하지 않습니다. GitHub Pages는 `gh-pages`의 루트를 소스로 설정합니다. 첫 활성화/배포 상태를 확인할 권한이나 네트워크가 없으면 브랜치 업로드와 실제 사이트 확인을 구분해 보고하세요.
 
 웹 배포 후 검사는 `tools/check-web-browser.mjs`로 API 없는 정적 호스트의 /Bakery/ 경로에서 수행합니다. 세이브 API 검사와 달리 이 도구는 개인 saves를 사용하지 않습니다. 웹 저장 규칙·오류·파일 이동·빌드 제외 범위는 `tests/webSave.test.js`에서 검사합니다. 웹/PC 저장 변경 시 두 실행 방식의 브라우저 검사를 함께 수행합니다.
+
+### 데모 변경 확인과 정식판 보호
+현재 `demo` 브랜치는 정식 배포와 별도입니다. `src/edition.js`의 데모 설정은 로컬 포트 5174·saves-demo 저장과 화면 배지를 결정합니다. Windows 배치 파일도 5174로 실행합니다. 웹 저장은 little-hearth:demo:web 네임스페이스를 사용합니다. demoEdition이 참이면 publish:web은 Git/네트워크 작업 전에 정식 배포를 차단합니다. 정식 승격은 사용자 검토 후 별도 작업으로 수행하며 데모의 포트·저장 위치·배지가 그대로 정식판에 들어가지 않게 확인합니다.
+
+세이브 삭제는 `deleteSlot` API를 통해 처리합니다. 서버는 슬롯 파일 쓰기와 삭제를 같은 큐에 넣어 쓰기 중 삭제한 파일이 다시 생기는 문제를 막습니다. 슬롯은 1~3으로 제한하며 삭제 시 손상 파일도 읽어 검증하지 않고 해당 파일만 지웁니다. 현재 슬롯 삭제 후에는 타이틀로 이동해 자동 재저장을 방지합니다. 테스트에는 실제 saves/saves-demo를 사용하지 않습니다.
+
+이미지 교체 UI·spritePicker·customSheet·player-sheet API를 제거했습니다. 예전 개인 이미지의 저장 플래그와 파일은 읽지 않습니다. 기본 스프라이트만 `PlayerSprite.draw`에서 사용합니다. 수정 검사는 `node tools/check-demo-browser.mjs`와 `node tools/check-web-browser.mjs`로 수행합니다. 과거의 정식 서버 대상 검사 도구는 5173/saves를 사용할 수 있으므로 이 데모에서는 위 두 도구를 우선 사용하세요.
