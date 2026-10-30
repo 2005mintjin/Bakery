@@ -14,14 +14,15 @@ export function showBaking(ui) {
     return;
   }
   ui.panel(
-    `<div class="panel-eyebrow">작업실 · 손끝으로 만드는 한 조각</div><h2>반죽 치대기</h2>${stageRibbon(1)}<p>반죽 위에서 마우스를 누른 채 좌우로 문질러 주세요.</p><canvas id="dough" width="520" height="230" aria-label="마우스로 드래그하여 반죽하기"></canvas><progress id="knead-progress" max="100" value="${b.progress}"></progress><p id="knead-label">반죽 ${Math.floor(b.progress)}%</p><p class="muted">닫아도 진행도와 사용한 재료가 유지됩니다.</p>`,
+    `<div class="panel-eyebrow">작업실 · 손끝으로 만드는 한 조각</div><h2>반죽 치대기</h2>${stageRibbon(1)}<p>반죽 위를 마우스나 손가락으로 누른 채 좌우로 문질러 주세요.</p><canvas id="dough" width="520" height="230" aria-label="마우스 또는 손가락으로 드래그하여 반죽하기"></canvas><progress id="knead-progress" max="100" value="${b.progress}"></progress><p id="knead-label">반죽 ${Math.floor(b.progress)}%</p><p class="muted">닫아도 진행도와 사용한 재료가 유지됩니다.</p>`,
   );
   attachDough(ui);
 }
 function attachDough(ui) {
   const canvas = ui.overlay.querySelector("#dough"),
     c = canvas.getContext("2d");
-  let previous = null;
+  let previous = null,
+    activePointer = null;
   const point = (e) => {
     const r = canvas.getBoundingClientRect();
     return {
@@ -30,6 +31,7 @@ function attachDough(ui) {
     };
   };
   const paint = () => {
+    if (ui.g.state.baking?.phase !== "kneading" || !canvas.isConnected) return;
     const progress = ui.g.state.baking.progress;
     c.fillStyle = "#b89263";
     c.fillRect(0, 0, 520, 230);
@@ -65,15 +67,18 @@ function attachDough(ui) {
     }
   };
   canvas.onpointerdown = (e) => {
-    if (e.button !== 0) return;
+    if (e.button !== 0 || activePointer !== null) return;
+    activePointer = e.pointerId;
     e.preventDefault();
     previous = point(e);
     canvas.setPointerCapture(e.pointerId);
     paint();
   };
   canvas.onpointermove = (e) => {
+    if (e.pointerId !== activePointer) return;
     if (!previous || !(e.buttons & 1)) {
       previous = null;
+      activePointer = null;
       return;
     }
     const p = point(e),
@@ -83,6 +88,7 @@ function attachDough(ui) {
     previous = p;
     if (ui.g.state.baking.phase === "topping") {
       previous = null;
+      activePointer = null;
       if (canvas.hasPointerCapture(e.pointerId))
         canvas.releasePointerCapture(e.pointerId);
       ui.show("oven");
@@ -94,12 +100,16 @@ function attachDough(ui) {
     ui.overlay.querySelector("#knead-label").textContent =
       "반죽 " + Math.floor(ui.g.state.baking.progress) + "%";
   };
-  canvas.onlostpointercapture = () => {
+  canvas.onlostpointercapture = (e) => {
+    if (e.pointerId !== activePointer) return;
     previous = null;
+    activePointer = null;
     if (ui.g.state.baking?.phase === "kneading") paint();
   };
   canvas.onpointerup = canvas.onpointercancel = (e) => {
+    if (e.pointerId !== activePointer) return;
     previous = null;
+    activePointer = null;
     if (canvas.hasPointerCapture(e.pointerId))
       canvas.releasePointerCapture(e.pointerId);
     paint();

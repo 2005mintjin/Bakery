@@ -234,3 +234,15 @@ Downloads (12)의 `평화로운 숲속 낚시 연못 지도.png`는 `assets/back
 선택 저장 필드 anastasia는 {introDay, daily}이며 v8을 유지합니다. daily는 null 또는 {day, product, status: active|done|cancelled}입니다. 검증/이관은 `save/anastasiaState.js`에서 수행합니다. 기존 완료 기록에는 완료 일자가 없으므로 읽은 영업일을 시작점으로 한 번 기록하고 기존 돈/물품/호감도를 지급하거나 초기화하지 않습니다. 음성 별칭은 아나스타샤/원문 이름 오타 아냐스타샤/기존 ID mira입니다. 실제 출력 이름은 아나스타샤를 사용합니다.
 
 관련 검사: `node --test tests/anastasia.test.js tests/townStory.test.js tests/dialogueVoice.test.js`, `node tools/check-anastasia-browser.mjs`. 브라우저 검사는 임시 정적 호스트·격리 저장을 사용하며 원본 PNG 경로, MP3 실제 디코딩/AudioBufferSource 시작, 카운터 전경 픽셀과 좁은 대화창을 검사합니다. 기존 음성 검사 도구도 고정된 음성 개수 대신 현재 설정의 개수를 기다리도록 바꿨습니다.
+
+### 모바일 조작과 정식 승격
+
+`inputDirections.js`의 HeldDirections가 포인터별 방향과 파생 키 집합을 관리하고, `app/touchInput.js`가 실제 Pointer Events/캡처·해제를 연결합니다. 진행 데이터는 game.state에만 있고 touchKeys는 저장하지 않는 입력 상태입니다. 키보드 g.keys와 touchKeys를 movementKeys로 합쳐 기존 player.move의 이동·대각선 정규화·충돌을 공유합니다. 한 손가락이 떨어져도 같은 방향의 다른 손가락은 유지하며 blur/hidden/resize/미디어 변경/메뉴 열기 때 터치를 해제합니다.
+
+조작 DOM은 index.html의 touch-controls, 반응형 레이아웃은 styles/mobile.css입니다. any-pointer:coarse 또는 폭 900px 이하에서 표시하며, world-frame으로 캔버스와 장소/안내/알림의 기준 사각형을 묶어 실내 버튼 목록과 좌표가 섞이지 않도록 합니다. 모바일은 기존 interior-actions 버튼을 정적 목록으로, 낮은 가로 화면은 이미지 옆 목록으로 표시합니다. 기능/이벤트를 두 벌 만들지 않습니다. BakeryHud는 조작부 뒤에 둡니다. PC 레이아웃과 조작은 유지합니다.
+
+bakingUI는 한 번에 한 포인터만 반죽에 사용하고 취소/캡처 상실 시 좌표를 비웁니다. 논리 520×230과 실제 DOM 사각형 사이 좌표 변환, 게임 진행도/재료/기력 비용은 기존과 같습니다. 분리된 캔버스가 진행 상태를 바꾼 뒤에도 그리지 않도록 보호합니다.
+
+관련 검사: tests/inputDirections.test.js 및 tools/check-mobile-browser.mjs. 브라우저 도구는 격리된 정적 호스트에서 CDP의 실제 touchStart/Move/End/Cancel로 다중 방향, 해제/메뉴/회전, NPC/실내, 손가락 반죽/취소·재개, 오븐, 낚시, 수면/결산, 저장 재접속을 확인합니다. tools/check-web-browser.mjs로 정식 경로/기존 저장/PC 키보드도 확인합니다. 정적 빌드 폴더를 공유하므로 도구들은 순서대로 실행하세요. 실제 휴대폰 실기와 Safari 엔진 테스트는 별도입니다.
+
+이번 사용자 요청으로 검토된 데모를 정식 반영합니다. demo 브랜치의 true/5174/saves-demo는 유지하고, main 승격 때 edition=false·실행 파일 5173·기존 little-hearth:web:를 복구한 뒤 검사/배포합니다. 세이브를 자동 복사/삭제하지 않습니다. GitHub Pages의 완료 결과와 정적 브라우저 검증을 구분해 기록합니다.

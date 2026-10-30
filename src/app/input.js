@@ -1,6 +1,8 @@
+import { bindTouchInput } from "./touchInput.js";
 import { isInterior } from "../interior.js";
 import { interact } from "./interactions.js";
 export function bindInput(g) {
+  g.touchControls = bindTouchInput(g);
   const unlockAudio = () => {
     g.fx.unlock();
     g.voices?.unlock();

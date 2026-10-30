@@ -17,7 +17,11 @@ async function boot() {
   title(game);
   bindInput(game);
   startGameLoop(game, renderer);
-  game.ui.notify("달빛마을에 오신 것을 환영해요. E로 이웃과 인사해요.");
+  game.ui.notify(
+    game.touchControls.visible
+      ? "길에서는 방향 버튼, 실내에서는 기능 버튼을 눌러 보세요."
+      : "달빛마을에 오신 것을 환영해요. E로 이웃과 인사해요.",
+  );
 }
 
 boot().catch((e) => {

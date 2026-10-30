@@ -1,0 +1,361 @@
+.world-frame {
+  position: relative;
+  min-width: 0;
+}
+#touch-controls {
+  display: none;
+}
+@media (any-pointer: coarse), (max-width: 900px) {
+  button {
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+  input:not([type="checkbox"]):not([type="range"]),
+  select {
+    min-height: 44px;
+    font-size: 16px;
+  }
+  input[type="checkbox"] {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+  .site-masthead {
+    padding: 8px 10px;
+    min-height: 56px;
+    gap: 8px;
+  }
+  .brand {
+    font-size: 19px;
+    letter-spacing: 1px;
+    gap: 7px;
+  }
+  .brand-emblem {
+    width: 30px;
+    height: 30px;
+    font-size: 23px;
+    flex-shrink: 0;
+  }
+  .brand small,
+  .masthead-note,
+  .chapter-label,
+  .sidebar-note,
+  .cards,
+  footer,
+  .page-end,
+  kbd {
+    display: none;
+  }
+  .header-tools {
+    gap: 5px;
+  }
+  .header-tools button {
+    padding: 6px 9px;
+    font-size: 14px;
+  }
+  main {
+    padding: 8px 10px max(10px, env(safe-area-inset-bottom));
+  }
+  .heading {
+    margin: 5px 0 12px;
+  }
+  body.is-playing .heading {
+    display: none;
+  }
+  .play-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .play-main,
+  .game-sidebar {
+    width: 100%;
+  }
+  .game-sidebar {
+    display: block;
+    order: -1;
+  }
+  .side-menu {
+    display: none;
+  }
+  .day-card {
+    margin: 0;
+    padding: 6px 10px;
+    border-radius: 4px;
+    background: #f2dfbcee;
+    box-shadow: inset 0 0 0 1px #a47a4c;
+  }
+  .day-card::before,
+  .day-card::after,
+  .plaque-label {
+    display: none;
+  }
+  #status {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    gap: 2px 10px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  #status > strong,
+  #status > span {
+    margin: 0;
+    font-size: 14px;
+  }
+  .energy-meter {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin: 0;
+  }
+  .energy-meter span {
+    font-size: 13px;
+  }
+  .energy-meter progress {
+    width: 60px;
+    height: 9px;
+  }
+  .game {
+    border-width: 3px;
+  }
+  #location {
+    font-size: 12px;
+    top: 5px;
+    left: 5px;
+    padding: 4px 6px;
+    max-width: 70%;
+  }
+  #hint {
+    font-size: 12px;
+    bottom: 4px;
+    padding: 4px 6px;
+    line-height: 1.35;
+  }
+  #toast {
+    font-size: 13px;
+    padding: 5px 7px;
+    top: 36px;
+    max-width: 85%;
+  }
+  #touch-controls:not([hidden]) {
+    display: grid;
+    grid-template-columns: 148px minmax(0, 1fr);
+    gap: 12px;
+    padding: 10px 6px;
+    align-items: center;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+  .touch-dpad {
+    display: grid;
+    grid-template: repeat(3, 46px) / repeat(3, 46px);
+    gap: 4px;
+  }
+  .touch-dpad button {
+    padding: 0;
+    font-size: 23px;
+    touch-action: none;
+  }
+  .touch-dpad button[aria-pressed="true"] {
+    background: #ba985f;
+    color: #fff9de;
+    box-shadow: inset 0 3px 6px #49332180;
+  }
+  .touch-dpad [data-move="w"] {
+    grid-area: 1/2;
+  }
+  .touch-dpad [data-move="a"] {
+    grid-area: 2/1;
+  }
+  .touch-dpad span {
+    grid-area: 2/2;
+    display: grid;
+    place-items: center;
+    color: #c5a372;
+  }
+  .touch-dpad [data-move="d"] {
+    grid-area: 2/3;
+  }
+  .touch-dpad [data-move="s"] {
+    grid-area: 3/2;
+  }
+  .touch-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+  .touch-actions button {
+    font-size: 16px;
+    padding: 8px 6px;
+  }
+  [data-touch-interact] {
+    grid-column: 1/-1;
+    min-height: 52px;
+    background: linear-gradient(#e7d1a5, #ba9b61);
+  }
+  .touch-menu {
+    grid-column: 1/-1;
+  }
+  #touch-controls[data-outdoors="false"] {
+    grid-template-columns: 1fr;
+    padding: 8px 0;
+  }
+  #touch-controls[data-outdoors="false"] .touch-dpad,
+  #touch-controls[data-outdoors="false"] [data-touch-interact] {
+    display: none;
+  }
+  #touch-controls[data-outdoors="false"] .touch-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  #touch-controls[data-outdoors="false"] .touch-menu {
+    grid-column: auto;
+  }
+  #interior-actions:not([hidden]) {
+    position: static;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    padding: 8px;
+    background: #36251b;
+    pointer-events: auto;
+  }
+  #interior-actions button,
+  #interior-actions .room-arrow {
+    position: static;
+    flex: 1 1 130px;
+    margin: 0;
+    font-size: 15px;
+    padding: 8px;
+    min-height: 44px;
+    max-width: 100%;
+  }
+  #bakery-console {
+    margin: 0 0 8px;
+    padding: 12px;
+  }
+  .bakery-controls button {
+    flex: 1 1 130px;
+    min-height: 44px;
+    font-size: 15px;
+  }
+  #overlay {
+    padding: max(10px, env(safe-area-inset-top)) 10px
+      max(10px, env(safe-area-inset-bottom));
+  }
+  .panel {
+    max-height: calc(100dvh - 24px);
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .panel-actions {
+    position: relative;
+  }
+  .panel-actions button,
+  #dialogue-next,
+  #dialogue-choices button {
+    min-height: 44px;
+  }
+  #dialogue-next {
+    font-size: 16px;
+    padding: 9px 16px;
+  }
+  #dough {
+    max-height: none;
+    aspect-ratio: 52/23;
+    height: auto;
+  }
+  @media (orientation: landscape) and (max-height: 600px) {
+    .site-masthead {
+      min-height: 44px;
+      padding: 3px 10px;
+    }
+    .header-tools button {
+      min-height: 36px;
+    }
+    main {
+      padding-top: 4px;
+    }
+    .day-card {
+      padding: 3px 8px;
+    }
+    .play-layout {
+      gap: 5px;
+    }
+    .play-main {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 158px;
+      gap: 10px;
+      align-items: start;
+    }
+    .game {
+      width: min(100%, calc((100dvh - 110px) * 5 / 3));
+      justify-self: center;
+    }
+    #touch-controls:not([hidden]) {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      padding: 0;
+    }
+    .touch-dpad {
+      grid-template: repeat(3, 44px) / repeat(3, 44px);
+    }
+    .touch-dpad button {
+      min-height: 44px;
+    }
+    .touch-actions {
+      width: 100%;
+      gap: 4px;
+    }
+    .touch-actions button {
+      font-size: 14px;
+    }
+    .touch-menu {
+      display: none;
+    }
+    [data-touch-interact] {
+      min-height: 44px;
+    }
+    #bakery-console {
+      grid-column: 1/-1;
+    }
+    body.is-interior .play-main {
+      display: block;
+    }
+    body.is-interior .game {
+      display: grid;
+      width: 100%;
+      grid-template-columns: minmax(0, 1fr) 160px;
+      align-items: center;
+    }
+    body.is-interior .world-frame {
+      width: min(100%, calc((100dvh - 155px) * 5 / 3));
+      margin: auto;
+    }
+    #interior-actions:not([hidden]) {
+      align-content: start;
+      max-height: calc(100dvh - 155px);
+      overflow-y: auto;
+    }
+    #interior-actions button {
+      flex-basis: 100%;
+    }
+    #touch-controls[data-outdoors="false"] .touch-actions {
+      display: flex;
+      justify-content: center;
+    }
+    #touch-controls[data-outdoors="false"] .touch-actions button {
+      min-width: 100px;
+    }
+    .dialogue-portrait {
+      height: 120px;
+    }
+  }
+}

@@ -26,9 +26,10 @@ export class BakeryHud {
       chip.dataset.stock = r.id;
       this.root.querySelector(".bakery-stock").append(chip);
     }
-    document
-      .querySelector(".game")
-      .insertAdjacentElement("afterend", this.root);
+    (
+      document.querySelector("#touch-controls") ||
+      document.querySelector(".game")
+    ).insertAdjacentElement("afterend", this.root);
   }
   update() {
     const { g, root } = this,

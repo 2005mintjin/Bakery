@@ -2,7 +2,7 @@ import { target } from "../exploration.js";
 import { isInterior } from "../interior.js";
 export function updateHint(g) {
   const o = target(g);
-  g.ui.update(
+  const hint =
     g.state.scene === "bakery"
       ? "아래 영업·재고 패널에서 주문과 진열 수량을 관리하세요"
       : isInterior(g.state.scene)
@@ -17,6 +17,8 @@ export function updateHint(g) {
                 ? "← 낚시터 · 밭 아래에서 E · 오른쪽 길 → 마을"
                 : g.state.scene === "pond"
                   ? "부두에서 E · 낚시하기 / 오른쪽 길 → 베리 텃밭"
-                  : "← 베리 텃밭 · 해봄 소도시 →",
+                  : "← 베리 텃밭 · 해봄 소도시 →";
+  g.ui.update(
+    g.touchControls?.visible ? hint.replace(/\bE\b/g, "조사 버튼") : hint,
   );
 }
