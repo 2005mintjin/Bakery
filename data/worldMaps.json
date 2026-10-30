@@ -31,7 +31,7 @@
     "doors": [
       {
         "id": "bakery",
-        "name": "작은 화덕",
+        "name": "펜서 베이커리",
         "scene": "bakery",
         "x": 277,
         "y": 232,

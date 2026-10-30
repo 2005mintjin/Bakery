@@ -8,7 +8,7 @@ export function showShop(ui) {
   const s = ui.g.state,
     menu = saleProducts(s);
   ui.panel(
-    `<div class="panel-eyebrow">TODAY'S MENU · 오늘 굽는 것들</div><h2>작은 화덕 영업 안내</h2><p>손님은 선택한 메뉴 중에서 1~3개를 주문해요. 진열 재고와 별개로 오늘 팔 제품을 골라 주세요.</p><div class="sale-menu">${availableProducts(
+    `<div class="panel-eyebrow">TODAY'S MENU · 오늘 굽는 것들</div><h2>펜서 베이커리 영업 안내</h2><p>손님은 선택한 메뉴 중에서 1~3개를 주문해요. 진열 재고와 별개로 오늘 팔 제품을 골라 주세요.</p><div class="sale-menu">${availableProducts(
       s,
     )
       .map(

@@ -98,10 +98,10 @@ export function drawRoom(r, scene) {
   lamp(610, 44);
   r.text(
     kitchen
-      ? "작은 화덕 · 작업실"
+      ? "펜서 베이커리 · 작업실"
       : store
         ? "해봄 잡화점"
-        : "작은 화덕 · 판매실",
+        : "펜서 베이커리 · 판매실",
     480,
     83,
     "#6d553b",
@@ -180,7 +180,7 @@ export function drawRoom(r, scene) {
     wood(689, 136, 132, 111);
     r.r(697, 144, 116, 95, "#465e49");
     r.text("OPEN", 755, 177, "#f3e4b4", 18);
-    r.text("작은 화덕", 755, 210, "#d5d6a6", 13);
+    r.text("펜서 베이커리", 755, 210, "#d5d6a6", 13);
     poly(
       [
         [255, 345],

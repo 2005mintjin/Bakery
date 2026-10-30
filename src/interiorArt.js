@@ -77,7 +77,7 @@ export function drawInterior(r, scene) {
   r.r(447, 163, 7, 108, "#f5e4b8");
   r.r(363, 213, 174, 6, "#f5e4b8");
   r.r(346, 276, 208, 12, "#a88051");
-  r.text(post ? "달빛 우체국" : "작은 화덕", 450, 92, "#f9eacb", 22);
+  r.text(post ? "달빛 우체국" : "펜서 베이커리", 450, 92, "#f9eacb", 22);
   if (!post) {
     // Brick oven with warm fire, seen at eye level.
     r.r(65, 193, 220, 210, "#a87855");

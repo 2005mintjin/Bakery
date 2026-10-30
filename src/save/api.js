@@ -1,3 +1,4 @@
+import { savePath } from "../brand.js";
 import { webSavePrefix } from "../edition.js";
 import { validate } from "./validate.js";
 import { browserMode } from "./mode.js";
@@ -6,7 +7,7 @@ let webStore;
 const browserStore = () =>
   (webStore ??= createBrowserSlots(
     globalThis.localStorage,
-    webSavePrefix + new URL("./", globalThis.location.href).pathname,
+    webSavePrefix + savePath(new URL("./", globalThis.location.href).pathname),
   ));
 async function request(path, options) {
   const r = await fetch("/api/saves" + path, options);

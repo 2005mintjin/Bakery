@@ -14,7 +14,7 @@ export function showSleep(ui) {
   const rest = sleepPreview(s),
     hours = (rest.duration / 60).toFixed(1);
   ui.panel(
-    `<h2>작은 화덕 · 다락방에서 쉬기</h2><p>잠자리에 들면 가게가 닫히고 오전 6시에 일어납니다.</p><p>예상 수면 ${hours}시간 · 기력 +${rest.recovered} → ${rest.stamina}/${maxStamina}</p><p class="muted">8시간 자면 충분히 회복합니다. 늦게 잘수록 회복량이 줄어요. 굽는 중인 빵은 아침에 오븐에서 꺼낼 수 있습니다.</p>`,
+    `<h2>펜서 베이커리 · 다락방에서 쉬기</h2><p>잠자리에 들면 가게가 닫히고 오전 6시에 일어납니다.</p><p>예상 수면 ${hours}시간 · 기력 +${rest.recovered} → ${rest.stamina}/${maxStamina}</p><p class="muted">8시간 자면 충분히 회복합니다. 늦게 잘수록 회복량이 줄어요. 굽는 중인 빵은 아침에 오븐에서 꺼낼 수 있습니다.</p>`,
     [
       [
         "잠자기 · 오전 6시에 기상",
