@@ -1,8 +1,5 @@
-import {
-  sleepPreview,
-  sleepUntilMorning,
-  maxStamina,
-} from "../../wellbeing.js";
+import { sleepPreview, maxStamina } from "../../wellbeing.js";
+import { settleNight } from "../../nightSettlement.js";
 export function showSleep(ui) {
   const s = ui.g.state;
   if (!["bakery", "bakeryKitchen"].includes(s.scene)) {
@@ -11,6 +8,7 @@ export function showSleep(ui) {
     );
     return;
   }
+  let confirmed = false;
   const rest = sleepPreview(s),
     hours = (rest.duration / 60).toFixed(1);
   ui.panel(
@@ -19,11 +17,10 @@ export function showSleep(ui) {
       [
         "잠자기 · 오전 6시에 기상",
         () => {
-          const result = sleepUntilMorning(s);
-          ui.close();
-          ui.notify(
-            `좋은 아침이에요! ${(result.duration / 60).toFixed(1)}시간 수면 · 기력 +${result.recovered}`,
-          );
+          if (confirmed) return;
+          confirmed = true;
+          settleNight(s);
+          ui.show("nightReport");
         },
       ],
     ],

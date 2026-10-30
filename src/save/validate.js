@@ -1,3 +1,6 @@
+import { validateAnastasiaState } from "./anastasiaState.js";
+import { validateDailyState } from "./dailyState.js";
+import { validateFishingState } from "./fishingState.js";
 import { productIds } from "../recipeBook.js";
 import { validateBakingState } from "./bakingState.js";
 import { fresh } from "./defaultState.js";
@@ -16,6 +19,7 @@ export function validate(input) {
       "city",
       "store",
       "field",
+      "pond",
       "cafe",
       "workshop",
     ].includes(s.scene)
@@ -132,6 +136,19 @@ export function validate(input) {
     )
       throw Error("잘못된 주문 수량");
   }
+  if (s.tutorial === undefined) s.tutorial = { bakeryIntroSeen: false };
+  else if (
+    !s.tutorial ||
+    Array.isArray(s.tutorial) ||
+    typeof s.tutorial !== "object" ||
+    typeof s.tutorial.bakeryIntroSeen !== "boolean"
+  )
+    throw Error("손상된 이용 안내 기록");
+  validateAnastasiaState(s);
+  if (s.shop?.customer?.portrait === "mira")
+    s.shop.customer.name = "아나스타샤";
+  validateDailyState(s);
+  validateFishingState(s);
   validateProgression(s);
   validateBakingState(s);
   return {

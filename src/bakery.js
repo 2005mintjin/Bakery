@@ -1,3 +1,4 @@
+import { recordSale, recordExpense } from "./dailyReport.js";
 import { productIds } from "./recipeBook.js";
 import { spend } from "./inventory.js";
 export function display(s, id, quantity = 1) {
@@ -14,7 +15,9 @@ export function display(s, id, quantity = 1) {
 export function sell(s, recipes) {
   let total = 0;
   for (const r of recipes) {
-    total += (s.display[r.id] || 0) * r.price;
+    const quantity = s.display[r.id] || 0;
+    total += quantity * r.price;
+    if (quantity > 0) recordSale(s, r.id, quantity, quantity * r.price, false);
     s.display[r.id] = 0;
   }
   s.money += total;
@@ -24,6 +27,7 @@ export function sell(s, recipes) {
 export function buyItem(s, item) {
   if (!item || s.money < item.price) return false;
   s.money -= item.price;
+  recordExpense(s, item.price);
   s.items[item.id] = (s.items[item.id] || 0) + item.quantity;
   return true;
 }

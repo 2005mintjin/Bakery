@@ -569,3 +569,42 @@
     font-size: 11px;
   }
 }
+.bakery-guide {
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr);
+  gap: 24px;
+  margin: 20px 0;
+}
+.bakery-guide > img {
+  width: 100px;
+  align-self: start;
+  margin-top: 34px;
+}
+.bakery-guide .guide-page {
+  font-size: 16px;
+  color: #8b603b;
+  margin: 0;
+}
+.bakery-guide ol {
+  padding-left: 24px;
+}
+.bakery-guide li {
+  font-size: 17px;
+  line-height: 1.85;
+  margin-bottom: 14px;
+}
+.bakery-guide h3 {
+  margin: 8px 0 18px;
+}
+@media (max-width: 620px) {
+  .bakery-guide {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .bakery-guide > img {
+    display: none;
+  }
+  .bakery-guide li {
+    font-size: 16px;
+  }
+}

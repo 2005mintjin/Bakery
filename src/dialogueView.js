@@ -1,3 +1,4 @@
+import { drawDialoguePortrait } from "./dialoguePortrait.js";
 import { voicePlan } from "./dialogueVoice.js";
 import { DialogueSequence } from "./dialogueSequence.js";
 function escape(text) {
@@ -22,9 +23,18 @@ export function presentDialogue(ui, actor, pages, actions = [], options = {}) {
         `<span class="speaker-chip" data-speaker="${escape(name)}">${escape(name)}</span>`,
     )
     .join("");
+  const art = actor.portraitBounds
+    ? `<canvas class="dialogue-sprite" role="img" aria-label="${escape(actor.name)}"></canvas>`
+    : `<img src="${escape(asset)}" alt="${escape(actor.name)}">`;
   ui.panel(
-    `<div class="portrait-scene indoor dialogue-portrait"><img src="${escape(asset)}" alt="${escape(actor.name)}"></div><div class="speaker-chips">${chips}</div><h2><span id="dialogue-speaker"></span> <small class="muted">${escape(options.role || actor.role || "")}</small></h2><div id="typed-dialogue" class="dialogue-text" aria-live="polite"></div><div class="dialogue-next-row"><span id="dialogue-page" class="muted"></span><button id="dialogue-next" type="button" aria-label="다음">다음 <kbd>SPACE</kbd></button></div><div id="dialogue-choices" class="actions" hidden></div>`,
+    `<div class="portrait-scene indoor dialogue-portrait">${art}</div><div class="speaker-chips">${chips}</div><h2><span id="dialogue-speaker"></span> <small class="muted">${escape(options.role || actor.role || "")}</small></h2><div id="typed-dialogue" class="dialogue-text" aria-live="polite"></div><div class="dialogue-next-row"><span id="dialogue-page" class="muted"></span><button id="dialogue-next" type="button" aria-label="다음">다음 <kbd>SPACE</kbd></button></div><div id="dialogue-choices" class="actions" hidden></div>`,
     [],
+  );
+  drawDialoguePortrait(
+    ui.overlay,
+    asset,
+    actor.portraitBounds,
+    actor.portraitClip,
   );
   const voices = ui.g.voices;
   const voiceSession = voices?.begin();

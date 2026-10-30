@@ -1,3 +1,5 @@
+import { showNightReport } from "./screens/nightReport.js";
+import { showFishing } from "./screens/fishing.js";
 import { showOven } from "../ovenUI.js";
 import { showSleep } from "./screens/rest.js";
 import { showCafe } from "./screens/cafe.js";
@@ -13,7 +15,11 @@ import {
   showWorkshopMolds,
   showWorkshopOven,
 } from "./screens/workshop.js";
+import { showBakeryGuide } from "./screens/guide.js";
 export const screens = {
+  nightReport: showNightReport,
+  fishing: showFishing,
+  bakeryGuide: showBakeryGuide,
   workshop: showWorkshop,
   workshopMolds: showWorkshopMolds,
   workshopOven: showWorkshopOven,

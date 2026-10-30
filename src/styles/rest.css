@@ -1,0 +1,70 @@
+.panel.night-panel {
+  width: min(1120px, 100%);
+}
+.night-report {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+.sleep-picture {
+  margin: 0;
+  overflow: hidden;
+  border: 3px solid #866047;
+  background: #2b211e;
+  border-radius: 9px;
+}
+.sleep-picture img {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+}
+.sleep-picture figcaption {
+  padding: 0.8rem;
+  color: #f3dfb4;
+  font-size: 1rem;
+  line-height: 1.6;
+  text-align: center;
+}
+.night-totals dl {
+  margin: 0;
+}
+.night-totals dl > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1rem;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #bc956760;
+}
+.night-totals dd {
+  margin: 0;
+  font-weight: 700;
+}
+.night-net {
+  color: #6b4c26;
+  background: #e6c58c55;
+}
+.night-products {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0;
+}
+.night-products li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.25rem 0;
+}
+.night-rest {
+  background: #6c784320;
+  border-left: 3px solid #8e8a55;
+  padding: 0.8rem;
+}
+@media (max-width: 760px) {
+  .night-report {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+}

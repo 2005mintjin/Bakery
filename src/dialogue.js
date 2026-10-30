@@ -1,8 +1,13 @@
+import { AnastasiaStory } from "./anastasiaStory.js";
 import { TownStory } from "./townStory.js";
 import { accept, complete } from "./quest.js";
 export function talk(game, n) {
   if (game.data.townStories?.[n.id]) {
-    const story = new TownStory(game, n);
+    const Story =
+      game.data.townStories[n.id].controller === "anastasia"
+        ? AnastasiaStory
+        : TownStory;
+    const story = new Story(game, n);
     story.start();
     return story;
   }

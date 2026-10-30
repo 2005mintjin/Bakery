@@ -41,6 +41,10 @@
     "crematory": {
       "asset": "assets/audio/voices/crematory.mp3",
       "aliases": ["크레마토리", "크레마", "크리마"]
+    },
+    "anastasia": {
+      "asset": "assets/audio/voices/anastasia.mp3",
+      "aliases": ["아나스타샤", "아냐스타샤", "mira"]
     }
   }
 }

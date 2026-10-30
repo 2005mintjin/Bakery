@@ -1,3 +1,4 @@
+import { recordSale } from "./dailyReport.js";
 import { productIds } from "./recipeBook.js";
 import { spend } from "./inventory.js";
 import { availableProducts } from "./equipment.js";
@@ -55,7 +56,7 @@ export function tickShop(s, dt, customers = [], random = Math.random) {
   s.shop.elapsed = 0;
   const i = s.shop.sequence++,
     person = customers[i % Math.max(1, customers.length)] || {
-      name: ["미라", "이시도로", "마리아"][i % 3],
+      name: ["아나스타샤", "이시도로", "마리아"][i % 3],
       portrait: ["mira", "jun", "sora"][i % 3],
     };
   s.shop.customer = {
@@ -85,6 +86,7 @@ export function serve(s, recipes) {
   s.display[c.bread] -= quantity;
   s.money += recipe.price * quantity;
   s.revenue += recipe.price * quantity;
+  recordSale(s, c.bread, quantity, recipe.price * quantity);
   s.shop.customer = null;
   return true;
 }

@@ -1,12 +1,16 @@
 [
   {
     "id": "mira",
-    "name": "미라",
-    "personality": "다정하지만 손녀가 그리운 꽃집 주인",
+    "name": "아나스타샤",
+    "personality": "갓 구운 빵을 좋아하고 장난스러운 비밀을 간직한 주민",
     "x": 235,
     "y": 300,
     "color": "#ae6880",
-    "quest": "delivery"
+    "quest": "delivery",
+    "spriteHeight": 64,
+    "portraitAsset": "assets/characters/residents/anastasia-portrait.png",
+    "spriteAsset": "assets/characters/residents/anastasia-sd.png",
+    "spriteBounds": [0, 15, 1210, 1264]
   },
   {
     "id": "jun",

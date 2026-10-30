@@ -47,6 +47,7 @@ export async function createGame(data) {
     backgrounds,
     counterArt,
   );
+  renderer.lighting = data.lighting;
   renderer.gardenSprites = gardenSprites;
   renderer.staffArt = staffArt;
   renderer.residentArt = residentArt;

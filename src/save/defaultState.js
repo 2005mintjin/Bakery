@@ -3,6 +3,8 @@ import { freshEquipment } from "../equipment.js";
 export function fresh() {
   return {
     version: 8,
+    tutorial: { bakeryIntroSeen: false },
+    anastasia: { introDay: null, daily: null },
     scene: "town",
     x: 480,
     y: 430,
@@ -45,6 +47,9 @@ export function fresh() {
     harvestAt: 0,
     parcels: [],
     parcelDay: 0,
+    dailyLedger: null,
+    lastNight: null,
+    fishing: null,
     baking: null,
     doughs: productCounts(),
     oven: null,

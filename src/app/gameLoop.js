@@ -1,3 +1,5 @@
+import { movementKeys } from "../inputDirections.js";
+import { tickFishing } from "../fishing.js";
 import { advanceClock } from "../wellbeing.js";
 import { move } from "../player.js";
 import { transition } from "../sceneManager.js";
@@ -13,9 +15,15 @@ export function startGameLoop(g, renderer) {
     const dt = Math.min((now - prev) / 1000, 0.05);
     prev = now;
     let walking = false;
+    g.touchControls?.update();
     if (g.started && !g.ui.open && !document.hidden) {
       if (!isInterior(g.state.scene)) {
-        walking = move(g.state, g.keys, dt, residents(g));
+        walking = move(
+          g.state,
+          movementKeys(g.keys, g.touchKeys),
+          dt,
+          residents(g),
+        );
         transition(g.state);
       }
       const previousCustomerPhase = g.state.shop.customer?.phase;
@@ -39,6 +47,14 @@ export function startGameLoop(g, renderer) {
       if (g.ui.open && g.ui.currentPanel === "ovenBatch")
         g.ui.show("ovenBatch");
     }
+    if (
+      g.started &&
+      !document.hidden &&
+      g.ui.open &&
+      g.ui.currentPanel === "fishing" &&
+      tickFishing(g.state, dt)
+    )
+      g.ui.show("fishing");
     if (g.started) g.music.update(g.state.scene);
     renderer.draw(g, walking, now / 1000);
     g.interior.update();

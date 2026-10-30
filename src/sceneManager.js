@@ -2,6 +2,7 @@ export const obstacles = {
   town: [],
   city: [],
   field: [],
+  pond: [],
   bakery: [],
   bakeryKitchen: [],
   post: [],
@@ -59,6 +60,10 @@ export function transition(s) {
     dest = ["field", 905, 310];
   else if (s.scene === "field" && s.x > 920 && s.y > 275 && s.y < 365)
     dest = ["town", 48, 310];
+  else if (s.scene === "field" && s.x < 39 && s.y > 275 && s.y < 365)
+    dest = ["pond", 905, 288];
+  else if (s.scene === "pond" && s.x > 920 && s.y > 255 && s.y < 335)
+    dest = ["field", 48, 310];
   else if (s.scene === "town" && s.x > 920 && s.y > 275 && s.y < 365)
     dest = ["city", 48, 295];
   else if (s.scene === "city" && s.x < 39 && s.y > 275 && s.y < 365)

@@ -57,6 +57,19 @@ function dialoguePanel(ui, person, text, actions, role = "") {
     actions,
   );
 }
+export function customerActor(customer, npc) {
+  const actor = {
+    ...customer,
+    ...(npc ? { name: npc.name, portraitAsset: npc.portraitAsset } : {}),
+  };
+  if (npc?.dialogueUsesSprite && npc.spriteAsset && npc.spriteBounds) {
+    actor.portraitAsset = npc.spriteAsset;
+    actor.portraitBounds = [...npc.spriteBounds];
+    if (npc.spriteClip)
+      actor.portraitClip = npc.spriteClip.map((point) => [...point]);
+  }
+  return actor;
+}
 export function openCustomerDialogue(g) {
   const c = g.state.shop.customer;
   if (g.state.scene !== "bakery" || c?.phase !== "waiting") {
@@ -67,10 +80,7 @@ export function openCustomerDialogue(g) {
   const npc =
     g.data.customers?.find((n) => n.portrait === c.portrait) ||
     g.data.npcs?.find((n) => n.id === c.portrait);
-  const actor = {
-    ...c,
-    ...(npc ? { name: npc.name, portraitAsset: npc.portraitAsset } : {}),
-  };
+  const actor = customerActor(c, npc);
   const render = (text = orderText(g.data.serviceDialogues, c)) =>
     dialoguePanel(
       g.ui,

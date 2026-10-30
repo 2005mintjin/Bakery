@@ -10,6 +10,7 @@ export class BakeryHud {
     for (const [type, label] of [
       ["shelf", "진열·재고 관리"],
       ["shop", "영업 안내판"],
+      ["bakeryGuide", "빵집 이용 안내"],
       ["customerTalk", "손님과 대화하기"],
     ]) {
       const b = document.createElement("button");
@@ -25,9 +26,10 @@ export class BakeryHud {
       chip.dataset.stock = r.id;
       this.root.querySelector(".bakery-stock").append(chip);
     }
-    document
-      .querySelector(".game")
-      .insertAdjacentElement("afterend", this.root);
+    (
+      document.querySelector("#touch-controls") ||
+      document.querySelector(".game")
+    ).insertAdjacentElement("afterend", this.root);
   }
   update() {
     const { g, root } = this,

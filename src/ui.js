@@ -1,3 +1,4 @@
+import { cancelFishing } from "./fishing.js";
 import { presentDialogue } from "./dialogueView.js";
 import {
   hasStaffAccess,
@@ -22,6 +23,7 @@ export class UI {
     if (!this.g.started) return;
     this.dialogueController?.dispose();
     this.dialogueController = null;
+    if (this.currentPanel === "fishing") cancelFishing(this.g.state);
     this.overlay.hidden = true;
     this.currentPanel = null;
     this.serviceAccess = null;
@@ -83,6 +85,8 @@ export class UI {
     )?.focus({ preventScroll: true });
   }
   show(type) {
+    if (this.currentPanel === "fishing" && type !== "fishing")
+      cancelFishing(this.g.state);
     const target = staffServices[type];
     if (!target) this.serviceAccess = null;
     else if (!hasStaffAccess(this.g, type)) {

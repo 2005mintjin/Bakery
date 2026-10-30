@@ -1,3 +1,7 @@
+import { anastasiaStatus } from "./anastasiaQuests.js";
+export function residentQuestStatus(s, npc) {
+  return npc.id === "mira" ? anastasiaStatus(s) : s.quests[npc.quest];
+}
 export function residents(g) {
   return g.state.scene === "town"
     ? g.data.npcs
