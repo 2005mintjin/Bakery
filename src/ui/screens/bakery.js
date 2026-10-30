@@ -1,6 +1,4 @@
 import { closeShop } from "../../wellbeing.js";
-import { names } from "../../inventory.js";
-import { display } from "../../bakery.js";
 import { takeBread, storeBread } from "../../shop.js";
 
 export function showWarehouse(ui) {
@@ -68,38 +66,4 @@ export function showShop(ui) {
   );
 }
 
-export function showShelf(ui) {
-  const s = ui.g.state;
-  const d = ui.g.data;
-  const type = "shelf";
-  ui.panel(
-    "<h2>빵 진열대</h2><p>" +
-      (s.shop.customer
-        ? s.shop.customer.name + "의 주문: " + names[s.shop.customer.bread]
-        : s.shop.open
-          ? "손님을 기다리고 있어요."
-          : "영업 안내판에서 먼저 개점하세요.") +
-      "</p>" +
-      d.recipes
-        .map(
-          (r) =>
-            `<p>${r.name}: 가방 ${s.items[r.id]} / 진열 ${s.display[r.id] || 0}</p>`,
-        )
-        .join("") +
-      `<p>누적 수익 ${s.revenue}G</p>`,
-    [
-      ...d.recipes.map((r) => [
-        r.name + " 진열",
-        () => {
-          ui.notify(
-            display(s, r.id) ? "진열했어요" : "창고에서 빵을 먼저 꺼내세요",
-          );
-          ui.show(type);
-        },
-      ]),
-      ...(s.shop.customer?.phase === "waiting"
-        ? [["손님과 대화하기", () => ui.show("customerTalk")]]
-        : []),
-    ],
-  );
-}
+export { showShelf } from "./shelf.js";

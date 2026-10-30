@@ -1,7 +1,14 @@
+import { productIds } from "./recipeBook.js";
 import { spend } from "./inventory.js";
-export function display(s, id) {
-  if (!spend(s, { [id]: 1 })) return false;
-  s.display[id] = (s.display[id] || 0) + 1;
+export function display(s, id, quantity = 1) {
+  if (
+    !productIds.includes(id) ||
+    !Number.isSafeInteger(quantity) ||
+    quantity < 1 ||
+    !spend(s, { [id]: quantity })
+  )
+    return false;
+  s.display[id] = (s.display[id] || 0) + quantity;
   return true;
 }
 export function sell(s, recipes) {
@@ -18,5 +25,18 @@ export function buyItem(s, item) {
   if (!item || s.money < item.price) return false;
   s.money -= item.price;
   s.items[item.id] = (s.items[item.id] || 0) + item.quantity;
+  return true;
+}
+
+export function undisplay(s, id, quantity = 1) {
+  if (
+    !productIds.includes(id) ||
+    !Number.isSafeInteger(quantity) ||
+    quantity < 1 ||
+    !(s.display[id] >= quantity)
+  )
+    return false;
+  s.display[id] -= quantity;
+  s.items[id] = (s.items[id] || 0) + quantity;
   return true;
 }

@@ -31,7 +31,11 @@ export function startGameLoop(g, renderer) {
       advanceClock(g.state, dt * 2);
     }
     if (g.started && !document.hidden && tickBaking(g.state, dt)) {
-      g.ui.notify("빵이 다 구워졌어요! 작업실에서 꺼내 주세요.");
+      g.ui.notify(
+        g.state.oven.kind === "drying"
+          ? "베리가 다 말랐어요! 오븐에서 꺼내 주세요."
+          : "빵이 다 구워졌어요! 작업실에서 꺼내 주세요.",
+      );
       if (g.ui.open && g.ui.currentPanel === "ovenBatch")
         g.ui.show("ovenBatch");
     }

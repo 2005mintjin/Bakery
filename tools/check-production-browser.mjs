@@ -110,7 +110,7 @@ try {
   await kneadOneCycle();
   await close();
   let state = await save();
-  assert.equal(state.version, 6);
+  assert.equal(state.version, 7);
   assert.equal(state.baking.phase, "kneading");
   assert.ok(state.baking.progress > 0 && state.baking.progress < 100);
   await p.keyboard.press("Escape");
@@ -162,6 +162,15 @@ try {
     })
     .waitFor();
   await p.waitForTimeout(1400);
+  // Keep this broad production check deterministic; randomized selection is tested separately.
+  state = await save();
+  state.shop.customer.bread = "loaf";
+  state.shop.customer.quantity = 1;
+  await p.request.put("http://127.0.0.1:5173/api/saves/3", { data: state });
+  await p.keyboard.press("Escape");
+  await p.getByRole("button", { name: "불러오기", exact: true }).click();
+  await hidden();
+
   await p.screenshot({
     path: path.join(tmpdir(), "hearth-large-customer.png"),
   });

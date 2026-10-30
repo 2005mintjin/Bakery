@@ -31,9 +31,10 @@ try {
       import("/src/counterArt.js"),
     ]);
     const maps = await (await fetch("/data/interiorBackgrounds.json")).json();
+    const visitors = await (await fetch("/data/customers.json")).json();
     const [scenery, art] = await Promise.all([
       loadScenery(maps),
-      loadCounterArt(await (await fetch("/data/npcs.json")).json()),
+      loadCounterArt(visitors),
     ]);
     const canvas = document.createElement("canvas");
     for (const child of [...document.body.children])
@@ -47,7 +48,7 @@ try {
     r.draw(g, false, 0);
     const baseline = r.c.getImageData(0, 0, 1920, 1152).data,
       counts = [];
-    for (const portrait of ["mira", "jun", "sora"]) {
+    for (const portrait of visitors.map((c) => c.portrait)) {
       s.shop.customer = {
         name: portrait,
         portrait,
@@ -85,7 +86,7 @@ try {
   });
   assert.deepEqual(errors, []);
   console.log(
-    "PASS: all 3 customers visible above the checkout; all pixels at/below the original counter surface match the unobstructed background, bread remains visible, no JS errors",
+    "PASS: all 8 customers visible above the checkout; all pixels at/below the original counter surface match the unobstructed background, stocked background remains unchanged, no JS errors",
   );
 } finally {
   await b.close();

@@ -1,3 +1,4 @@
+import { BakeryHud } from "./bakeryHud.js";
 import { worldMaps } from "./sceneManager.js";
 export const isInterior = (scene) =>
   ["bakery", "bakeryKitchen", "post", "store", "cafe"].includes(scene);
@@ -53,6 +54,7 @@ export const interiorActions = {
 export class Interior {
   constructor(g) {
     this.g = g;
+    this.bakeryHud = new BakeryHud(g);
     this.root = document.createElement("div");
     this.root.id = "interior-actions";
     this.root.hidden = true;
@@ -60,6 +62,7 @@ export class Interior {
     this.scene = null;
   }
   update() {
+    this.bakeryHud.update();
     const g = this.g,
       scene = g.state.scene;
     this.root.hidden = !g.started || !isInterior(scene);
@@ -67,7 +70,9 @@ export class Interior {
     if (this.scene !== scene) {
       this.scene = scene;
       this.root.replaceChildren();
-      for (const [type, label, help] of interiorActions[scene] || []) {
+      for (const [type, label, help] of scene === "bakery"
+        ? []
+        : interiorActions[scene] || []) {
         const b = document.createElement("button");
         b.className = "interior-hotspot spot-" + type;
         b.textContent = label;
@@ -110,18 +115,6 @@ export class Interior {
         this.root.append(b);
       }
     }
-    const waiting =
-      scene === "bakery" && g.state.shop.customer?.phase === "waiting";
-    let talk = this.root.querySelector(".spot-customerTalk");
-    if (waiting && !talk) {
-      talk = document.createElement("button");
-      talk.className = "interior-hotspot spot-customerTalk";
-      talk.textContent = "손님과 대화하기";
-      talk.onclick = () => {
-        if (!g.ui.open) g.ui.show("customerTalk");
-      };
-      this.root.append(talk);
-    } else if (!waiting && talk) talk.remove();
     for (const b of this.root.querySelectorAll("button"))
       b.disabled = g.ui.open;
     this.root.setAttribute(

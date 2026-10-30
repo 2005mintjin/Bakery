@@ -1,29 +1,35 @@
+import { doughTypes } from "./recipeBook.js";
 import { doughStaminaCost } from "./stamina.js";
 import { names } from "./inventory.js";
-import { baseDough, beginDough, knead, addTopping } from "./baking.js";
+import { beginDough, knead, addTopping } from "./baking.js";
 export function showBaking(ui) {
   const s = ui.g.state,
     b = s.baking;
   if (!b) {
     ui.panel(
-      "<h2>작은 화덕 · 반죽 준비</h2><p>밀가루 2 + 이스트 1 + 소금 1로 기본 반죽을 만듭니다.</p><p>" +
-        Object.keys(baseDough)
-          .map((k) => `${names[k]} ${s.items[k]}`)
-          .join(" / ") +
-        `</p><p>반죽 1회에 기력 ${doughStaminaCost} 소모 · 현재 ${s.stamina}</p><p>완성한 반죽은 창고에 모아 두고 오븐에서 최대 6개씩 구울 수 있어요.</p>`,
+      "<h2>작은 화덕 · 반죽 준비</h2><p>빵·파이·쿠키 중 만들 반죽을 선택하세요.</p>" +
+        Object.entries(doughTypes)
+          .map(
+            ([key, d]) =>
+              `<p><b>${d.name} 반죽</b> · ${Object.entries(d.cost)
+                .map(([id, n]) => names[id] + " " + n)
+                .join(" + ")}</p>`,
+          )
+          .join("") +
+        `<p>반죽 1회 기력 ${doughStaminaCost} · 현재 ${s.stamina} · 최대 6개를 모아 오븐에서 구워요.</p>`,
       [
-        [
-          "재료 섞어 반죽 시작",
+        ...Object.entries(doughTypes).map(([key, d]) => [
+          key === "bread" ? "재료 섞어 반죽 시작" : d.name + " 반죽 시작",
           () => {
-            if (!beginDough(s))
+            if (!beginDough(s, key))
               ui.notify(
                 s.stamina < doughStaminaCost
-                  ? "기력이 부족해요. 잠을 자거나 카페에서 쉬어 주세요."
-                  : "밀가루·이스트·소금이 부족해요",
+                  ? "기력이 부족해요."
+                  : "반죽 재료가 부족해요. 잡화점에서 구매해 주세요.",
               );
             ui.show("oven");
           },
-        ],
+        ]),
         ["오븐 관리 · 최대 6개 굽기", () => ui.show("ovenBatch")],
         ["반죽·빵 창고 확인", () => ui.show("warehouse")],
       ],
@@ -43,16 +49,10 @@ export function showBaking(ui) {
   }
   if (b.phase === "topping") {
     ui.panel(
-      "<h2>토핑 선택</h2><p>기본 반죽 완성! 토핑은 한 가지만 넣습니다.</p><p>꿀 " +
-        s.items.honey +
-        " / 베리 " +
-        s.items.berry +
-        "</p>",
-      [
-        ["아무것도 넣지 않기 · 밀빵", () => choose("none")],
-        ["꿀 1개 넣기 · 꿀빵", () => choose("honey")],
-        ["베리 2개 넣기 · 베리빵", () => choose("berry")],
-      ],
+      `<h2>토핑 선택</h2><p>${doughTypes[b.type || "bread"].name} 반죽 완성! 속재료 또는 토핑을 하나 선택하세요.</p>`,
+      Object.entries(doughTypes[b.type || "bread"].finishes).map(
+        ([type, finish]) => [finish.name, () => choose(type)],
+      ),
     );
     return;
   }

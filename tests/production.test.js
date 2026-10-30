@@ -107,7 +107,7 @@ test("v2 migration keeps old progress and adds starters once", () => {
   old.warehouse.loaf = 4;
   old.shop.customer = { name: "이웃", bread: "loaf" };
   let s = validate(old);
-  assert.equal(s.version, 6);
+  assert.equal(s.version, 7);
   assert.equal(s.money, 123);
   assert.equal(s.quests.delivery, "done");
   assert.equal(s.warehouse.loaf, 4);
@@ -121,7 +121,19 @@ test("v2 migration keeps old progress and adds starters once", () => {
 test("each ingredient and seed is sold individually; unaffordable purchases change nothing", () => {
   assert.deepEqual(
     goods.map((g) => g.id),
-    ["flour", "yeast", "salt", "honey", "berrySeeds"],
+    [
+      "flour",
+      "yeast",
+      "salt",
+      "honey",
+      "berrySeeds",
+      "water",
+      "sugar",
+      "butter",
+      "meat",
+      "fish",
+      "chocolate",
+    ],
   );
   for (const item of goods) {
     const s = fresh(),
@@ -165,7 +177,7 @@ test("knock precedes customer appearance and service, and the portrait survives 
   const s = fresh();
   s.shop.open = true;
   s.display.loaf = 1;
-  assert.ok(tickShop(s, 12));
+  assert.ok(tickShop(s, 12, [], () => 0));
   assert.equal(s.shop.customer.phase, "knocking");
   assert.equal(serve(s, recipes), false);
   tickShop(s, 0.6);

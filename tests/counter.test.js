@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { drawCounter, counterLayout } from "../src/counterArt.js";
-test("customer is behind the checkout foreground with bread visible in the case", () => {
+test("customer is behind checkout foreground and no food sprites are added", () => {
   const calls = [],
     portrait = { width: 128, height: 160 },
     background = {},
@@ -37,17 +37,19 @@ test("customer is behind the checkout foreground with bread visible in the case"
   const layers = calls.filter((c) => c.image);
   assert.deepEqual(
     layers.map((c) => c.image),
-    [bread, portrait, background],
+    [portrait, background],
   );
-  assert.deepEqual(calls.find((c) => c.clip).clip, [0, 459, 960, 117]);
+  assert.deepEqual(calls.find((c) => c.clip).clip, [
+    0,
+    counterLayout.frontY,
+    960,
+    576 - counterLayout.frontY,
+  ]);
   const portraitBottom =
     counterLayout.customer.y +
     (counterLayout.customer.width * portrait.height * 0.62) / portrait.width;
   assert.ok(portraitBottom > counterLayout.frontY);
-  assert.ok(
-    counterLayout.order.y + counterLayout.order.height <
-      counterLayout.customer.y + 30,
-  );
+
   calls.length = 0;
   drawCounter(r, { shop: { customer: { phase: "knocking" } }, display: {} });
   assert.equal(calls.length, 0);

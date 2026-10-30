@@ -32,7 +32,10 @@ export async function createGame(data) {
   const [scenery, counterArt, gardenSprites, staffArt, residentArt] =
     await Promise.all([
       loadScenery(backgrounds),
-      loadCounterArt(data.npcs),
+      loadCounterArt([
+        ...data.npcs,
+        ...data.customers.map((c) => ({ ...c, id: c.portrait })),
+      ]),
       loadScenery(gardenAssets),
       loadStaffArt(data.serviceDialogues.staff),
       loadResidentArt(data.npcs),

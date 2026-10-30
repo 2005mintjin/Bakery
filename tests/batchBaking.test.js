@@ -1,3 +1,4 @@
+import { productCounts } from "../src/recipeBook.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { fresh, validate } from "../src/saveSystem.js";
@@ -30,7 +31,12 @@ function prepare(s, type = "none") {
 test("prepared dough queues by type and consumes ingredients/stamina only once per piece", () => {
   const s = stock();
   for (const type of ["none", "none", "honey", "berry"]) prepare(s, type);
-  assert.deepEqual(s.doughs, { loaf: 2, honeybread: 1, berrybread: 1 });
+  assert.deepEqual(s.doughs, {
+    ...productCounts(),
+    loaf: 2,
+    honeybread: 1,
+    berrybread: 1,
+  });
   assert.equal(s.baking, null);
   assert.equal(s.oven, null);
   assert.equal(s.stamina, 60);
@@ -59,16 +65,16 @@ test("prepared dough queues by type and consumes ingredients/stamina only once p
 });
 test("one mixed batch holds up to six and rejects empty, excessive, fractional or unavailable selections atomically", () => {
   const s = stock();
-  s.doughs = { loaf: 5, honeybread: 2, berrybread: 2 };
+  s.doughs = { ...productCounts(), loaf: 5, honeybread: 2, berrybread: 2 };
   for (const batch of [
     {},
-    { loaf: 7 },
-    { loaf: 5, honeybread: 2 },
-    { loaf: -1 },
-    { loaf: 1.5 },
-    { loaf: NaN },
-    { loaf: Infinity },
-    { loaf: 6 },
+    { ...productCounts(), loaf: 7 },
+    { ...productCounts(), loaf: 5, honeybread: 2 },
+    { ...productCounts(), loaf: -1 },
+    { ...productCounts(), loaf: 1.5 },
+    { ...productCounts(), loaf: NaN },
+    { ...productCounts(), loaf: Infinity },
+    { ...productCounts(), loaf: 6 },
     { unknown: 1 },
     [],
   ]) {
@@ -76,22 +82,44 @@ test("one mixed batch holds up to six and rejects empty, excessive, fractional o
     assert.equal(putInOven(s, batch), false);
     assert.deepEqual(s, before);
   }
-  assert.ok(putInOven(s, { loaf: 2, honeybread: 2, berrybread: 2 }));
-  assert.deepEqual(s.doughs, { loaf: 3, honeybread: 0, berrybread: 0 });
-  assert.equal(putInOven(s, { loaf: 1 }), false);
+  assert.ok(
+    putInOven(s, { ...productCounts(), loaf: 2, honeybread: 2, berrybread: 2 }),
+  );
+  assert.deepEqual(s.doughs, {
+    ...productCounts(),
+    loaf: 3,
+    honeybread: 0,
+    berrybread: 0,
+  });
+  assert.equal(putInOven(s, { ...productCounts(), loaf: 1 }), false);
   assert.equal(bakeSeconds, 60);
   assert.equal(tickBaking(s, 59.99), false);
   assert.equal(collectBread(s), false);
   assert.equal(tickBaking(s, 0.01), true);
   assert.equal(tickBaking(s, 5), false);
-  assert.deepEqual(collectBread(s), { loaf: 2, honeybread: 2, berrybread: 2 });
-  assert.deepEqual(s.warehouse, { loaf: 2, honeybread: 2, berrybread: 2 });
+  assert.deepEqual(collectBread(s), {
+    ...productCounts(),
+    loaf: 2,
+    honeybread: 2,
+    berrybread: 2,
+  });
+  assert.deepEqual(s.warehouse, {
+    ...productCounts(),
+    loaf: 2,
+    honeybread: 2,
+    berrybread: 2,
+  });
   assert.equal(collectBread(s), false);
 });
 test("next batch leaves extra dough queued and a new dough can be prepared while oven is busy or ready", () => {
   let s = stock();
-  s.doughs = { loaf: 3, honeybread: 2, berrybread: 2 };
-  assert.deepEqual(nextBatch(s), { loaf: 3, honeybread: 2, berrybread: 1 });
+  s.doughs = { ...productCounts(), loaf: 3, honeybread: 2, berrybread: 2 };
+  assert.deepEqual(nextBatch(s), {
+    ...productCounts(),
+    loaf: 3,
+    honeybread: 2,
+    berrybread: 1,
+  });
   putInOven(s);
   prepare(s);
   assert.equal(s.doughs.loaf, 1);
@@ -120,7 +148,7 @@ test("legacy kneading and topping keep exact progress; shaped dough migrates onc
     old.money = 123;
     old.stamina = 17;
     const s = validate(old);
-    assert.deepEqual(s.baking, old.baking);
+    assert.deepEqual(s.baking, { ...old.baking, type: "bread" });
     assert.equal(s.money, 123);
     assert.equal(s.stamina, 17);
     assert.equal(s.oven, null);
@@ -148,7 +176,7 @@ test("legacy baking preserves fraction completed and ready bread remains claimab
       seconds: 2,
     };
     let s = validate(old);
-    assert.equal(s.version, 6);
+    assert.equal(s.version, 7);
     assert.equal(s.oven.seconds, 24);
     assert.equal(s.oven.batch.honeybread, 1);
     assert.equal(s.baking, null);
@@ -170,8 +198,8 @@ test("legacy baking preserves fraction completed and ready bread remains claimab
 });
 test("new queue, working dough and mixed oven survive roundtrip; malformed batch saves are rejected", () => {
   const s = stock();
-  s.doughs = { loaf: 4, honeybread: 2, berrybread: 1 };
-  putInOven(s, { loaf: 2, honeybread: 2, berrybread: 1 });
+  s.doughs = { ...productCounts(), loaf: 4, honeybread: 2, berrybread: 1 };
+  putInOven(s, { ...productCounts(), loaf: 2, honeybread: 2, berrybread: 1 });
   beginDough(s);
   knead(s, 10);
   tickBaking(s, 32.25);
@@ -196,7 +224,7 @@ test("new queue, working dough and mixed oven survive roundtrip; malformed batch
 test("sleep finishes a whole batch, preserves raw stock and a separately kneaded dough", () => {
   const s = stock();
   s.doughs.loaf = 8;
-  putInOven(s, { loaf: 6 });
+  putInOven(s, { ...productCounts(), loaf: 6 });
   beginDough(s);
   knead(s, 60);
   sleepUntilMorning(s);
@@ -209,10 +237,20 @@ test("sleep finishes a whole batch, preserves raw stock and a separately kneaded
 test("older sparse warehouses gain missing zero counts and collect migrated bread without NaN", () => {
   const old = fresh();
   old.version = 5;
-  old.warehouse = { loaf: 2 };
+  old.warehouse = { ...productCounts(), loaf: 2 };
   old.baking = { phase: "ready", progress: 100, topping: "honey", seconds: 5 };
   const s = validate(old);
-  assert.deepEqual(s.warehouse, { loaf: 2, honeybread: 0, berrybread: 0 });
+  assert.deepEqual(s.warehouse, {
+    ...productCounts(),
+    loaf: 2,
+    honeybread: 0,
+    berrybread: 0,
+  });
   collectBread(s);
-  assert.deepEqual(s.warehouse, { loaf: 2, honeybread: 1, berrybread: 0 });
+  assert.deepEqual(s.warehouse, {
+    ...productCounts(),
+    loaf: 2,
+    honeybread: 1,
+    berrybread: 0,
+  });
 });

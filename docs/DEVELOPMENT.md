@@ -38,6 +38,9 @@
 | 카페 상품·기력 회복 화면 | `data/cafeItems.json`, `src/ui/screens/cafe.js` |
 | 일괄 오븐·종류별 수량 입력 | `src/ovenUI.js`, `src/baking.js` |
 | 반죽·오븐 저장 검증/이관 | `src/save/bakingState.js` |
+| 반죽 종류·제품 ID·속재료 규칙 | `src/recipeBook.js`, `src/baking.js` |
+| 방문객·선호도·무작위 1~3개 주문 | `data/customers.json`, `src/shop.js`, `data/serviceDialogues.json` |
+| 판매실 재고·주문 패널 | `src/bakeryHud.js`, `src/ui/screens/shelf.js` |
 | 제빵 규칙·반죽 화면 | `src/baking.js`, `src/bakingUI.js`, `data/recipes.json` |
 | 재고·손님·판매·구매 규칙 | `src/shop.js`, `src/bakery.js`, `src/inventory.js`, `data/storeItems.json` |
 | 텃밭 성장·표시 | `src/garden.js`, `src/gardenArt.js` |
@@ -80,6 +83,7 @@ node --test tests/server.test.js
 
 | 수정 영역 | 실제 브라우저 검사 |
 | --- | --- |
+| 파이·쿠키·건조·8명 방문·수량 판매·진열 배경/UI | `node tools/check-expansion-browser.mjs` |
 | 반죽 재고·혼합 6개·실제 60초·동시 반죽·이관 | `node tools/check-batch-browser.mjs` |
 | 실제 목소리 디코딩·글자 동기화·무음·중단 | `node tools/check-voices-browser.mjs` |
 | 카페 원본 이미지·데셰네 전체 분기·주문·퇴장 | `node tools/check-cafe-browser.mjs` |
@@ -90,12 +94,12 @@ node --test tests/server.test.js
 | 캐릭터 크기·색감·좌우 반전 | `node tools/check-player-browser.mjs` |
 | 손님 상반신·계산대 가림·진열 그림 | `node tools/check-counter-browser.mjs` |
 
-별도 설치된 도구는 `BAKERY_PLAYWRIGHT_MODULE`에 Playwright 모듈 URL, `BAKERY_BROWSER`에 Chromium 실행 경로를 지정할 수 있습니다. 일괄 오븐/목소리/카페/기력/주민/서비스/제작 검사는 슬롯 3을 잠시 사용하고 원본을 복원합니다. 이 검사들은 동시에 실행하지 않고, 다른 플레이어가 슬롯 3을 사용하는 중에도 실행하지 않습니다. 서버 API 테스트는 임시 폴더와 임시 포트를 사용하며 개인 세이브를 건드리지 않습니다.
+별도 설치된 도구는 `BAKERY_PLAYWRIGHT_MODULE`에 Playwright 모듈 URL, `BAKERY_BROWSER`에 Chromium 실행 경로를 지정할 수 있습니다. 새 메뉴/일괄 오븐/목소리/카페/기력/주민/서비스/제작 검사는 슬롯 3을 잠시 사용하고 원본을 복원합니다. 이 검사들은 동시에 실행하지 않고, 다른 플레이어가 슬롯 3을 사용하는 중에도 실행하지 않습니다. 서버 API 테스트는 임시 폴더와 임시 포트를 사용하며 개인 세이브를 건드리지 않습니다.
 
 ## 패치와 저장 호환
 
 - 실행 파일의 이름·ASCII/CRLF 인코딩·실행 명령을 유지합니다. 런타임 의존성을 추가하지 않습니다.
-- 세이브 버전은 현재 6이며 버전 1~5 이관을 지원합니다. 버전 6은 준비 반죽과 최대 6개 판의 오븐을 별도 저장합니다. 버전 5부터 기력을 저장합니다. 구버전 기력은 100으로 한 번 초기화하며 기존 시간·재고·퀘스트를 보존합니다.
+- 세이브 버전은 현재 7이며 버전 1~6 이관을 지원합니다. 버전 7은 반죽 종류·건조 작업·1~3개 주문을 저장합니다. 버전 6은 준비 반죽과 최대 6개 판의 오븐을 별도 저장합니다. 버전 5부터 기력을 저장합니다. 구버전 기력은 100으로 한 번 초기화하며 기존 시간·재고·퀘스트를 보존합니다.
 - 저장 형식 변경 시 초기값·검증·이관·관련 테스트를 함께 검토합니다. 가져온 값에 새 기본값을 매번 중복 지급하지 않습니다.
 - 파일 저장은 임시 파일 작성 후 교체하며, 세이브와 사용자 이미지 쓰기는 하나의 서버 큐로 직렬화합니다.
 - 패치는 변경한 파일을 Git으로 관리합니다. 새 배포 폴더에서는 기존 `saves/`를 복사해 이어 합니다. 사용자 세이브를 Git에 넣거나 초기화하지 않습니다.
@@ -116,3 +120,13 @@ node --test tests/server.test.js
 `baking`은 치대기·토핑만 담당하고 토핑 선택 완료 시 `doughs`에 종류별로 1개를 더합니다. 굽기를 시작할 때만 선택 수량을 `doughs`에서 차감하고 독립적인 `oven.batch`에 넣습니다. `oven`의 완성 빵을 꺼낼 때 `warehouse`에 한 번만 더합니다. 반죽 수량·재료·기력을 중복 차감하지 않습니다. 실제 타이머 상수 `bakeSeconds=60`, 한 판 제한 `ovenCapacity=6`은 `src/baking.js`에 있습니다.
 
 굽기 완료 시 반죽 작업창을 다시 그리지 않습니다. 진행 중인 마우스 치대기와 작업 반죽을 유지하고 오븐 관리 창만 갱신합니다. 저장 형식 변경은 `save/bakingState.js`에서 구버전 판을 이관하는 경로와 검증을 함께 수정합니다. 테스트를 빠르게 만들기 위해 실제 60초 규칙을 줄이지 않습니다. 단위 테스트는 경과 시간을 직접 전달하고 브라우저 검사에서 한 판을 실제 60초 기다립니다.
+
+## 새 메뉴·손님 수정
+
+`recipeBook.js`에는 제품 ID와 반죽별 기본 재료·속재료를, `data/recipes.json`에는 표시 이름·판매가·총 재료를 둡니다. 새 제품을 넣으면 `inventory.js`의 이름과 두 정의를 함께 수정합니다. `tests/pastries.test.js`는 JSON의 총 재료가 실제 반죽/속재료 비용과 같은지, 전 메뉴를 제작할 수 있는지 확인합니다. 저장 초기값은 제품 ID에서 생성되며 이관에서 기존 종류를 보존합니다.
+
+`customers.json`은 방문 순서·이름·초상·SD 영역·선호 가중치를 정의합니다. 손님이 올 때 `shop.js`가 가중 무작위 제품과 1~3개 수량을 뽑아 주문 객체에 고정합니다. 화면을 다시 그리거나 대화를 열 때 추첨하지 않습니다. 재고 부족 시 일부 소비·부분 결제가 없어야 합니다. 수량만큼 진열 재고를 차감하고 단가 × 수량을 한 번 정산합니다.
+
+건조는 `oven.kind: "drying"`과 `batch.driedberry`를 사용합니다. 시작 시 생베리를 차감하고 수령 시에만 재료 가방에 말린 베리를 넣습니다. 굽기와 건조는 같은 슬롯을 사용하며 동시에 실행하지 않습니다. 상태 검증은 `save/bakingState.js`에서 종류별로 처리합니다.
+
+새 판매실은 첨부된 배경 그대로 그립니다. `counterArt.js`는 손님과 계산대 앞 레이어만 그리며 음식 재고를 배경에 추가하지 않습니다. 재고·주문은 `bakeryHud.js`의 DOM 패널, 수량 진열·회수는 `ui/screens/shelf.js`가 담당합니다. 이미지 속 음식 수와 실제 재고를 연결하지 않습니다.

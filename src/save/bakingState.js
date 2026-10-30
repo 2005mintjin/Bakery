@@ -1,3 +1,4 @@
+import { doughTypes } from "../recipeBook.js";
 import {
   breadIds,
   breadForTopping,
@@ -39,6 +40,26 @@ function counts(value, allKeys = false) {
   );
 }
 export function validateBakingState(s) {
+  if (
+    s.version < 7 &&
+    s.baking &&
+    ["kneading", "topping"].includes(s.baking.phase)
+  )
+    s.baking.type = "bread";
+  if (s.version === 6) {
+    if (
+      !counts(s.doughs) ||
+      !["loaf", "honeybread", "berrybread"].every((id) =>
+        Object.hasOwn(s.doughs, id),
+      )
+    )
+      throw Error("손상된 반죽 창고");
+    s.doughs = {
+      ...Object.fromEntries(breadIds.map((id) => [id, 0])),
+      ...s.doughs,
+    };
+    if (s.oven) s.oven.kind = "baking";
+  }
   if (s.version < 6) {
     legacyDough(s.baking);
     s.doughs = Object.fromEntries(breadIds.map((id) => [id, 0]));
@@ -50,6 +71,7 @@ export function validateBakingState(s) {
       else
         s.oven = {
           phase: b.phase,
+          kind: "baking",
           batch: Object.fromEntries(
             breadIds.map((key) => [key, key === id ? 1 : 0]),
           ),
@@ -67,6 +89,7 @@ export function validateBakingState(s) {
     b !== null &&
     (!b ||
       !["kneading", "topping"].includes(b.phase) ||
+      !Object.hasOwn(doughTypes, b.type) ||
       !nonnegative(b.progress) ||
       b.progress > 100 ||
       b.topping !== null ||
@@ -80,7 +103,12 @@ export function validateBakingState(s) {
     if (
       !oven ||
       !["baking", "ready"].includes(oven.phase) ||
-      !counts(oven.batch) ||
+      !(oven.kind === "drying"
+        ? oven.batch &&
+          Object.keys(oven.batch).length === 1 &&
+          Number.isSafeInteger(oven.batch.driedberry) &&
+          oven.batch.driedberry > 0
+        : oven.kind === "baking" && counts(oven.batch)) ||
       !nonnegative(oven.seconds) ||
       oven.seconds > bakeSeconds
     )

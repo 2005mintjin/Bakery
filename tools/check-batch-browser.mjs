@@ -1,3 +1,4 @@
+import { productCounts } from "../src/recipeBook.js";
 // Slot 3 is temporary and restored byte-for-byte. Run sequentially with save checks.
 import assert from "node:assert/strict";
 import { readFile, writeFile, unlink } from "node:fs/promises";
@@ -108,7 +109,12 @@ try {
   ])
     await prepare(topping);
   let s = await save();
-  assert.deepEqual(s.doughs, { loaf: 3, honeybread: 2, berrybread: 2 });
+  assert.deepEqual(s.doughs, {
+    ...productCounts(),
+    loaf: 3,
+    honeybread: 2,
+    berrybread: 2,
+  });
   assert.equal(s.stamina, 30);
   assert.equal(s.oven, null);
   await reloadSave();
@@ -138,7 +144,12 @@ try {
   s = await save();
   assert.equal(s.baking.phase, "kneading");
   assert.equal(s.doughs.loaf, 1);
-  assert.deepEqual(s.oven.batch, { loaf: 2, honeybread: 2, berrybread: 2 });
+  assert.deepEqual(s.oven.batch, {
+    ...productCounts(),
+    loaf: 2,
+    honeybread: 2,
+    berrybread: 2,
+  });
   assert.ok(s.oven.seconds > 0 && s.oven.seconds < 60);
   const progress = s.baking.progress;
   await reloadSave();
@@ -162,8 +173,18 @@ try {
   await choose("완성한 빵 모두 꺼내기");
   await close();
   s = await save();
-  assert.deepEqual(s.warehouse, { loaf: 2, honeybread: 2, berrybread: 2 });
-  assert.deepEqual(s.doughs, { loaf: 2, honeybread: 0, berrybread: 0 });
+  assert.deepEqual(s.warehouse, {
+    ...productCounts(),
+    loaf: 2,
+    honeybread: 2,
+    berrybread: 2,
+  });
+  assert.deepEqual(s.doughs, {
+    ...productCounts(),
+    loaf: 2,
+    honeybread: 0,
+    berrybread: 0,
+  });
   assert.equal(s.oven, null);
   assert.equal(s.stamina, 20);
   await p.setViewportSize({ width: 540, height: 850 });
@@ -202,6 +223,7 @@ try {
     name: "마리아",
     portrait: "sora",
     bread: "loaf",
+    quantity: 1,
     phase: "waiting",
     arrival: 1.2,
   };
@@ -251,7 +273,7 @@ try {
   };
   await reloadSave(legacy);
   s = await save();
-  assert.equal(s.version, 6);
+  assert.equal(s.version, 7);
   assert.equal(s.baking, null);
   assert.ok(s.oven.seconds >= 24 && s.oven.seconds < 27);
   assert.equal(s.oven.batch.berrybread, 1);

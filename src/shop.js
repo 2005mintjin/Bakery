@@ -1,5 +1,6 @@
+import { productIds } from "./recipeBook.js";
 import { spend } from "./inventory.js";
-export const breadIds = ["loaf", "honeybread", "berrybread"];
+export const breadIds = productIds;
 export function ensureShop(s) {
   s.warehouse ??= { loaf: 0, honeybread: 0, berrybread: 0 };
   s.shop ??= { open: false, elapsed: 0, customer: null, sequence: 0 };
@@ -10,7 +11,7 @@ export function ensureShop(s) {
 export function storeBread(s, id) {
   ensureShop(s);
   if (!breadIds.includes(id) || !spend(s, { [id]: 1 })) return false;
-  s.warehouse[id]++;
+  s.warehouse[id] = (s.warehouse[id] || 0) + 1;
   return true;
 }
 export function takeBread(s, id) {
@@ -20,7 +21,17 @@ export function takeBread(s, id) {
   s.items[id] = (s.items[id] || 0) + 1;
   return true;
 }
-export function tickShop(s, dt, customers = []) {
+export function chooseOrder(person, random = Math.random) {
+  const weights = breadIds.map((id) => person.preferences?.[id] || 1),
+    total = weights.reduce((a, b) => a + b, 0);
+  let choice = Math.max(0, Math.min(0.999999, random())) * total;
+  for (let i = 0; i < breadIds.length; i++) {
+    choice -= weights[i];
+    if (choice < 0) return breadIds[i];
+  }
+  return breadIds.at(-1);
+}
+export function tickShop(s, dt, customers = [], random = Math.random) {
   ensureShop(s);
   if (!s.shop.open) return false;
   if (s.shop.customer) {
@@ -42,7 +53,8 @@ export function tickShop(s, dt, customers = []) {
   s.shop.customer = {
     name: person.name,
     portrait: person.portrait,
-    bread: breadIds[i % 3],
+    bread: chooseOrder(person, random),
+    quantity: 1 + Math.min(2, Math.floor(Math.max(0, random()) * 3)),
     phase: "knocking",
     arrival: 0,
   };
@@ -50,12 +62,21 @@ export function tickShop(s, dt, customers = []) {
 }
 export function serve(s, recipes) {
   const c = s.shop?.customer;
-  if (!c || c.phase !== "waiting" || !(s.display[c.bread] > 0)) return false;
+  const quantity = c?.quantity ?? 1;
+  if (
+    !c ||
+    c.phase !== "waiting" ||
+    !Number.isInteger(quantity) ||
+    quantity < 1 ||
+    quantity > 3 ||
+    !(s.display[c.bread] >= quantity)
+  )
+    return false;
   const recipe = recipes.find((r) => r.id === c.bread);
   if (!recipe) return false;
-  s.display[c.bread]--;
-  s.money += recipe.price;
-  s.revenue += recipe.price;
+  s.display[c.bread] -= quantity;
+  s.money += recipe.price * quantity;
+  s.revenue += recipe.price * quantity;
   s.shop.customer = null;
   return true;
 }

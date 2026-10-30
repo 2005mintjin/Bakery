@@ -116,3 +116,59 @@
   left: 10%;
   top: 46%;
 }
+#bakery-console {
+  margin: 12px 0;
+  padding: 16px;
+  border: 1px solid #d6c5a2;
+  border-radius: 10px;
+  background: #fff8e8;
+}
+#bakery-console[hidden] {
+  display: none;
+}
+.bakery-summary,
+.bakery-controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+.bakery-stock {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+.bakery-stock span {
+  background: #ebe5cc;
+  padding: 5px 8px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+#bakery-console small {
+  display: block;
+  margin-top: 9px;
+  color: #786d53;
+}
+.shelf-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 10px 0;
+  border-bottom: 1px solid #ded9c9;
+}
+.shelf-row span {
+  flex: 1;
+  min-width: 210px;
+  font-size: 12px;
+}
+.shelf-row input {
+  width: 55px;
+  padding: 8px;
+}
+.shelf-row button {
+  font-size: 11px;
+  padding: 8px;
+}

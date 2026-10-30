@@ -10,10 +10,9 @@ export function customerWords(dialogues, customer) {
   return dialogues.customers[customer.portrait] || dialogues.customers.mira;
 }
 export function orderText(dialogues, customer) {
-  return customerWords(dialogues, customer).order.replaceAll(
-    "{bread}",
-    names[customer.bread] || "빵",
-  );
+  return customerWords(dialogues, customer)
+    .order.replaceAll("{bread}", names[customer.bread] || "빵")
+    .replaceAll("{count}", String(customer.quantity ?? 1));
 }
 export function resolveCustomerReply(s, action, recipes) {
   const c = s.shop.customer;
@@ -54,7 +53,9 @@ export function openCustomerDialogue(g) {
     return;
   }
   const words = customerWords(g.data.serviceDialogues, c);
-  const npc = g.data.npcs?.find((n) => n.id === c.portrait);
+  const npc =
+    g.data.customers?.find((n) => n.portrait === c.portrait) ||
+    g.data.npcs?.find((n) => n.id === c.portrait);
   const actor = {
     ...c,
     ...(npc ? { name: npc.name, portraitAsset: npc.portraitAsset } : {}),
@@ -85,7 +86,9 @@ export function openCustomerDialogue(g) {
               orderText(g.data.serviceDialogues, c) +
                 "\n\n아직 진열대에 " +
                 names[c.bread] +
-                "이 없어요. 먼저 준비해 주세요.",
+                " " +
+                (c.quantity ?? 1) +
+                "개가 필요해요. 주문 수량을 모두 진열한 뒤 다시 말해 주세요.",
             );
           } else if (result === "waiting") {
             g.ui.close();

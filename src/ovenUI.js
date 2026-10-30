@@ -5,6 +5,7 @@ import {
   nextBatch,
   putInOven,
   collectBread,
+  dryBerries,
 } from "./baking.js";
 import { names } from "./inventory.js";
 export function showOven(ui) {
@@ -13,15 +14,12 @@ export function showOven(ui) {
   const back = ["반죽 만들기로 돌아가기", () => ui.show("oven")];
   if (oven) {
     const amount = Object.values(oven.batch).reduce((a, b) => a + b, 0);
-    const breads = breadIds
+    const breads = Object.keys(oven.batch)
       .filter((id) => oven.batch[id])
-      .map(
-        (id) =>
-          `<p><img class="batch-bread" src="assets/food/${id}.svg" alt="${names[id]}"> ${names[id]} ${oven.batch[id]}개</p>`,
-      )
+      .map((id) => `<p> ${names[id]} ${oven.batch[id]}개</p>`)
       .join("");
     ui.panel(
-      `<h2>${oven.phase === "ready" ? "빵 굽기 완료!" : "오븐에서 굽는 중"} · ${amount}/${ovenCapacity}개</h2>${breads}` +
+      `<h2>${oven.phase === "ready" ? (oven.kind === "drying" ? "베리 건조 완료!" : "빵 굽기 완료!") : oven.kind === "drying" ? "베리 건조 중" : "오븐에서 굽는 중"} · ${amount}/${ovenCapacity}개</h2>${breads}` +
         (oven.phase === "baking"
           ? `<progress id="bake-progress" max="${bakeSeconds}" value="${oven.seconds}"></progress><p id="bake-seconds">완성까지 ${Math.ceil(bakeSeconds - oven.seconds)}초</p><p>굽는 동안 다음 반죽을 준비할 수 있어요. 다른 탭에서는 멈춥니다.</p>`
           : "<p>완성한 빵을 모두 꺼내면 다음 반죽을 구울 수 있어요.</p>"),
@@ -29,10 +27,16 @@ export function showOven(ui) {
         ...(oven.phase === "ready"
           ? [
               [
-                "완성한 빵 모두 꺼내기",
+                oven.kind === "drying"
+                  ? "말린 베리 꺼내기"
+                  : "완성한 빵 모두 꺼내기",
                 () => {
                   if (collectBread(s))
-                    ui.notify("완성한 빵을 창고에 보관했어요");
+                    ui.notify(
+                      oven.kind === "drying"
+                        ? "말린 베리를 가방에 보관했어요"
+                        : "완성한 빵을 창고에 보관했어요",
+                    );
                   ui.show("ovenBatch");
                 },
               ],
@@ -64,6 +68,7 @@ export function showOven(ui) {
           ui.show("ovenBatch");
         },
       ],
+      ["베리 말리기", () => showDrying(ui)],
       back,
     ],
   );
@@ -96,4 +101,33 @@ export function showOven(ui) {
   for (const input of ui.overlay.querySelectorAll("[data-dough]"))
     input.oninput = update;
   update();
+}
+
+export function showDrying(ui) {
+  const s = ui.g.state;
+  if (s.oven) {
+    ui.notify("현재 오븐 작업을 마치고 꺼내 주세요.");
+    ui.show("ovenBatch");
+    return;
+  }
+  ui.panel(
+    `<h2>오븐에서 베리 말리기</h2><p>생베리 2개 → 말린 베리 1개. 60초 동안 1~6묶음을 건조합니다. 현재 생베리 ${s.items.berry}개</p><label>묶음 수 <input id="dry-count" type="number" min="1" max="6" value="1" aria-label="베리 건조 묶음 수"></label>`,
+    [
+      [
+        "건조 시작",
+        () => {
+          if (
+            !dryBerries(s, Number(ui.overlay.querySelector("#dry-count").value))
+          ) {
+            ui.notify(
+              "오븐이 비어 있고 베리가 2개 이상 필요해요. 묶음은 1~6개를 선택하세요.",
+            );
+            return;
+          }
+          ui.show("ovenBatch");
+        },
+      ],
+      ["오븐 관리로 돌아가기", () => ui.show("ovenBatch")],
+    ],
+  );
 }

@@ -1,7 +1,68 @@
 [
-  { "id": "flour", "name": "밀가루", "price": 2, "quantity": 1 },
-  { "id": "yeast", "name": "이스트", "price": 3, "quantity": 1 },
-  { "id": "salt", "name": "소금", "price": 1, "quantity": 1 },
-  { "id": "honey", "name": "꿀", "price": 5, "quantity": 1 },
-  { "id": "berrySeeds", "name": "베리 씨앗", "price": 8, "quantity": 1 }
+  {
+    "id": "flour",
+    "name": "밀가루",
+    "price": 2,
+    "quantity": 1
+  },
+  {
+    "id": "yeast",
+    "name": "이스트",
+    "price": 3,
+    "quantity": 1
+  },
+  {
+    "id": "salt",
+    "name": "소금",
+    "price": 1,
+    "quantity": 1
+  },
+  {
+    "id": "honey",
+    "name": "꿀",
+    "price": 5,
+    "quantity": 1
+  },
+  {
+    "id": "berrySeeds",
+    "name": "베리 씨앗",
+    "price": 8,
+    "quantity": 1
+  },
+  {
+    "id": "water",
+    "name": "물",
+    "price": 1,
+    "quantity": 1
+  },
+  {
+    "id": "sugar",
+    "name": "설탕",
+    "price": 2,
+    "quantity": 1
+  },
+  {
+    "id": "butter",
+    "name": "버터",
+    "price": 4,
+    "quantity": 1
+  },
+  {
+    "id": "meat",
+    "name": "고기",
+    "price": 6,
+    "quantity": 1
+  },
+  {
+    "id": "fish",
+    "name": "생선",
+    "price": 5,
+    "quantity": 1
+  },
+  {
+    "id": "chocolate",
+    "name": "초콜릿",
+    "price": 5,
+    "quantity": 1
+  }
 ]

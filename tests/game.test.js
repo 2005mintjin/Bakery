@@ -1,3 +1,4 @@
+import {productCounts} from "../src/recipeBook.js";
 import {
   beginDough,
   knead,
@@ -49,7 +50,7 @@ function makeBread(s, r) {
 test("three recipes consume ingredients, display and settle exactly once", () => {
   const s = fresh();
   s.items.berry = 2;
-  for (const r of recipes) {
+  for (const r of recipes.slice(0, 3)) {
     assert.ok(makeBread(s, r));
     assert.ok(display(s, r.id));
     assert.equal(s.items[r.id], 0);
@@ -121,16 +122,16 @@ test("warehouse transfer and timed orders consume only the requested displayed b
   assert.equal(tickShop(s, 30), false);
   s.shop.open = true;
   assert.equal(tickShop(s, 11), false);
-  assert.ok(tickShop(s, 1));
+  assert.ok(tickShop(s, 1, [], () => 0));
   assert.equal(s.shop.customer.bread, "loaf");
   assert.equal(serve(s, recipes), false);
   tickShop(s, 1.2);
   assert.ok(serve(s, recipes));
   assert.equal(s.money, 76);
   assert.equal(serve(s, recipes), false);
-  tickShop(s, 12);
+  tickShop(s, 12, [], () => 0);
   assert.equal(serve(s, recipes), false);
-  assert.equal(s.shop.customer.bread, "honeybread");
+  assert.equal(s.shop.customer.bread, "loaf");
 });
 test("post office parcel cannot be received twice on the same day", () => {
   const s = fresh();
@@ -162,12 +163,8 @@ test("v1 migration and malformed shop rejection", () => {
   s.version = 1;
   delete s.shop;
   delete s.warehouse;
-  assert.equal(validate(s).version, 6);
-  assert.deepEqual(validate(s).warehouse, {
-    loaf: 0,
-    honeybread: 0,
-    berrybread: 0,
-  });
+  assert.equal(validate(s).version, 7);
+  assert.deepEqual(validate(s).warehouse, productCounts());
   const bad = fresh();
   bad.shop.customer = { name: "bad", bread: "invalid" };
   assert.throws(() => validate(bad));

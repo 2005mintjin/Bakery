@@ -1,3 +1,4 @@
+import { productIds } from "../recipeBook.js";
 import { validateBakingState } from "./bakingState.js";
 import { fresh } from "./defaultState.js";
 const nonnegative = (x) => Number.isFinite(x) && x >= 0;
@@ -5,7 +6,7 @@ export function validate(input) {
   const s = structuredClone(input),
     base = fresh();
   if (
-    ![1, 2, 3, 4, 5, 6].includes(s.version) ||
+    ![1, 2, 3, 4, 5, 6, 7].includes(s.version) ||
     ![
       "town",
       "bakery",
@@ -50,7 +51,7 @@ export function validate(input) {
       throw Error("손상된 상점");
     if (
       shop.customer &&
-      (!["loaf", "honeybread", "berrybread"].includes(shop.customer.bread) ||
+      (!productIds.includes(shop.customer.bread) ||
         typeof shop.customer.name !== "string")
     )
       throw Error("손상된 주문");
@@ -70,7 +71,16 @@ export function validate(input) {
       customer &&
       (!["knocking", "waiting"].includes(customer.phase) ||
         !nonnegative(customer.arrival) ||
-        !["mira", "jun", "sora"].includes(customer.portrait))
+        ![
+          "mira",
+          "jun",
+          "sora",
+          "post-clerk",
+          "arien",
+          "sasha",
+          "erina",
+          "barista",
+        ].includes(customer.portrait))
     )
       throw Error("손상된 손님");
     if (
@@ -108,11 +118,20 @@ export function validate(input) {
   if (s.version < 5) s.stamina = base.stamina;
   else if (!nonnegative(s.stamina) || s.stamina > 100)
     throw Error("손상된 기력");
+  if (s.shop?.customer) {
+    if (s.version < 7) s.shop.customer.quantity = 1;
+    else if (
+      !Number.isInteger(s.shop.customer.quantity) ||
+      s.shop.customer.quantity < 1 ||
+      s.shop.customer.quantity > 3
+    )
+      throw Error("잘못된 주문 수량");
+  }
   validateBakingState(s);
   return {
     ...base,
     ...s,
-    version: 6,
+    version: 7,
     items: { ...base.items, ...s.items },
     warehouse: { ...base.warehouse, ...s.warehouse },
   };

@@ -147,7 +147,7 @@ test("supplied interiors and soundtrack assets are bundled at the configured pat
     b = readFileSync(
       new URL("../" + backgrounds.bakeryKitchen.asset, import.meta.url),
     );
-  assert.equal(a.readUInt32BE(16), 1671);
+  assert.equal(a.readUInt32BE(16), 1672);
   assert.equal(a.readUInt32BE(20), 941);
   assert.equal(b.readUInt32BE(16), 1536);
   assert.equal(b.readUInt32BE(20), 1024);

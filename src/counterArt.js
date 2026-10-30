@@ -1,105 +1,62 @@
-import { names } from "./inventory.js";
 export const counterLayout = {
-  frontY: 459,
-  customer: { x: 288, y: 210, width: 384 },
+  frontY: 490,
+  customer: { x: 288, y: 230, width: 384 },
   sdCustomer: { centerX: 480, y: 230, height: 300 },
-  order: { x: 320, y: 160, width: 320, height: 63 },
 };
-export async function loadCounterArt(npcs = []) {
+export async function loadCounterArt(actors = []) {
   const images = new Map();
+  const unique = new Map([
+    ["mira", { id: "mira" }],
+    ["jun", { id: "jun" }],
+    ["sora", { id: "sora" }],
+    ...actors.map((a) => [a.id || a.portrait, a]),
+  ]);
   await Promise.all(
-    ["mira", "jun", "sora", "loaf", "honeybread", "berrybread"].map(
-      (id) =>
+    [...unique].map(
+      ([id, actor]) =>
         new Promise((resolve, reject) => {
           const image = new Image();
           image.onload = () => {
+            image.sdBounds = actor.spriteAsset
+              ? actor.spriteBounds || [0, 0, image.width, image.height]
+              : null;
             images.set(id, image);
             resolve();
           };
           image.onerror = reject;
-          const npc = npcs.find((n) => n.id === id);
-          const visitorAsset = npc?.spriteAsset;
-          image.sdBounds = visitorAsset ? npc.spriteBounds : null;
-          image.src =
-            visitorAsset ||
-            (["mira", "jun", "sora"].includes(id)
-              ? "assets/characters/" + id + ".svg"
-              : "assets/food/" + id + ".svg");
+          image.src = actor.spriteAsset || `assets/characters/${id}.svg`;
         }),
     ),
   );
   return images;
 }
 export function drawCounter(r, s) {
-  const customer = s.shop.customer;
-  for (const [i, id] of ["loaf", "honeybread", "berrybread"].entries()) {
-    const amount = s.display[id] || 0,
-      img = r.counterArt?.get(id);
-    if (!img || !amount) continue;
-    for (let j = 0; j < Math.min(amount, 4); j++)
-      r.c.drawImage(
-        img,
-        235 + i * 180 + (j % 2) * 69,
-        278 + Math.floor(j / 2) * 67,
-        72,
-        48,
-      );
-    r.r(243 + i * 180, 397, 137, 20, "#f3e2b8");
-    r.text(names[id] + " × " + amount, 312 + i * 180, 411, "#6c4a2e", 11);
+  if (s.shop.customer?.phase !== "waiting") return;
+  const img = r.counterArt?.get(s.shop.customer.portrait);
+  if (!img) return;
+  if (img.sdBounds) {
+    const [sx, sy, sw, sh] = img.sdBounds,
+      p = counterLayout.sdCustomer,
+      w = (p.height * sw) / sh;
+    r.c.drawImage(img, sx, sy, sw, sh, p.centerX - w / 2, p.y, w, p.height);
+  } else {
+    const p = counterLayout.customer;
+    r.c.drawImage(
+      img,
+      0,
+      img.height * 0.14,
+      img.width,
+      img.height * 0.62,
+      p.x,
+      p.y,
+      p.width,
+      (p.width * img.height * 0.62) / img.width,
+    );
   }
-  if (customer?.phase === "waiting") {
-    const img = r.counterArt?.get(customer.portrait),
-      p = counterLayout.customer;
-    if (img?.sdBounds) {
-      const [sx, sy, sw, sh] = img.sdBounds,
-        sd = counterLayout.sdCustomer;
-      const width = (sd.height * sw) / sh;
-      r.c.drawImage(
-        img,
-        sx,
-        sy,
-        sw,
-        sh,
-        sd.centerX - width / 2,
-        sd.y,
-        width,
-        sd.height,
-      );
-    } else if (img)
-      r.c.drawImage(
-        img,
-        0,
-        img.height * 0.14,
-        img.width,
-        img.height * 0.62,
-        p.x,
-        p.y,
-        p.width,
-        (p.width * img.height * 0.62) / img.width,
-      );
-    // Restore the foreground checkout counter OVER the customer; the bread case stays behind.
-    // The original photo countertop starts at logical Y=459. It hides the lower torso.
-    r.c.save();
-    r.c.beginPath();
-    r.c.rect(0, counterLayout.frontY, 960, 576 - counterLayout.frontY);
-    r.c.clip();
-    r.c.drawImage(r.bg.bakery, 0, 0, 960, 576);
-    r.c.restore();
-  }
-  if (!customer) return;
-  if (customer.phase === "knocking") {
-    r.r(285, 128, 390, 56, "#fff1cced");
-    r.text("똑똑! 문을 두드리는 소리가 들려요.", 480, 162, "#75583b", 17);
-    return;
-  }
-  const o = counterLayout.order;
-  r.r(o.x, o.y, o.width, o.height, "#fff2d5f0");
-  r.text(customer.name + " · 주문 대기 중", 480, o.y + 29, "#725333", 15);
-  r.text(
-    "손님과 대화하기 버튼으로 말을 걸어 주세요",
-    480,
-    o.y + 51,
-    "#8b7657",
-    11,
-  );
+  r.c.save();
+  r.c.beginPath();
+  r.c.rect(0, counterLayout.frontY, 960, 576 - counterLayout.frontY);
+  r.c.clip();
+  r.c.drawImage(r.bg.bakery, 0, 0, 960, 576);
+  r.c.restore();
 }
