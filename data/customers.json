@@ -1,0 +1,80 @@
+[
+  {
+    "name": "미라",
+    "portrait": "mira",
+    "portraitAsset": "assets/characters/mira.svg",
+    "preferences": {
+      "loaf": 2
+    }
+  },
+  {
+    "name": "이시도로",
+    "portrait": "jun",
+    "portraitAsset": "assets/characters/residents/isidoro-portrait.png",
+    "spriteAsset": "assets/characters/residents/isidoro-sd.png",
+    "spriteBounds": [73, 12, 1149, 1261],
+    "preferences": {
+      "meatpie": 4
+    }
+  },
+  {
+    "name": "마리아",
+    "portrait": "sora",
+    "portraitAsset": "assets/characters/residents/maria-portrait.png",
+    "spriteAsset": "assets/characters/residents/maria-sd.png",
+    "spriteBounds": [0, 16, 1210, 1262],
+    "preferences": {
+      "fishpie": 4
+    }
+  },
+  {
+    "name": "하나",
+    "portrait": "post-clerk",
+    "portraitAsset": "assets/characters/clerks/post-clerk.png",
+    "spriteAsset": "assets/characters/visitors/post-clerk-sd.png",
+    "spriteBounds": [0, 25, 1275, 1189],
+    "preferences": {
+      "fishpie": 4
+    }
+  },
+  {
+    "name": "아리엔",
+    "portrait": "arien",
+    "portraitAsset": "assets/characters/clerks/cat-sisters.png",
+    "spriteAsset": "assets/characters/visitors/sisters-sd.png",
+    "spriteBounds": [0, 290, 560, 734],
+    "preferences": {
+      "fishpie": 4
+    }
+  },
+  {
+    "name": "사샤",
+    "portrait": "sasha",
+    "portraitAsset": "assets/characters/clerks/cat-sisters.png",
+    "spriteAsset": "assets/characters/visitors/sisters-sd.png",
+    "spriteBounds": [560, 0, 460, 1024],
+    "preferences": {
+      "fishpie": 4
+    }
+  },
+  {
+    "name": "에리나",
+    "portrait": "erina",
+    "portraitAsset": "assets/characters/clerks/cat-sisters.png",
+    "spriteAsset": "assets/characters/visitors/sisters-sd.png",
+    "spriteBounds": [1020, 190, 516, 834],
+    "preferences": {
+      "fishpie": 4
+    }
+  },
+  {
+    "name": "데셰네",
+    "portrait": "barista",
+    "portraitAsset": "assets/characters/clerks/barista.png",
+    "spriteAsset": "assets/characters/visitors/barista-sd.png",
+    "spriteBounds": [21, 0, 1230, 1215],
+    "preferences": {
+      "chococookie": 2
+    }
+  }
+]

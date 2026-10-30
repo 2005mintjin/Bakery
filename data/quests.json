@@ -1,0 +1,26 @@
+[
+  {
+    "id": "delivery",
+    "name": "그리운 아침의 향기",
+    "description": "미라에게 갓 구운 밀빵 1개를 전해 주세요.",
+    "item": "loaf",
+    "count": 1,
+    "reward": 35
+  },
+  {
+    "id": "berries",
+    "name": "정원사의 작은 부탁",
+    "description": "텃밭을 가꿔 베리 3개를 모아 이시도로에게 전해 주세요.",
+    "item": "berry",
+    "count": 3,
+    "reward": 20
+  },
+  {
+    "id": "friend",
+    "name": "남편이 좋아하는 꿀빵",
+    "description": "마리아에게 가방에 든 꿀빵 1개를 전해 주세요.",
+    "item": "honeybread",
+    "count": 1,
+    "reward": 20
+  }
+]

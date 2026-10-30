@@ -1,0 +1,137 @@
+import { BakeryHud } from "./bakeryHud.js";
+import { worldMaps } from "./sceneManager.js";
+export const isInterior = (scene) =>
+  ["bakery", "bakeryKitchen", "post", "store", "cafe", "workshop"].includes(
+    scene,
+  );
+export function leaveInterior(s) {
+  if (!isInterior(s.scene)) return false;
+  const origin = ["store", "cafe", "workshop"].includes(s.scene)
+      ? "city"
+      : "town",
+    dest = s.scene === "bakeryKitchen" ? "bakery" : s.scene;
+  const door = worldMaps[origin]?.doors.find((d) => d.scene === dest);
+  s.scene = origin;
+  s.x = door?.x ?? 480;
+  s.y = (door?.y ?? 280) + 45;
+  return true;
+}
+export function changeBakeryRoom(s) {
+  if (s.scene === "bakery") {
+    s.scene = "bakeryKitchen";
+    return true;
+  }
+  if (s.scene === "bakeryKitchen") {
+    s.scene = "bakery";
+    return true;
+  }
+  return false;
+}
+export const interiorActions = {
+  workshop: [["workshop", "⚒ 도구와 오븐 개량", "도구를 사고 오븐을 개선해요"]],
+  cafe: [
+    [
+      "cafeTalk",
+      "바리스타 데셰네와 대화",
+      "직원과 대화하고 커피·디저트를 주문해요",
+    ],
+  ],
+  bakery: [
+    ["shelf", "빵 진열대", "빵을 진열하거나 꺼낸 빵을 확인해요"],
+    ["shop", "영업 안내판", "문을 열거나 닫아요"],
+  ],
+  bakeryKitchen: [
+    ["oven", "작업대 · 반죽 만들기", "반죽을 만들어 창고에 모아요"],
+    ["ovenBatch", "오븐 · 굽기 관리", "준비한 반죽을 구워요"],
+    ["warehouse", "빵 창고", "보관한 빵을 꺼내요"],
+  ],
+  post: [
+    ["postTalk", "우체국 직원과 대화", "대화한 뒤 오늘 도착한 소포를 받아요"],
+  ],
+  store: [
+    [
+      "storeTalk",
+      "잡화점 직원과 대화",
+      "직원과 대화한 뒤 재료와 씨앗을 구매해요",
+    ],
+  ],
+};
+export class Interior {
+  constructor(g) {
+    this.g = g;
+    this.bakeryHud = new BakeryHud(g);
+    this.root = document.createElement("div");
+    this.root.id = "interior-actions";
+    this.root.hidden = true;
+    document.querySelector(".game").append(this.root);
+    this.scene = null;
+  }
+  update() {
+    this.bakeryHud.update();
+    const g = this.g,
+      scene = g.state.scene;
+    this.root.hidden = !g.started || !isInterior(scene);
+    this.root.dataset.scene = scene;
+    if (this.scene !== scene) {
+      this.scene = scene;
+      this.root.replaceChildren();
+      for (const [type, label, help] of scene === "bakery"
+        ? []
+        : interiorActions[scene] || []) {
+        const b = document.createElement("button");
+        b.className = "interior-hotspot spot-" + type;
+        b.textContent = label;
+        b.title = help;
+        b.onclick = () => {
+          if (g.started && !g.ui.open) g.ui.show(type);
+        };
+        this.root.append(b);
+      }
+      if (scene === "bakery" || scene === "bakeryKitchen") {
+        const b = document.createElement("button");
+        b.className = "room-arrow";
+        b.textContent = scene === "bakery" ? "작업실 →" : "← 판매실";
+        b.setAttribute(
+          "aria-label",
+          scene === "bakery"
+            ? "화덕과 창고가 있는 작업실로 이동"
+            : "판매실로 이동",
+        );
+        b.onclick = () => {
+          if (!g.ui.open) {
+            changeBakeryRoom(g.state);
+            g.keys.clear();
+          }
+        };
+        this.root.append(b);
+      }
+      if (isInterior(scene)) {
+        const b = document.createElement("button");
+        b.className = "interior-exit";
+        b.textContent = ["store", "cafe", "workshop"].includes(scene)
+          ? "← 소도시로 나가기"
+          : "← 광장으로 나가기";
+        b.onclick = () => {
+          if (!g.ui.open) {
+            leaveInterior(g.state);
+            g.keys.clear();
+          }
+        };
+        this.root.append(b);
+      }
+    }
+    for (const b of this.root.querySelectorAll("button"))
+      b.disabled = g.ui.open;
+    this.root.setAttribute(
+      "aria-label",
+      {
+        bakery: "빵집 판매실",
+        bakeryKitchen: "빵집 작업실",
+        post: "우체국",
+        store: "잡화점",
+        cafe: "햇살 카페",
+        workshop: "해봄 공방",
+      }[scene] || "실내 기능",
+    );
+  }
+}

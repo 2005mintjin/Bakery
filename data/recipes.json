@@ -1,0 +1,118 @@
+[
+  {
+    "id": "loaf",
+    "name": "밀빵",
+    "cost": {
+      "flour": 2,
+      "yeast": 1,
+      "salt": 1
+    },
+    "price": 16,
+    "doughType": "bread",
+    "finish": "none"
+  },
+  {
+    "id": "honeybread",
+    "name": "꿀빵",
+    "cost": {
+      "flour": 2,
+      "honey": 1,
+      "yeast": 1,
+      "salt": 1
+    },
+    "price": 25,
+    "doughType": "bread",
+    "finish": "honey"
+  },
+  {
+    "id": "berrybread",
+    "name": "베리빵",
+    "cost": {
+      "flour": 2,
+      "berry": 2,
+      "yeast": 1,
+      "salt": 1
+    },
+    "price": 30,
+    "doughType": "bread",
+    "finish": "berry"
+  },
+  {
+    "id": "berrypie",
+    "name": "베리 파이",
+    "cost": {
+      "flour": 2,
+      "water": 1,
+      "salt": 1,
+      "berry": 2,
+      "sugar": 1
+    },
+    "price": 38,
+    "doughType": "pie",
+    "finish": "berry"
+  },
+  {
+    "id": "meatpie",
+    "name": "미트파이",
+    "cost": {
+      "flour": 2,
+      "water": 1,
+      "salt": 1,
+      "meat": 2
+    },
+    "price": 45,
+    "doughType": "pie",
+    "finish": "meat"
+  },
+  {
+    "id": "fishpie",
+    "name": "생선파이",
+    "cost": {
+      "flour": 2,
+      "water": 1,
+      "salt": 1,
+      "fish": 2
+    },
+    "price": 42,
+    "doughType": "pie",
+    "finish": "fish"
+  },
+  {
+    "id": "cookie",
+    "name": "버터 쿠키",
+    "cost": {
+      "flour": 1,
+      "sugar": 1,
+      "butter": 1
+    },
+    "price": 18,
+    "doughType": "cookie",
+    "finish": "none"
+  },
+  {
+    "id": "berrycookie",
+    "name": "말린 베리 쿠키",
+    "cost": {
+      "flour": 1,
+      "sugar": 1,
+      "butter": 1,
+      "driedberry": 1
+    },
+    "price": 27,
+    "doughType": "cookie",
+    "finish": "driedberry"
+  },
+  {
+    "id": "chococookie",
+    "name": "초콜릿 쿠키",
+    "cost": {
+      "flour": 1,
+      "sugar": 1,
+      "butter": 1,
+      "chocolate": 1
+    },
+    "price": 28,
+    "doughType": "cookie",
+    "finish": "chocolate"
+  }
+]

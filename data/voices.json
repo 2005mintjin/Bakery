@@ -1,0 +1,38 @@
+{
+  "gain": 0.7,
+  "sliceSeconds": 0.028,
+  "fadeSeconds": 0.004,
+  "speakers": {
+    "maria": {
+      "asset": "assets/audio/voices/maria.mp3",
+      "aliases": ["마리아", "소라", "sora"]
+    },
+    "isidoro": {
+      "asset": "assets/audio/voices/isidoro.mp3",
+      "aliases": ["이시도로", "준", "jun"]
+    },
+    "barista": {
+      "asset": "assets/audio/voices/barista.mp3",
+      "aliases": ["데셰네", "바리스타"]
+    },
+    "post-clerk": {
+      "asset": "assets/audio/voices/post-clerk.mp3",
+      "aliases": ["하나", "우체국 직원"]
+    },
+    "arien": {
+      "asset": "assets/audio/voices/arien.mp3",
+      "aliases": ["아리엔"],
+      "gain": 2
+    },
+    "sasha": {
+      "asset": "assets/audio/voices/sasha.mp3",
+      "aliases": ["사샤"],
+      "gain": 2
+    },
+    "erina": {
+      "asset": "assets/audio/voices/erina.mp3",
+      "aliases": ["에리나"],
+      "gain": 2
+    }
+  }
+}

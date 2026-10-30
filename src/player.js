@@ -1,0 +1,27 @@
+import { obstacles } from "./sceneManager.js";
+export function move(s, keys, dt, npcs) {
+  let dx =
+    Number(keys.has("d") || keys.has("arrowright")) -
+    Number(keys.has("a") || keys.has("arrowleft"));
+  let dy =
+    Number(keys.has("s") || keys.has("arrowdown")) -
+    Number(keys.has("w") || keys.has("arrowup"));
+  if (!dx && !dy) return false;
+  const f = (145 * dt) / Math.hypot(dx, dy);
+  const blocks = [
+    ...obstacles[s.scene],
+    ...npcs.map((n) => ({ x: n.x - 12, y: n.y - 10, w: 24, h: 22 })),
+  ];
+  const valid = (x, y) =>
+    x > 30 &&
+    x < 930 &&
+    y > 45 &&
+    y < 553 &&
+    !blocks.some(
+      (b) =>
+        x + 10 > b.x && x - 10 < b.x + b.w && y + 6 > b.y && y - 8 < b.y + b.h,
+    );
+  if (valid(s.x + dx * f, s.y)) s.x += dx * f;
+  if (valid(s.x, s.y + dy * f)) s.y += dy * f;
+  return true;
+}

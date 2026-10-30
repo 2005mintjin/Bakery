@@ -1,0 +1,37 @@
+[
+  {
+    "id": "mira",
+    "name": "미라",
+    "personality": "다정하지만 손녀가 그리운 꽃집 주인",
+    "x": 235,
+    "y": 300,
+    "color": "#ae6880",
+    "quest": "delivery"
+  },
+  {
+    "id": "jun",
+    "name": "이시도로",
+    "personality": "호탕한 사투리로 농사를 가르치는 정원사",
+    "x": 725,
+    "y": 345,
+    "color": "#66845d",
+    "quest": "berries",
+    "portraitAsset": "assets/characters/residents/isidoro-portrait.png",
+    "spriteAsset": "assets/characters/residents/isidoro-sd.png",
+    "spriteBounds": [73, 12, 1149, 1261],
+    "spriteHeight": 64
+  },
+  {
+    "id": "sora",
+    "name": "마리아",
+    "personality": "무심한 듯 다정한 우편배달부",
+    "x": 814,
+    "y": 285,
+    "color": "#668ca6",
+    "quest": "friend",
+    "portraitAsset": "assets/characters/residents/maria-portrait.png",
+    "spriteAsset": "assets/characters/residents/maria-sd.png",
+    "spriteBounds": [0, 16, 1210, 1262],
+    "spriteHeight": 64
+  }
+]

@@ -1,0 +1,4 @@
+[
+  { "id": "coffee", "name": "따뜻한 커피", "price": 8, "stamina": 15 },
+  { "id": "dessert", "name": "베리 케이크", "price": 12, "stamina": 25 }
+]

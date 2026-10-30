@@ -1,0 +1,86 @@
+.spot-customerTalk {
+  right: 5%;
+  top: 72%;
+}
+.spot-postTalk,
+.spot-storeTalk {
+  left: 38%;
+  top: 69%;
+}
+.service-portrait {
+  height: 210px;
+}
+.dialogue-text {
+  white-space: pre-line;
+}
+.service-portrait img {
+  height: 245px;
+}
+.dialogue-portrait {
+  height: 250px;
+  background: linear-gradient(#dbcba7, #9d8c6c);
+  border: 1px solid #c6b48a;
+}
+.dialogue-portrait img {
+  height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  align-self: flex-end;
+}
+.dialogue-next-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 12px;
+}
+#typed-dialogue {
+  min-height: 88px;
+  line-height: 1.85;
+  white-space: pre-line;
+}
+#dialogue-choices[hidden],
+#dialogue-next[hidden] {
+  display: none;
+}
+.narration {
+  font-style: italic;
+  color: #7b765f;
+}
+.speaker-chips {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 8px 0;
+}
+.speaker-chip {
+  font-size: 12px;
+  color: #8c8873;
+  padding: 3px 12px;
+  border-radius: 12px;
+  background: #e9e0c8;
+}
+.speaker-chip.active {
+  background: #a5b583;
+  color: #334a2f;
+}
+#dialogue-page {
+  font-size: 11px;
+}
+.dialogue-choice {
+  min-height: 42px;
+}
+@media (max-width: 650px) {
+  .dialogue-portrait {
+    height: 190px;
+  }
+  .dialogue-next-row {
+    gap: 6px;
+  }
+  .speaker-chip {
+    padding: 3px 8px;
+  }
+  #typed-dialogue {
+    font-size: 14px;
+  }
+}

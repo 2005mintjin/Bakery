@@ -1,0 +1,75 @@
+import {
+  plotPositions,
+  cropStage,
+  gameMinutes,
+  growthMinutes,
+} from "./garden.js";
+export const gardenAssets = Object.fromEntries(
+  ["sprout", "bush", "flower", "ripe"].map((name) => [
+    name,
+    { asset: "assets/tiles/berry-" + name + ".svg" },
+  ]),
+);
+export function drawGardenBase(r) {
+  r.r(0, 0, 960, 576, "#91b767");
+  for (let i = 0; i < 2100; i++) {
+    const x = (i * 53) % 960,
+      y = (i * 97) % 576;
+    r.r(x, y, 2, 3, ["#a9cb79", "#7fa15a", "#b3cc7c"][i % 3]);
+  }
+  r.r(0, 270, 960, 76, "#d2bc87");
+  for (const p of plotPositions) {
+    r.r(p.x - 98, p.y - 58, 196, 116, "#906b47");
+    r.r(p.x - 91, p.y - 50, 182, 100, "#6d503a");
+    for (let y = p.y - 42; y < p.y + 48; y += 17)
+      r.r(p.x - 86, y, 172, 4, "#9e7751");
+  }
+  for (const [x, y] of [
+    [65, 130],
+    [890, 155],
+    [80, 435],
+    [900, 460],
+  ])
+    r.tree(x, y);
+}
+export function drawGarden(r, s) {
+  for (let index = 0; index < plotPositions.length; index++) {
+    const p = plotPositions[index],
+      stage = cropStage(s, index);
+    if (stage !== "empty") {
+      const crop = s.garden[index],
+        flowering =
+          stage === "growing" &&
+          gameMinutes(s) - crop.wateredAt >= growthMinutes / 2;
+      const sprite =
+        stage === "dry"
+          ? "sprout"
+          : stage === "ripe"
+            ? "ripe"
+            : flowering
+              ? "flower"
+              : "bush";
+      const img = r.gardenSprites?.get(gardenAssets[sprite].asset);
+      for (let i = 0; i < 6; i++) {
+        const x = p.x - 72 + (i % 3) * 56,
+          y = p.y - 43 + Math.floor(i / 3) * 43;
+        if (img) r.c.drawImage(img, x, y, 42, 42);
+        else {
+          r.oval(x + 4, y + 5, 30, 25, "#67944c");
+          if (stage === "ripe") r.r(x + 14, y + 20, 7, 7, "#c56168");
+        }
+      }
+    }
+    const label = {
+      empty: "빈 밭",
+      dry: "물 필요",
+      growing: "성장 중",
+      ripe: "수확 가능",
+    }[stage];
+    r.r(p.x - 2, p.y + 81, 4, 13, "#75583a");
+    r.r(p.x - 36, p.y + 61, 72, 23, "#806141");
+    r.r(p.x - 33, p.y + 64, 66, 17, "#d8b781");
+    r.r(p.x - 30, p.y + 66, 60, 1, "#f1d6a0");
+    r.text(label, p.x, p.y + 77, "#5c472e", 11);
+  }
+}

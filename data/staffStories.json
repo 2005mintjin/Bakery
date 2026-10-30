@@ -1,0 +1,575 @@
+{
+  "post": {
+    "entry": "first",
+    "repeat": "repeat",
+    "nodes": {
+      "first": {
+        "pages": [
+          {
+            "text": "안녕, 오늘도 소포가 왔던데?"
+          }
+        ],
+        "choices": [
+          {
+            "label": "네, 서명할게요.",
+            "next": "parcel"
+          },
+          {
+            "label": "안녕히 계세요.",
+            "next": "first-bye"
+          }
+        ]
+      },
+      "parcel": {
+        "pages": [
+          {
+            "text": "이거 받고 더 맛있게 구워줘, 우리 마을 사람들은 너희 가족 빵집밖에 안 가는걸?"
+          }
+        ],
+        "action": "parcel"
+      },
+      "first-bye": {
+        "pages": [
+          {
+            "text": "응? 네 소포가 아니려나."
+          }
+        ],
+        "action": "exit"
+      },
+      "repeat": {
+        "pages": [
+          {
+            "text": "어머, 못 받은 게 있었니?"
+          }
+        ],
+        "choices": [
+          {
+            "label": "잡담하기.",
+            "next": "chat"
+          },
+          {
+            "label": "네, 서명할게요.",
+            "next": "parcel",
+            "condition": "unclaimedParcel"
+          },
+          {
+            "label": "안녕히 계세요.",
+            "next": "exit"
+          }
+        ]
+      },
+      "chat": {
+        "pages": [
+          {
+            "text": "으음, 이야기하고 싶다고? 당연히 되지. 무슨 얘기가 하고 싶은데?"
+          }
+        ],
+        "next": "topics"
+      },
+      "topics": {
+        "choices": [
+          {
+            "label": "오늘도 예쁘시네요.",
+            "next": "compliment"
+          },
+          {
+            "label": "저희 누나한테 편지는 안 오나요?",
+            "next": "sister"
+          },
+          {
+            "label": "아무것도 아니에요.",
+            "next": "nothing"
+          }
+        ]
+      },
+      "compliment": {
+        "pages": [
+          {
+            "text": "으음, 그런 소리 해 주는 거 너밖에 없는 거 알지?"
+          },
+          {
+            "text": "... 고맙긴 한데, 그런 건 애인한테나 해 주는 거야."
+          }
+        ],
+        "next": "topics"
+      },
+      "sister": {
+        "pages": [
+          {
+            "text": "그러게, 요즘은 온 지 꽤 됐더라."
+          },
+          {
+            "text": "어렸을 때 동네에서 매일 둘이 붙어 다녔잖아. 근데 도시로 이사 가더니 소식도 없어."
+          },
+          {
+            "text": "... 나중에 편지 오면 말해줄게!"
+          }
+        ],
+        "next": "topics"
+      },
+      "nothing": {
+        "pages": [
+          {
+            "text": "그럼, 잘 가!"
+          }
+        ],
+        "action": "exit"
+      },
+      "exit": {
+        "action": "exit"
+      }
+    }
+  },
+  "store": {
+    "entry": "welcome",
+    "speakers": [
+      "아리엔",
+      "사샤",
+      "에리나"
+    ],
+    "nodes": {
+      "welcome": {
+        "pages": [
+          {
+            "text": "아리엔: 어서오세요!\n사샤: 안녕하세요...\n에리나: ... 하세요.",
+            "speaker": "고양이 세 자매",
+            "activeSpeaker": "all"
+          }
+        ],
+        "choices": [
+          {
+            "label": "상점을 둘러본다.",
+            "next": "shop"
+          },
+          {
+            "label": "말을 걸어본다.",
+            "next": "talk"
+          },
+          {
+            "label": "상점 떠나기",
+            "next": "exit"
+          }
+        ]
+      },
+      "main": {
+        "choices": [
+          {
+            "label": "상점을 둘러본다.",
+            "next": "shop"
+          },
+          {
+            "label": "말을 걸어본다.",
+            "next": "talk"
+          },
+          {
+            "label": "상점 떠나기",
+            "next": "exit"
+          }
+        ]
+      },
+      "shop": {
+        "action": "shop"
+      },
+      "exit": {
+        "action": "exit"
+      },
+      "talk": {
+        "pages": [
+          {
+            "text": "아리엔: 흐응, 심심하신가 보네요!\n사샤: ... 물건 안 살 건가요.\n에리나: ...",
+            "speaker": "고양이 세 자매",
+            "activeSpeaker": "all"
+          }
+        ],
+        "choices": [
+          {
+            "label": "부모님은 어디 계시니?",
+            "next": "parents"
+          },
+          {
+            "label": "너네 서로 알아볼 수 있겠어?",
+            "next": "recognize"
+          },
+          {
+            "label": "에리나한테 말을 걸어본다.",
+            "next": "erina-first"
+          }
+        ]
+      },
+      "topics": {
+        "choices": [
+          {
+            "label": "부모님은 어디 계시니?",
+            "next": "parents"
+          },
+          {
+            "label": "너네 서로 알아볼 수 있겠어?",
+            "next": "recognize"
+          },
+          {
+            "label": "에리나한테 말을 걸어본다.",
+            "next": "erina-first"
+          }
+        ]
+      },
+      "parents": {
+        "pages": [
+          {
+            "text": "아리엔: 엄마가 아프셔서 아빠랑 같이 병원에 계세요..\n사샤: 되게 아프시대요.\n에리나: 힝....",
+            "speaker": "고양이 세 자매",
+            "activeSpeaker": "all"
+          }
+        ],
+        "next": "topics"
+      },
+      "recognize": {
+        "pages": [
+          {
+            "text": "아리엔: 당연하죠, 우린 얼마나 다른데!\n사샤: 그냥 목소리 듣고 알아봐요...\n에리나: ....",
+            "speaker": "고양이 세 자매",
+            "activeSpeaker": "all"
+          }
+        ],
+        "next": "topics"
+      },
+      "erina-first": {
+        "pages": [
+          {
+            "text": "....",
+            "speaker": "에리나",
+            "activeSpeaker": "에리나"
+          }
+        ],
+        "choices": [
+          {
+            "label": "에리나한테 말을 걸어본다.",
+            "next": "erina-hesitate"
+          },
+          {
+            "label": "...미안.",
+            "next": "main"
+          }
+        ]
+      },
+      "erina-hesitate": {
+        "pages": [
+          {
+            "text": "........",
+            "speaker": "에리나",
+            "activeSpeaker": "에리나"
+          },
+          {
+            "text": "저..그게..",
+            "speaker": "에리나",
+            "activeSpeaker": "에리나"
+          },
+          {
+            "text": "...",
+            "speaker": "에리나",
+            "activeSpeaker": "에리나"
+          },
+          {
+            "text": "시선을 피하고 있다.",
+            "speaker": "이야기",
+            "kind": "narration",
+            "activeSpeaker": "에리나"
+          }
+        ],
+        "choices": [
+          {
+            "label": "에리나한테 말을 걸어본다.",
+            "next": "erina-greeting"
+          },
+          {
+            "label": "...미안.",
+            "next": "main"
+          }
+        ]
+      },
+      "erina-pet": {
+        "pages": [
+          {
+            "text": "흐에에에엣...!",
+            "speaker": "에리나",
+            "activeSpeaker": "에리나"
+          },
+          {
+            "text": "...잔뜩 움츠린다.",
+            "speaker": "이야기",
+            "kind": "narration",
+            "activeSpeaker": "에리나"
+          },
+          {
+            "text": "으으, 말 없이 쓰다듬지 마요..",
+            "speaker": "에리나",
+            "activeSpeaker": "에리나"
+          }
+        ],
+        "next": "main"
+      },
+      "erina-greeting": {
+        "pages": [
+          {
+            "text": "........",
+            "speaker": "에리나",
+            "activeSpeaker": "에리나"
+          },
+          {
+            "text": "아..안녕하세요...",
+            "speaker": "에리나",
+            "activeSpeaker": "에리나"
+          },
+          {
+            "text": "...",
+            "speaker": "에리나",
+            "activeSpeaker": "에리나"
+          },
+          {
+            "text": "여전히 시선을 피하고 있다.",
+            "speaker": "이야기",
+            "activeSpeaker": "에리나",
+            "kind": "narration"
+          }
+        ],
+        "choices": [
+          {
+            "label": "에리나를 쓰다듬는다.",
+            "next": "erina-pet"
+          },
+          {
+            "label": "...미안.",
+            "next": "main"
+          }
+        ]
+      }
+    }
+  },
+  "cafe": {
+    "entry": "welcome",
+    "nodes": {
+      "welcome": {
+        "pages": [
+          {
+            "text": "안녕하심까."
+          }
+        ],
+        "choices": [
+          {
+            "label": "주문하기",
+            "next": "shop"
+          },
+          {
+            "label": "말 걸어보기",
+            "next": "talk"
+          },
+          {
+            "label": "카페 나오기",
+            "next": "bye"
+          }
+        ]
+      },
+      "shop": {
+        "action": "shop"
+      },
+      "bye": {
+        "pages": [
+          {
+            "text": "..잘 가십쇼."
+          }
+        ],
+        "action": "exit"
+      },
+      "exit": {
+        "action": "exit"
+      },
+      "talk": {
+        "pages": [
+          {
+            "text": "... 뭐가 궁금하심까."
+          }
+        ],
+        "choices": [
+          {
+            "label": "빨간 머리 아주머니는 어디 계시나요?",
+            "next": "crema"
+          },
+          {
+            "label": "다른 메뉴는 안 내나요?",
+            "next": "menu"
+          },
+          {
+            "label": "말 없이 바라보기.",
+            "next": "stare"
+          },
+          {
+            "label": "아무것도 아니에요.",
+            "next": "exit"
+          }
+        ]
+      },
+      "topics": {
+        "choices": [
+          {
+            "label": "빨간 머리 아주머니는 어디 계시나요?",
+            "next": "crema"
+          },
+          {
+            "label": "다른 메뉴는 안 내나요?",
+            "next": "menu"
+          },
+          {
+            "label": "말 없이 바라보기.",
+            "next": "stare"
+          },
+          {
+            "label": "아무것도 아니에요.",
+            "next": "exit"
+          }
+        ]
+      },
+      "crema": {
+        "pages": [
+          {
+            "text": "누구 말임까."
+          },
+          {
+            "text": "...."
+          },
+          {
+            "text": "아."
+          },
+          {
+            "text": "크레마 씨 보고 아줌마라 하지 마십쇼."
+          },
+          {
+            "text": "얼마나 고우신데."
+          },
+          {
+            "text": "..."
+          },
+          {
+            "text": "뭐...지금쯤 공방 가서 검은머리 고양이랑 일하고 있을 검다."
+          }
+        ],
+        "next": "topics"
+      },
+      "menu": {
+        "pages": [
+          {
+            "text": "다른 메뉴 말임까."
+          },
+          {
+            "text": "..."
+          },
+          {
+            "text": "커피랑 케이크만 있으면 되지 않슴까."
+          }
+        ],
+        "choices": [
+          {
+            "label": "브런치는 어때요?",
+            "next": "brunch"
+          },
+          {
+            "label": "뭐, 그렇죠.",
+            "next": "topics"
+          }
+        ]
+      },
+      "brunch": {
+        "pages": [
+          {
+            "text": "브런치 말임까."
+          },
+          {
+            "text": "..."
+          },
+          {
+            "text": "그럼 카페 말고 레스토랑을 차려야 하지 말임다."
+          },
+          {
+            "text": "..."
+          },
+          {
+            "text": "요즘 브런치 파는 카페도 많단 말임까."
+          },
+          {
+            "text": "그럼 커피는 어느 세월에 판단 말임까."
+          },
+          {
+            "text": "케이크 만드는 것만 해도 되게 빡세지 말임다."
+          }
+        ],
+        "next": "topics"
+      },
+      "stare": {
+        "pages": [
+          {
+            "text": "..뭘 보는 검까."
+          }
+        ],
+        "choices": [
+          {
+            "label": "계속 바라보기.",
+            "next": "stare-one"
+          },
+          {
+            "label": "그만하기.",
+            "next": "topics"
+          }
+        ]
+      },
+      "stare-one": {
+        "pages": [
+          {
+            "text": "..."
+          },
+          {
+            "text": "눈싸움은 잘 못하지 말임다."
+          }
+        ],
+        "choices": [
+          {
+            "label": "계속 바라보기.",
+            "next": "stare-two"
+          },
+          {
+            "label": "그만하기.",
+            "next": "topics"
+          }
+        ]
+      },
+      "stare-two": {
+        "pages": [
+          {
+            "text": "..."
+          },
+          {
+            "text": "제가 그렇게 신기하게 생겼슴까."
+          }
+        ],
+        "choices": [
+          {
+            "label": "계속 바라보기.",
+            "next": "stare-three"
+          },
+          {
+            "label": "그만하기.",
+            "next": "topics"
+          }
+        ]
+      },
+      "stare-three": {
+        "pages": [
+          {
+            "text": "..."
+          },
+          {
+            "text": "커피 안 사먹을 검까."
+          }
+        ],
+        "next": "topics"
+      }
+    }
+  }
+}

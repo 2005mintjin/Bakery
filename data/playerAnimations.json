@@ -1,0 +1,309 @@
+{
+  "idle": {
+    "asset": "assets/characters/player-idle.png",
+    "frames": {
+      "down": [
+        {
+          "sourceIndex": 0,
+          "scaleX": 1,
+          "scaleY": 1,
+          "bodyHeight": 205,
+          "headWidth": 127,
+          "x": 0,
+          "y": 0,
+          "w": 224,
+          "h": 232,
+          "anchorX": 112,
+          "anchorY": 224
+        }
+      ],
+      "up": [
+        {
+          "sourceIndex": 0,
+          "scaleX": 1,
+          "scaleY": 1,
+          "bodyHeight": 205,
+          "headWidth": 125,
+          "x": 224,
+          "y": 0,
+          "w": 224,
+          "h": 232,
+          "anchorX": 112,
+          "anchorY": 224
+        }
+      ],
+      "left": [
+        {
+          "sourceIndex": 0,
+          "scaleX": 1,
+          "scaleY": 1,
+          "bodyHeight": 205,
+          "headWidth": 123,
+          "x": 672,
+          "y": 0,
+          "w": 224,
+          "h": 232,
+          "anchorX": 112,
+          "anchorY": 224,
+          "flip": true
+        }
+      ],
+      "right": [
+        {
+          "sourceIndex": 0,
+          "scaleX": 1,
+          "scaleY": 1,
+          "bodyHeight": 205,
+          "headWidth": 123,
+          "x": 672,
+          "y": 0,
+          "w": 224,
+          "h": 232,
+          "anchorX": 112,
+          "anchorY": 224
+        }
+      ]
+    },
+    "scale": 1
+  },
+  "walk": {
+    "asset": "assets/characters/player-walk.png",
+    "frames": {
+      "down": [
+        {
+          "sourceIndex": 0,
+          "scaleX": 0.9769230769230769,
+          "scaleY": 1.0904255319148937,
+          "bodyHeight": 188,
+          "headWidth": 130,
+          "x": 0,
+          "y": 0,
+          "w": 224,
+          "h": 232,
+          "anchorX": 112,
+          "anchorY": 224
+        },
+        {
+          "sourceIndex": 2,
+          "scaleX": 0.9769230769230769,
+          "scaleY": 1.0904255319148937,
+          "bodyHeight": 188,
+          "headWidth": 130,
+          "x": 224,
+          "y": 0,
+          "w": 224,
+          "h": 232,
+          "anchorX": 112,
+          "anchorY": 224
+        },
+        {
+          "sourceIndex": 4,
+          "scaleX": 0.9621212121212122,
+          "scaleY": 1.1021505376344085,
+          "bodyHeight": 186,
+          "headWidth": 132,
+          "x": 448,
+          "y": 0,
+          "w": 224,
+          "h": 232,
+          "anchorX": 112,
+          "anchorY": 224
+        },
+        {
+          "sourceIndex": 2,
+          "scaleX": 0.9769230769230769,
+          "scaleY": 1.0904255319148937,
+          "bodyHeight": 188,
+          "headWidth": 130,
+          "x": 672,
+          "y": 0,
+          "w": 224,
+          "h": 232,
+          "anchorX": 112,
+          "anchorY": 224
+        }
+      ],
+      "right": [
+        {
+          "sourceIndex": 0,
+          "scaleX": 0.9919354838709677,
+          "scaleY": 1.1081081081081081,
+          "bodyHeight": 185,
+          "headWidth": 124,
+          "x": 0,
+          "y": 232,
+          "w": 224,
+          "h": 232,
+          "anchorX": 112,
+          "anchorY": 224
+        },
+        {
+          "sourceIndex": 9,
+          "scaleX": 1.0,
+          "scaleY": 1.0962566844919786,
+          "bodyHeight": 187,
+          "headWidth": 123,
+          "x": 224,
+          "y": 232,
+          "w": 224,
+          "h": 232,
+          "anchorX": 112,
+          "anchorY": 224
+        },
+        {
+          "sourceIndex": 8,
+          "scaleX": 1.0,
+          "scaleY": 1.0962566844919786,
+          "bodyHeight": 187,
+          "headWidth": 123,
+          "x": 448,
+          "y": 232,
+          "w": 224,
+          "h": 232,
+          "anchorX": 112,
+          "anchorY": 224
+        },
+        {
+          "sourceIndex": 9,
+          "scaleX": 1.0,
+          "scaleY": 1.0962566844919786,
+          "bodyHeight": 187,
+          "headWidth": 123,
+          "x": 672,
+          "y": 232,
+          "w": 224,
+          "h": 232,
+          "anchorX": 112,
+          "anchorY": 224
+        }
+      ],
+      "up": [
+        {
+          "sourceIndex": 0,
+          "scaleX": 1.0330578512396693,
+          "scaleY": 1.0904255319148937,
+          "bodyHeight": 188,
+          "headWidth": 121,
+          "x": 0,
+          "y": 464,
+          "w": 224,
+          "h": 232,
+          "anchorX": 112,
+          "anchorY": 224
+        },
+        {
+          "sourceIndex": 2,
+          "scaleX": 1.0416666666666667,
+          "scaleY": 1.1021505376344085,
+          "bodyHeight": 186,
+          "headWidth": 120,
+          "x": 224,
+          "y": 464,
+          "w": 224,
+          "h": 232,
+          "anchorX": 112,
+          "anchorY": 224
+        },
+        {
+          "sourceIndex": 4,
+          "scaleX": 1.0330578512396693,
+          "scaleY": 1.0846560846560847,
+          "bodyHeight": 189,
+          "headWidth": 121,
+          "x": 448,
+          "y": 464,
+          "w": 224,
+          "h": 232,
+          "anchorX": 112,
+          "anchorY": 224
+        },
+        {
+          "sourceIndex": 2,
+          "scaleX": 1.0416666666666667,
+          "scaleY": 1.1021505376344085,
+          "bodyHeight": 186,
+          "headWidth": 120,
+          "x": 672,
+          "y": 464,
+          "w": 224,
+          "h": 232,
+          "anchorX": 112,
+          "anchorY": 224
+        }
+      ],
+      "left": [
+        {
+          "sourceIndex": 0,
+          "scaleX": 0.9919354838709677,
+          "scaleY": 1.1081081081081081,
+          "bodyHeight": 185,
+          "headWidth": 124,
+          "x": 0,
+          "y": 232,
+          "w": 224,
+          "h": 232,
+          "anchorX": 112,
+          "anchorY": 224,
+          "flip": true
+        },
+        {
+          "sourceIndex": 9,
+          "scaleX": 1.0,
+          "scaleY": 1.0962566844919786,
+          "bodyHeight": 187,
+          "headWidth": 123,
+          "x": 224,
+          "y": 232,
+          "w": 224,
+          "h": 232,
+          "anchorX": 112,
+          "anchorY": 224,
+          "flip": true
+        },
+        {
+          "sourceIndex": 8,
+          "scaleX": 1.0,
+          "scaleY": 1.0962566844919786,
+          "bodyHeight": 187,
+          "headWidth": 123,
+          "x": 448,
+          "y": 232,
+          "w": 224,
+          "h": 232,
+          "anchorX": 112,
+          "anchorY": 224,
+          "flip": true
+        },
+        {
+          "sourceIndex": 9,
+          "scaleX": 1.0,
+          "scaleY": 1.0962566844919786,
+          "bodyHeight": 187,
+          "headWidth": 123,
+          "x": 672,
+          "y": 232,
+          "w": 224,
+          "h": 232,
+          "anchorX": 112,
+          "anchorY": 224,
+          "flip": true
+        }
+      ]
+    },
+    "scale": 1,
+    "fps": 10,
+    "sourceFrames": {
+      "down": [0, 2, 4, 2],
+      "up": [0, 2, 4, 2],
+      "right": [0, 9, 8, 9],
+      "left": [0, 9, 8, 9]
+    },
+    "paletteMatched": true
+  },
+  "reservedBread": {
+    "asset": "assets/characters/source/sheet-2.png",
+    "sourceRect": [0, 612, 1536, 224],
+    "enabled": false,
+    "description": "원본 넷째 줄 전체 보존. 후속 빵 운반 기능용."
+  }
+}
