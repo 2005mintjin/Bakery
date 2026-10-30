@@ -8,33 +8,37 @@ export function showWarehouse(ui) {
   const d = ui.g.data;
   const type = "warehouse";
   ui.panel(
-    "<h2>빵 창고</h2><p>구운 빵은 창고에 보관됩니다. 먼저 꺼낸 뒤 진열하세요.</p>" +
+    "<h2>빵 창고</h2><p>준비된 반죽은 오븐에 넣어 굽습니다. 구운 빵은 꺼낸 뒤 진열하세요.</p>" +
       d.recipes
         .map(
           (r) =>
-            `<p>${r.name} · 창고 ${s.warehouse[r.id]} / 가방 ${s.items[r.id]}</p>`,
+            `<p>${r.name} · 준비 반죽 ${s.doughs[r.id]}개 / 구운 빵 ${s.warehouse[r.id]}개 / 가방 ${s.items[r.id]}개</p>`,
         )
-        .join(""),
-    d.recipes.flatMap((r) => [
-      [
-        r.name + " 꺼내기",
-        () => {
-          ui.notify(
-            takeBread(s, r.id) ? "가방에 담았어요" : "창고에 빵이 없어요",
-          );
-          ui.show(type);
-        },
-      ],
-      [
-        r.name + " 보관",
-        () => {
-          ui.notify(
-            storeBread(s, r.id) ? "창고에 넣었어요" : "가방에 빵이 없어요",
-          );
-          ui.show(type);
-        },
-      ],
-    ]),
+        .join("") +
+      `<p>치대는 중인 반죽 ${s.baking ? 1 : 0}개 · 오븐 ${s.oven ? Object.values(s.oven.batch).reduce((a, b) => a + b, 0) : 0}개 ${s.oven?.phase === "ready" ? "(완성)" : s.oven ? "(굽는 중)" : ""}</p>`,
+    [
+      ["오븐 관리", () => ui.show("ovenBatch")],
+      ...d.recipes.flatMap((r) => [
+        [
+          r.name + " 꺼내기",
+          () => {
+            ui.notify(
+              takeBread(s, r.id) ? "가방에 담았어요" : "창고에 빵이 없어요",
+            );
+            ui.show(type);
+          },
+        ],
+        [
+          r.name + " 보관",
+          () => {
+            ui.notify(
+              storeBread(s, r.id) ? "창고에 넣었어요" : "가방에 빵이 없어요",
+            );
+            ui.show(type);
+          },
+        ],
+      ]),
+    ],
   );
 }
 

@@ -93,22 +93,13 @@ try {
       await kneadOneCycle();
     await p.getByRole("heading", { name: "토핑 선택", exact: true }).waitFor();
   }
-  async function bake(topping, name) {
+  async function prepareDough(topping) {
     await p.locator(".spot-oven").click();
     await p
       .getByRole("button", { name: "재료 섞어 반죽 시작", exact: true })
       .click();
     await finishKneading();
     await p.getByRole("button", { name: topping, exact: true }).click();
-    await p
-      .getByRole("button", { name: "오븐에 넣고 굽기", exact: true })
-      .click();
-    await p
-      .getByRole("heading", { name: name + " 완성!", exact: true })
-      .waitFor();
-    await p
-      .getByRole("button", { name: "완성한 빵 꺼내기", exact: true })
-      .click();
     await close();
   }
   // Save/reload a partially kneaded dough before completing the first bread.
@@ -119,7 +110,7 @@ try {
   await kneadOneCycle();
   await close();
   let state = await save();
-  assert.equal(state.version, 5);
+  assert.equal(state.version, 6);
   assert.equal(state.baking.phase, "kneading");
   assert.ok(state.baking.progress > 0 && state.baking.progress < 100);
   await p.keyboard.press("Escape");
@@ -130,16 +121,20 @@ try {
   await p
     .getByRole("button", { name: "아무것도 넣지 않기 · 밀빵", exact: true })
     .click();
+  await close();
+  await prepareDough("꿀 1개 넣기 · 꿀빵");
+  await prepareDough("베리 2개 넣기 · 베리빵");
+  await p.locator(".spot-ovenBatch").click();
   await p
-    .getByRole("button", { name: "오븐에 넣고 굽기", exact: true })
+    .getByRole("button", { name: "선택한 반죽 굽기", exact: true })
     .click();
-  await p.getByRole("heading", { name: "밀빵 완성!", exact: true }).waitFor();
   await p
-    .getByRole("button", { name: "완성한 빵 꺼내기", exact: true })
+    .getByRole("button", { name: "완성한 빵 모두 꺼내기", exact: true })
+    .waitFor({ timeout: 75000 });
+  await p
+    .getByRole("button", { name: "완성한 빵 모두 꺼내기", exact: true })
     .click();
   await close();
-  await bake("꿀 1개 넣기 · 꿀빵", "꿀빵");
-  await bake("베리 2개 넣기 · 베리빵", "베리빵");
   state = await save();
   assert.equal(state.warehouse.loaf, 1);
   assert.equal(state.warehouse.honeybread, 1);

@@ -1,3 +1,4 @@
+import { showOven } from "../ovenUI.js";
 import { showSleep } from "./screens/rest.js";
 import { showCafe } from "./screens/cafe.js";
 import { showBaking } from "../bakingUI.js";
@@ -21,6 +22,7 @@ export const screens = {
   parcel: showParcel,
   supplies: showSupplies,
   oven: showBaking,
+  ovenBatch: showOven,
   customerTalk: (ui) => openCustomerDialogue(ui.g),
   postTalk: (ui) => openStaffDialogue(ui.g, "post"),
   storeTalk: (ui) => openStaffDialogue(ui.g, "store"),

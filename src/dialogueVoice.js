@@ -155,18 +155,16 @@ export class DialogueVoice {
         const source = ctx.createBufferSource(),
           gain = ctx.createGain(),
           time = this.nextTime;
+        const volume =
+          this.music.volume *
+          this.config.gain *
+          (this.config.speakers[key]?.gain ?? 1);
         source.buffer = entry.buffer;
         source.connect(gain);
         gain.connect(ctx.destination);
         gain.gain.setValueAtTime(0, time);
-        gain.gain.linearRampToValueAtTime(
-          this.music.volume * this.config.gain,
-          time + fade,
-        );
-        gain.gain.setValueAtTime(
-          this.music.volume * this.config.gain,
-          time + duration - fade,
-        );
+        gain.gain.linearRampToValueAtTime(volume, time + fade);
+        gain.gain.setValueAtTime(volume, time + duration - fade);
         gain.gain.linearRampToValueAtTime(0, time + duration);
         const node = { source, gain };
         this.active.add(node);

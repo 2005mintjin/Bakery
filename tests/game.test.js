@@ -42,7 +42,7 @@ function makeBread(s, r) {
   )
     return false;
   putInOven(s);
-  tickBaking(s, 5);
+  tickBaking(s, 60);
   collectBread(s);
   return takeBread(s, r.id);
 }
@@ -162,7 +162,7 @@ test("v1 migration and malformed shop rejection", () => {
   s.version = 1;
   delete s.shop;
   delete s.warehouse;
-  assert.equal(validate(s).version, 5);
+  assert.equal(validate(s).version, 6);
   assert.deepEqual(validate(s).warehouse, {
     loaf: 0,
     honeybread: 0,
@@ -292,7 +292,7 @@ test("bakery production has its own room and only store sells ingredients", () =
   assert.equal(s.scene, "bakeryKitchen");
   assert.deepEqual(
     interiorActions.bakeryKitchen.map((x) => x[0]),
-    ["oven", "warehouse"],
+    ["oven", "ovenBatch", "warehouse"],
   );
   assert.ok(
     !interiorActions.bakery.some((x) =>

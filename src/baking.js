@@ -7,7 +7,9 @@ export const breadForTopping = {
   honey: "honeybread",
   berry: "berrybread",
 };
-export const bakeSeconds = 5;
+export const breadIds = Object.values(breadForTopping);
+export const bakeSeconds = 60;
+export const ovenCapacity = 6;
 export function beginDough(s) {
   if (s.baking || s.stamina < doughStaminaCost || !spend(s, baseDough))
     return false;
@@ -24,37 +26,68 @@ export function knead(s, distance) {
   return true;
 }
 export function addTopping(s, type) {
-  const b = s.baking;
   if (
-    b?.phase !== "topping" ||
+    s.baking?.phase !== "topping" ||
     !Object.hasOwn(toppings, type) ||
     !spend(s, toppings[type])
   )
     return false;
-  b.topping = type;
-  b.phase = "shaped";
+  s.doughs[breadForTopping[type]]++;
+  s.baking = null;
   return true;
 }
-export function putInOven(s) {
-  if (s.baking?.phase !== "shaped") return false;
-  s.baking.phase = "baking";
+export function nextBatch(s) {
+  let remaining = ovenCapacity;
+  return Object.fromEntries(
+    breadIds.map((id) => {
+      const amount = Math.min(s.doughs[id], remaining);
+      remaining -= amount;
+      return [id, amount];
+    }),
+  );
+}
+export function putInOven(s, selection = nextBatch(s)) {
+  if (
+    s.oven ||
+    !selection ||
+    typeof selection !== "object" ||
+    Array.isArray(selection)
+  )
+    return false;
+  if (
+    Object.entries(selection).some(
+      ([id, n]) =>
+        !breadIds.includes(id) ||
+        !Number.isSafeInteger(n) ||
+        n < 0 ||
+        n > s.doughs[id],
+    )
+  )
+    return false;
+  const batch = Object.fromEntries(
+    breadIds.map((id) => [id, selection[id] || 0]),
+  );
+  const total = Object.values(batch).reduce((a, b) => a + b, 0);
+  if (total < 1 || total > ovenCapacity) return false;
+  for (const id of breadIds) s.doughs[id] -= batch[id];
+  s.oven = { phase: "baking", batch, seconds: 0 };
   return true;
 }
 export function tickBaking(s, dt) {
-  const b = s.baking;
-  if (b?.phase !== "baking" || !Number.isFinite(dt) || dt <= 0) return false;
-  b.seconds = Math.min(bakeSeconds, b.seconds + dt);
-  if (b.seconds >= bakeSeconds) {
-    b.phase = "ready";
+  const oven = s.oven;
+  if (oven?.phase !== "baking" || !Number.isFinite(dt) || dt <= 0) return false;
+  oven.seconds = Math.min(bakeSeconds, oven.seconds + dt);
+  if (oven.seconds >= bakeSeconds) {
+    oven.phase = "ready";
     return true;
   }
   return false;
 }
 export function collectBread(s) {
-  const b = s.baking;
-  if (b?.phase !== "ready") return false;
-  const id = breadForTopping[b.topping];
-  s.warehouse[id] = (s.warehouse[id] || 0) + 1;
-  s.baking = null;
-  return id;
+  if (s.oven?.phase !== "ready") return false;
+  const batch = { ...s.oven.batch };
+  for (const id of breadIds)
+    s.warehouse[id] = (s.warehouse[id] || 0) + (batch[id] || 0);
+  s.oven = null;
+  return batch;
 }

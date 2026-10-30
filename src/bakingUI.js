@@ -1,15 +1,6 @@
 import { doughStaminaCost } from "./stamina.js";
 import { names } from "./inventory.js";
-import {
-  baseDough,
-  beginDough,
-  knead,
-  addTopping,
-  putInOven,
-  collectBread,
-  breadForTopping,
-  bakeSeconds,
-} from "./baking.js";
+import { baseDough, beginDough, knead, addTopping } from "./baking.js";
 export function showBaking(ui) {
   const s = ui.g.state,
     b = s.baking;
@@ -19,7 +10,7 @@ export function showBaking(ui) {
         Object.keys(baseDough)
           .map((k) => `${names[k]} ${s.items[k]}`)
           .join(" / ") +
-        `</p><p>반죽 1회에 기력 ${doughStaminaCost} 소모 · 현재 ${s.stamina}</p><p>반죽을 마우스로 치대고, 꿀이나 베리를 넣은 뒤 구워 보세요.</p>`,
+        `</p><p>반죽 1회에 기력 ${doughStaminaCost} 소모 · 현재 ${s.stamina}</p><p>완성한 반죽은 창고에 모아 두고 오븐에서 최대 6개씩 구울 수 있어요.</p>`,
       [
         [
           "재료 섞어 반죽 시작",
@@ -33,6 +24,8 @@ export function showBaking(ui) {
             ui.show("oven");
           },
         ],
+        ["오븐 관리 · 최대 6개 굽기", () => ui.show("ovenBatch")],
+        ["반죽·빵 창고 확인", () => ui.show("warehouse")],
       ],
     );
     return;
@@ -63,61 +56,12 @@ export function showBaking(ui) {
     );
     return;
   }
-  const id = breadForTopping[b.topping];
-  if (b.phase === "shaped") {
-    ui.panel(
-      '<h2>오븐에 넣기</h2><img class="baking-bread" src="assets/food/' +
-        id +
-        '.svg" alt="' +
-        names[id] +
-        '"><p>' +
-        names[id] +
-        " 반죽을 준비했어요.</p>",
-      [
-        [
-          "오븐에 넣고 굽기",
-          () => {
-            putInOven(s);
-            ui.show("oven");
-          },
-        ],
-      ],
-    );
-    return;
-  }
-  if (b.phase === "baking") {
-    ui.panel(
-      '<h2>오븐에서 굽는 중</h2><img class="baking-bread" src="assets/food/' +
-        id +
-        '.svg" alt="굽는 빵"><progress id="bake-progress" max="' +
-        bakeSeconds +
-        '" value="' +
-        b.seconds +
-        '"></progress><p id="bake-seconds"></p><p class="muted">메뉴를 열거나 다른 곳을 둘러보아도 굽기는 계속됩니다. 다른 탭에서는 멈춥니다.</p>',
-    );
-    return;
-  }
-  ui.panel(
-    "<h2>" +
-      names[id] +
-      ' 완성!</h2><img class="baking-bread" src="assets/food/' +
-      id +
-      '.svg" alt="' +
-      names[id] +
-      '"><p>꺼낸 빵은 빵 창고로 옮깁니다.</p>',
-    [
-      [
-        "완성한 빵 꺼내기",
-        () => {
-          collectBread(s);
-          ui.notify("빵을 창고에 보관했어요");
-          ui.show("oven");
-        },
-      ],
-    ],
-  );
   function choose(type) {
     if (!addTopping(s, type)) ui.notify("토핑 재료가 부족해요");
+    else
+      ui.notify(
+        "완성한 반죽을 창고에 보관했어요. 다음 반죽을 만들거나 오븐에 넣어 주세요.",
+      );
     ui.show("oven");
   }
 }

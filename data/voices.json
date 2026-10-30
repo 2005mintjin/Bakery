@@ -21,15 +21,18 @@
     },
     "arien": {
       "asset": "assets/audio/voices/arien.mp3",
-      "aliases": ["아리엔"]
+      "aliases": ["아리엔"],
+      "gain": 2
     },
     "sasha": {
       "asset": "assets/audio/voices/sasha.mp3",
-      "aliases": ["사샤"]
+      "aliases": ["사샤"],
+      "gain": 2
     },
     "erina": {
       "asset": "assets/audio/voices/erina.mp3",
-      "aliases": ["에리나"]
+      "aliases": ["에리나"],
+      "gain": 2
     }
   }
 }

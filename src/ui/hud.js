@@ -1,13 +1,16 @@
+import { bakeSeconds } from "../baking.js";
 import { daylight } from "../render/daylight.js";
 export function updateHud(ui, hint) {
   const s = ui.g.state;
-  if (ui.currentPanel === "oven" && s.baking?.phase === "baking") {
+  if (ui.currentPanel === "ovenBatch" && s.oven?.phase === "baking") {
     const progress = ui.overlay.querySelector("#bake-progress"),
       label = ui.overlay.querySelector("#bake-seconds");
-    if (progress) progress.value = s.baking.seconds;
+    if (progress) progress.value = s.oven.seconds;
     if (label)
       label.textContent =
-        "완성까지 " + Math.max(0, Math.ceil(5 - s.baking.seconds)) + "초";
+        "완성까지 " +
+        Math.max(0, Math.ceil(bakeSeconds - s.oven.seconds)) +
+        "초";
   }
   document.querySelector("#status").textContent =
     `${s.day}일째 · ${String(Math.floor(s.minutes / 60)).padStart(2, "0")}:${String(Math.floor(s.minutes % 60)).padStart(2, "0")}　${daylight(s.minutes).phase}　${s.money} G · 기력 ${s.stamina}/100`;

@@ -260,3 +260,18 @@ test("default browser fetch keeps the global receiver when loading named samples
     globalThis.fetch = original;
   }
 });
+test("only the three sisters get the configured twofold gain", async () => {
+  const t = setup();
+  await t.voices.unlock();
+  const id = t.voices.begin();
+  for (const key of Object.keys(config.speakers)) {
+    t.voices.type(id, [key]);
+    const gain = t.gains.at(-1).ramps[1][0];
+    assert.equal(
+      gain,
+      t.music.volume *
+        config.gain *
+        (["arien", "sasha", "erina"].includes(key) ? 2 : 1),
+    );
+  }
+});

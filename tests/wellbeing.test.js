@@ -82,7 +82,7 @@ test("one dough costs 10 stamina exactly once, low stamina or missing ingredient
   for (let i = 0; i < 20; i++) knead(s, 60);
   addTopping(s, "none");
   putInOven(s);
-  tickBaking(s, 5);
+  tickBaking(s, 60);
   collectBread(s);
   assert.equal(s.stamina, 90);
   s.stamina = 9;
@@ -129,7 +129,11 @@ test("retiring closes shop, cancels pending orders, preserves stock and finishes
   s.shop.elapsed = 11;
   s.shop.customer = { name: "마리아" };
   s.display.loaf = 2;
-  s.baking = { phase: "baking", progress: 100, topping: "honey", seconds: 1 };
+  s.oven = {
+    phase: "baking",
+    batch: { loaf: 0, honeybread: 1, berrybread: 0 },
+    seconds: 1,
+  };
   const stock = structuredClone(s.warehouse),
     money = s.money;
   sleepUntilMorning(s);
@@ -139,9 +143,9 @@ test("retiring closes shop, cancels pending orders, preserves stock and finishes
   assert.equal(s.display.loaf, 2);
   assert.equal(s.money, money);
   assert.deepEqual(s.warehouse, stock);
-  assert.equal(s.baking.phase, "ready");
+  assert.equal(s.oven.phase, "ready");
   assert.equal(s.scene, "bakery");
-  assert.equal(collectBread(s), "honeybread");
+  assert.equal(collectBread(s).honeybread, 1);
   assert.equal(s.warehouse.honeybread, 1);
 });
 test("shop sign offers retirement and cancelling sleep keeps time/stamina unchanged", () => {
@@ -225,7 +229,7 @@ test("v1-v4 saves gain stamina once while v5 persists fatigue and rejects corrup
     s.items.berry = 11;
     s.minutes = 1300;
     const migrated = validate(s);
-    assert.equal(migrated.version, 5);
+    assert.equal(migrated.version, 6);
     assert.equal(migrated.stamina, 100);
     assert.equal(migrated.minutes, 1300);
     assert.equal(migrated.money, 185);

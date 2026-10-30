@@ -35,7 +35,8 @@ export const interiorActions = {
     ["shop", "영업 안내판", "문을 열거나 닫아요"],
   ],
   bakeryKitchen: [
-    ["oven", "화덕 · 빵 굽기", "따끈한 빵을 구워요"],
+    ["oven", "작업대 · 반죽 만들기", "반죽을 만들어 창고에 모아요"],
+    ["ovenBatch", "오븐 · 최대 6개 굽기", "준비한 반죽을 1분 동안 구워요"],
     ["warehouse", "빵 창고", "보관한 빵을 꺼내요"],
   ],
   post: [

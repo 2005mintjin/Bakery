@@ -1,6 +1,6 @@
 export function fresh() {
   return {
-    version: 5,
+    version: 6,
     scene: "town",
     x: 480,
     y: 430,
@@ -29,6 +29,8 @@ export function fresh() {
     parcels: [],
     parcelDay: 0,
     baking: null,
+    doughs: { loaf: 0, honeybread: 0, berrybread: 0 },
+    oven: null,
     dialogueVisits: { postDay: 0 },
     garden: Array(6).fill(null),
   };

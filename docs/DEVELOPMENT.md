@@ -36,6 +36,8 @@
 | 기력·수면·폐점·시계 경과 | `src/stamina.js`, `src/wellbeing.js`, `src/ui/screens/rest.js` |
 | 시간별 노을·밤·새벽 | `src/render/daylight.js` |
 | 카페 상품·기력 회복 화면 | `data/cafeItems.json`, `src/ui/screens/cafe.js` |
+| 일괄 오븐·종류별 수량 입력 | `src/ovenUI.js`, `src/baking.js` |
+| 반죽·오븐 저장 검증/이관 | `src/save/bakingState.js` |
 | 제빵 규칙·반죽 화면 | `src/baking.js`, `src/bakingUI.js`, `data/recipes.json` |
 | 재고·손님·판매·구매 규칙 | `src/shop.js`, `src/bakery.js`, `src/inventory.js`, `data/storeItems.json` |
 | 텃밭 성장·표시 | `src/garden.js`, `src/gardenArt.js` |
@@ -78,6 +80,7 @@ node --test tests/server.test.js
 
 | 수정 영역 | 실제 브라우저 검사 |
 | --- | --- |
+| 반죽 재고·혼합 6개·실제 60초·동시 반죽·이관 | `node tools/check-batch-browser.mjs` |
 | 실제 목소리 디코딩·글자 동기화·무음·중단 | `node tools/check-voices-browser.mjs` |
 | 카페 원본 이미지·데셰네 전체 분기·주문·퇴장 | `node tools/check-cafe-browser.mjs` |
 | 시간대·기력·퇴근/수면·카페·손님 SD/초상 | `node tools/check-wellbeing-browser.mjs` |
@@ -87,12 +90,12 @@ node --test tests/server.test.js
 | 캐릭터 크기·색감·좌우 반전 | `node tools/check-player-browser.mjs` |
 | 손님 상반신·계산대 가림·진열 그림 | `node tools/check-counter-browser.mjs` |
 
-별도 설치된 도구는 `BAKERY_PLAYWRIGHT_MODULE`에 Playwright 모듈 URL, `BAKERY_BROWSER`에 Chromium 실행 경로를 지정할 수 있습니다. 목소리/카페/기력/주민/서비스/제작 검사는 슬롯 3을 잠시 사용하고 원본을 복원합니다. 이 검사들은 동시에 실행하지 않고, 다른 플레이어가 슬롯 3을 사용하는 중에도 실행하지 않습니다. 서버 API 테스트는 임시 폴더와 임시 포트를 사용하며 개인 세이브를 건드리지 않습니다.
+별도 설치된 도구는 `BAKERY_PLAYWRIGHT_MODULE`에 Playwright 모듈 URL, `BAKERY_BROWSER`에 Chromium 실행 경로를 지정할 수 있습니다. 일괄 오븐/목소리/카페/기력/주민/서비스/제작 검사는 슬롯 3을 잠시 사용하고 원본을 복원합니다. 이 검사들은 동시에 실행하지 않고, 다른 플레이어가 슬롯 3을 사용하는 중에도 실행하지 않습니다. 서버 API 테스트는 임시 폴더와 임시 포트를 사용하며 개인 세이브를 건드리지 않습니다.
 
 ## 패치와 저장 호환
 
 - 실행 파일의 이름·ASCII/CRLF 인코딩·실행 명령을 유지합니다. 런타임 의존성을 추가하지 않습니다.
-- 세이브 버전은 현재 5이며 버전 1~4 이관을 지원합니다. 버전 5부터 기력을 저장합니다. 구버전 기력은 100으로 한 번 초기화하며 기존 시간·재고·퀘스트를 보존합니다.
+- 세이브 버전은 현재 6이며 버전 1~5 이관을 지원합니다. 버전 6은 준비 반죽과 최대 6개 판의 오븐을 별도 저장합니다. 버전 5부터 기력을 저장합니다. 구버전 기력은 100으로 한 번 초기화하며 기존 시간·재고·퀘스트를 보존합니다.
 - 저장 형식 변경 시 초기값·검증·이관·관련 테스트를 함께 검토합니다. 가져온 값에 새 기본값을 매번 중복 지급하지 않습니다.
 - 파일 저장은 임시 파일 작성 후 교체하며, 세이브와 사용자 이미지 쓰기는 하나의 서버 큐로 직렬화합니다.
 - 패치는 변경한 파일을 Git으로 관리합니다. 새 배포 폴더에서는 기존 `saves/`를 복사해 이어 합니다. 사용자 세이브를 Git에 넣거나 초기화하지 않습니다.
@@ -107,3 +110,9 @@ node --test tests/server.test.js
 `voices.json`의 `speakers`에 샘플 경로와 캐릭터 이름 별칭을 지정합니다. 배우 이름은 `page.speaker`를 우선하고 없으면 `actor.name`을 사용합니다. 세 자매처럼 한 페이지에 여러 화자가 있으면 줄 앞의 이름표로 구분합니다. 이름표 자체와 구두점은 소리 내지 않습니다. 나레이션에는 `kind: "narration"`을 지정합니다. 임의의 주민에게 다른 인물의 목소리를 대신 붙이지 않습니다.
 
 `dialogueView.js`는 자연 출력으로 새로 나타난 글자만 재생 모듈에 전달합니다. 건너뛰기로 늘어난 글자 수를 오디오에 전달하지 않습니다. 닫기·페이지 전환·탭 숨김 시 예약된 소리까지 중단해야 하며, 음성 캐시나 오디오 노드는 세이브에 넣지 않습니다. 긴 샘플도 한 글자 간격보다 길게 겹치지 않습니다.
+
+## 일괄 오븐 수정
+
+`baking`은 치대기·토핑만 담당하고 토핑 선택 완료 시 `doughs`에 종류별로 1개를 더합니다. 굽기를 시작할 때만 선택 수량을 `doughs`에서 차감하고 독립적인 `oven.batch`에 넣습니다. `oven`의 완성 빵을 꺼낼 때 `warehouse`에 한 번만 더합니다. 반죽 수량·재료·기력을 중복 차감하지 않습니다. 실제 타이머 상수 `bakeSeconds=60`, 한 판 제한 `ovenCapacity=6`은 `src/baking.js`에 있습니다.
+
+굽기 완료 시 반죽 작업창을 다시 그리지 않습니다. 진행 중인 마우스 치대기와 작업 반죽을 유지하고 오븐 관리 창만 갱신합니다. 저장 형식 변경은 `save/bakingState.js`에서 구버전 판을 이관하는 경로와 검증을 함께 수정합니다. 테스트를 빠르게 만들기 위해 실제 60초 규칙을 줄이지 않습니다. 단위 테스트는 경과 시간을 직접 전달하고 브라우저 검사에서 한 판을 실제 60초 기다립니다.

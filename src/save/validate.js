@@ -1,10 +1,11 @@
+import { validateBakingState } from "./bakingState.js";
 import { fresh } from "./defaultState.js";
 const nonnegative = (x) => Number.isFinite(x) && x >= 0;
 export function validate(input) {
   const s = structuredClone(input),
     base = fresh();
   if (
-    ![1, 2, 3, 4, 5].includes(s.version) ||
+    ![1, 2, 3, 4, 5, 6].includes(s.version) ||
     ![
       "town",
       "bakery",
@@ -85,30 +86,6 @@ export function validate(input) {
       )
     )
       throw Error("손상된 텃밭");
-    const b = s.baking;
-    if (b !== null) {
-      if (
-        !b ||
-        !["kneading", "topping", "shaped", "baking", "ready"].includes(
-          b.phase,
-        ) ||
-        !nonnegative(b.progress) ||
-        b.progress > 100 ||
-        !nonnegative(b.seconds) ||
-        b.seconds > 5 ||
-        ![null, "none", "honey", "berry"].includes(b.topping)
-      )
-        throw Error("손상된 반죽");
-      if (
-        (["kneading", "topping"].includes(b.phase) && b.topping !== null) ||
-        (["shaped", "baking", "ready"].includes(b.phase) &&
-          (b.progress !== 100 || b.topping === null)) ||
-        (b.phase === "ready" && b.seconds !== 5) ||
-        (b.phase === "kneading" && b.progress >= 100) ||
-        (b.phase === "topping" && b.progress !== 100)
-      )
-        throw Error("손상된 제빵 단계");
-    }
   } else {
     s.garden = base.garden;
     s.baking = null;
@@ -131,5 +108,12 @@ export function validate(input) {
   if (s.version < 5) s.stamina = base.stamina;
   else if (!nonnegative(s.stamina) || s.stamina > 100)
     throw Error("손상된 기력");
-  return { ...base, ...s, version: 5, items: { ...base.items, ...s.items } };
+  validateBakingState(s);
+  return {
+    ...base,
+    ...s,
+    version: 6,
+    items: { ...base.items, ...s.items },
+    warehouse: { ...base.warehouse, ...s.warehouse },
+  };
 }
