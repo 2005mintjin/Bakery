@@ -28,6 +28,8 @@ try {
   });
   initial.scene = "store";
   initial.money = 1000;
+  initial.equipment.pieMold = true;
+  initial.equipment.cookieMold = true;
   initial.items.chococookie = 2;
   for (const key of [
     "flour",

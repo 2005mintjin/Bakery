@@ -110,7 +110,7 @@ try {
   await kneadOneCycle();
   await close();
   let state = await save();
-  assert.equal(state.version, 7);
+  assert.equal(state.version, 8);
   assert.equal(state.baking.phase, "kneading");
   assert.ok(state.baking.progress > 0 && state.baking.progress < 100);
   await p.keyboard.press("Escape");

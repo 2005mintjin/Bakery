@@ -1,12 +1,13 @@
 import { productIds } from "../recipeBook.js";
 import { validateBakingState } from "./bakingState.js";
 import { fresh } from "./defaultState.js";
+import { validateProgression } from "./progression.js";
 const nonnegative = (x) => Number.isFinite(x) && x >= 0;
 export function validate(input) {
   const s = structuredClone(input),
     base = fresh();
   if (
-    ![1, 2, 3, 4, 5, 6, 7].includes(s.version) ||
+    ![1, 2, 3, 4, 5, 6, 7, 8].includes(s.version) ||
     ![
       "town",
       "bakery",
@@ -16,6 +17,7 @@ export function validate(input) {
       "store",
       "field",
       "cafe",
+      "workshop",
     ].includes(s.scene)
   )
     throw Error("지원하지 않는 저장 파일");
@@ -127,11 +129,12 @@ export function validate(input) {
     )
       throw Error("잘못된 주문 수량");
   }
+  validateProgression(s);
   validateBakingState(s);
   return {
     ...base,
     ...s,
-    version: 7,
+    version: 8,
     items: { ...base.items, ...s.items },
     warehouse: { ...base.warehouse, ...s.warehouse },
   };

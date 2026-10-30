@@ -91,7 +91,7 @@ try {
   await choose("네, 서명할게요.");
   await close();
   let s = await save();
-  assert.equal(s.version, 7);
+  assert.equal(s.version, 8);
   assert.equal(s.parcelDay, 0);
   await p.locator(".spot-postTalk").click();
   await advanceDialogue(p);

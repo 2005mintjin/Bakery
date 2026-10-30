@@ -1,4 +1,7 @@
 :root {
+  --ui-font:
+    "휴먼편지체", "Human Pyeonji", "휴먼매직체", "Malgun Gothic",
+    "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
   --ink: #4b3023;
   --muted-ink: #806444;
   --paper: #efdcba;
@@ -9,7 +12,7 @@
   --gold: #d9b477;
   --berry: #893f34;
   --olive: #787348;
-  font-family: "Malgun Gothic", "Noto Sans KR", sans-serif;
+  font-family: var(--ui-font);
   color: var(--paper);
   background: var(--wood-deep);
   color-scheme: light;
@@ -91,7 +94,7 @@ h3,
 .day-card,
 .craft-tabs,
 .inventory-filters {
-  font-family: "Gungsuh", "Noto Serif KR", Georgia, serif;
+  font-family: var(--ui-font);
 }
 p,
 .muted {
@@ -133,18 +136,14 @@ p,
   background: #382319;
 }
 .brand small {
-  font:
-    8px Georgia,
-    serif;
+  font: 8px var(--ui-font);
   letter-spacing: 2px;
   margin: 10px 0 0;
   color: #c2a579;
 }
 .masthead-note {
   color: #c3aa84;
-  font:
-    13px Georgia,
-    serif;
+  font: 13px var(--ui-font);
   letter-spacing: 1px;
 }
 .header-tools {
@@ -298,9 +297,7 @@ canvas#world {
   padding: 5px;
   margin: 5px 0 13px;
   box-shadow: inset 0 0 0 2px #67452f;
-  font:
-    17px Georgia,
-    serif;
+  font: 17px var(--ui-font);
   letter-spacing: 1px;
 }
 .energy-meter {
@@ -747,4 +744,8 @@ footer {
 
 .side-menu {
   display: block;
+}
+
+.title-mark {
+  font-family: var(--ui-font);
 }

@@ -1,10 +1,14 @@
 import { BakeryHud } from "./bakeryHud.js";
 import { worldMaps } from "./sceneManager.js";
 export const isInterior = (scene) =>
-  ["bakery", "bakeryKitchen", "post", "store", "cafe"].includes(scene);
+  ["bakery", "bakeryKitchen", "post", "store", "cafe", "workshop"].includes(
+    scene,
+  );
 export function leaveInterior(s) {
   if (!isInterior(s.scene)) return false;
-  const origin = ["store", "cafe"].includes(s.scene) ? "city" : "town",
+  const origin = ["store", "cafe", "workshop"].includes(s.scene)
+      ? "city"
+      : "town",
     dest = s.scene === "bakeryKitchen" ? "bakery" : s.scene;
   const door = worldMaps[origin]?.doors.find((d) => d.scene === dest);
   s.scene = origin;
@@ -24,6 +28,7 @@ export function changeBakeryRoom(s) {
   return false;
 }
 export const interiorActions = {
+  workshop: [["workshop", "⚒ 도구와 오븐 개량", "도구를 사고 오븐을 개선해요"]],
   cafe: [
     [
       "cafeTalk",
@@ -37,7 +42,7 @@ export const interiorActions = {
   ],
   bakeryKitchen: [
     ["oven", "작업대 · 반죽 만들기", "반죽을 만들어 창고에 모아요"],
-    ["ovenBatch", "오븐 · 최대 6개 굽기", "준비한 반죽을 1분 동안 구워요"],
+    ["ovenBatch", "오븐 · 굽기 관리", "준비한 반죽을 구워요"],
     ["warehouse", "빵 창고", "보관한 빵을 꺼내요"],
   ],
   post: [
@@ -103,7 +108,7 @@ export class Interior {
       if (isInterior(scene)) {
         const b = document.createElement("button");
         b.className = "interior-exit";
-        b.textContent = ["store", "cafe"].includes(scene)
+        b.textContent = ["store", "cafe", "workshop"].includes(scene)
           ? "← 소도시로 나가기"
           : "← 광장으로 나가기";
         b.onclick = () => {
@@ -125,6 +130,7 @@ export class Interior {
         post: "우체국",
         store: "잡화점",
         cafe: "햇살 카페",
+        workshop: "해봄 공방",
       }[scene] || "실내 기능",
     );
   }

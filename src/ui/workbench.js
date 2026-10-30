@@ -1,3 +1,4 @@
+import { canMake, ovenLimit } from "../equipment.js";
 import { doughTypes } from "../recipeBook.js";
 import { doughStaminaCost } from "../stamina.js";
 import { names } from "../inventory.js";
@@ -14,7 +15,7 @@ export function showWorkbench(ui) {
     type = ui.workbenchTab || "bread",
     d = doughTypes[type];
   ui.panel(
-    `<div class="panel-eyebrow">LITTLE HEARTH · RECIPE BOOK</div><h2>작업실 · 레시피북</h2>${familyTabs(type)}${stageRibbon(0)}<section class="workbench-layout"><div class="recipe-illustration"><img src="${foodIcon(type)}" alt="${d.name}"><span>오늘의 작은 정성</span><h3>${d.name} 반죽</h3><p>한 번에 반죽 1개<br>완성한 반죽은 창고에 보관해요.</p></div><div class="recipe-preparation"><h3>필요한 재료</h3>${ingredients(d.cost, s)}<div class="energy-note">소모 기력 <b>${doughStaminaCost}</b> / 현재 <b>${s.stamina}</b></div><h3>이 반죽으로 만들어요</h3><div class="recipe-preview">${Object.values(
+    `<div class="panel-eyebrow">LITTLE HEARTH · RECIPE BOOK</div><h2>작업실 · 레시피북</h2>${familyTabs(type)}${!canMake(s, type) ? `<p class="lock-notice">🔒 ${type === "pie" ? "파이 틀" : "쿠키 틀"}이 필요해요. 소도시 오른쪽 아래 공방에서 구매하세요.</p>` : ""}${stageRibbon(0)}<section class="workbench-layout"><div class="recipe-illustration"><img src="${foodIcon(type)}" alt="${d.name}"><span>오늘의 작은 정성</span><h3>${d.name} 반죽</h3><p>한 번에 반죽 1개<br>완성한 반죽은 창고에 보관해요.</p></div><div class="recipe-preparation"><h3>필요한 재료</h3>${ingredients(d.cost, s)}<div class="energy-note">소모 기력 <b>${doughStaminaCost}</b> / 현재 <b>${s.stamina}</b></div><h3>이 반죽으로 만들어요</h3><div class="recipe-preview">${Object.values(
       d.finishes,
     )
       .map(
@@ -28,16 +29,22 @@ export function showWorkbench(ui) {
         () => {
           if (!beginDough(s, type))
             ui.notify(
-              s.stamina < doughStaminaCost
-                ? "기력이 부족해요."
-                : "반죽 재료가 부족해요. 잡화점에서 구매해 주세요.",
+              !canMake(s, type)
+                ? "공방에서 전용 틀을 먼저 구매해 주세요."
+                : s.stamina < doughStaminaCost
+                  ? "기력이 부족해요."
+                  : "반죽 재료가 부족해요. 잡화점에서 구매해 주세요.",
             );
           ui.show("oven");
         },
       ],
-      ["오븐 관리 · 최대 6개 굽기", () => ui.show("ovenBatch")],
+      [`오븐 관리 · 최대 ${ovenLimit(s)}개 굽기`, () => ui.show("ovenBatch")],
       ["반죽·빵 창고 확인", () => ui.show("warehouse")],
     ],
+  );
+  ui.overlay.querySelector(".panel-actions button").disabled = !canMake(
+    s,
+    type,
   );
   bindFamilyTabs(ui.overlay, "craft-tab", (type) => {
     ui.workbenchTab = type;

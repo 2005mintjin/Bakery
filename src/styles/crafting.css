@@ -498,3 +498,74 @@
   font-size: 13px;
   line-height: 1.8;
 }
+.lock-notice {
+  padding: 13px 16px;
+  background: #c7985922;
+  border: 1px solid #bc9462;
+  color: #825531;
+  border-radius: 3px;
+}
+.workshop-goods,
+.workshop-upgrades {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.sale-menu {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 20px 0;
+}
+.sale-menu label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid #bea17d;
+  border-radius: 3px;
+  background: #fff0d44d;
+  cursor: pointer;
+}
+.sale-menu label:has(:checked) {
+  border-color: #8d653e;
+  background: #c6a46e33;
+}
+.sale-menu input {
+  accent-color: #91623d;
+  width: 18px;
+  height: 18px;
+}
+.sale-menu img {
+  width: 36px;
+  height: 32px;
+}
+.sale-menu span {
+  font-size: 13px;
+}
+.sale-menu small {
+  display: block;
+  font-size: 11px;
+  color: #98795a;
+  margin-top: 4px;
+}
+.spot-workshop {
+  left: 32%;
+  top: 58%;
+}
+.workshop-goods h3 {
+  font-size: 19px;
+}
+@media (max-width: 620px) {
+  .sale-menu {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .sale-menu label {
+    padding: 8px;
+    gap: 5px;
+  }
+  .sale-menu img {
+    width: 27px;
+  }
+  .sale-menu span {
+    font-size: 11px;
+  }
+}

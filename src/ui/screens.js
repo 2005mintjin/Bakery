@@ -8,7 +8,9 @@ import { showInventory, showJournal } from "./screens/journal.js";
 import { showWarehouse, showShop, showShelf } from "./screens/bakery.js";
 import { showParcel, showSupplies } from "./screens/services.js";
 
+import { showWorkshop } from "./screens/workshop.js";
 export const screens = {
+  workshop: showWorkshop,
   sleep: showSleep,
   cafe: showCafe,
   cafeTalk: (ui) => openStaffDialogue(ui.g, "cafe"),

@@ -1,10 +1,6 @@
 import { doughTypes } from "../recipeBook.js";
-import {
-  breadIds,
-  breadForTopping,
-  bakeSeconds,
-  ovenCapacity,
-} from "../baking.js";
+import { breadIds, breadForTopping, bakeSeconds } from "../baking.js";
+import { ovenLimit } from "../equipment.js";
 const nonnegative = (x) => Number.isFinite(x) && x >= 0;
 function legacyDough(b) {
   if (b === null) return;
@@ -75,6 +71,7 @@ export function validateBakingState(s) {
           batch: Object.fromEntries(
             breadIds.map((key) => [key, key === id ? 1 : 0]),
           ),
+          duration: bakeSeconds,
           seconds:
             b.phase === "ready" ? bakeSeconds : (b.seconds / 5) * bakeSeconds,
         };
@@ -110,16 +107,17 @@ export function validateBakingState(s) {
           oven.batch.driedberry > 0
         : oven.kind === "baking" && counts(oven.batch)) ||
       !nonnegative(oven.seconds) ||
-      oven.seconds > bakeSeconds
+      ![30, 45, 60].includes(oven.duration) ||
+      oven.seconds > oven.duration
     )
       throw Error("손상된 오븐");
     const total = Object.values(oven.batch).reduce((a, b) => a + b, 0);
     if (
       total < 1 ||
-      total > ovenCapacity ||
+      total > ovenLimit(s) ||
       (oven.phase === "ready"
-        ? oven.seconds !== bakeSeconds
-        : oven.seconds >= bakeSeconds)
+        ? oven.seconds !== oven.duration
+        : oven.seconds >= oven.duration)
     )
       throw Error("잘못된 오븐 상태");
   }

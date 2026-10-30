@@ -229,7 +229,7 @@ test("v1-v4 saves gain stamina once while v5 persists fatigue and rejects corrup
     s.items.berry = 11;
     s.minutes = 1300;
     const migrated = validate(s);
-    assert.equal(migrated.version, 7);
+    assert.equal(migrated.version, 8);
     assert.equal(migrated.stamina, 100);
     assert.equal(migrated.minutes, 1300);
     assert.equal(migrated.money, 185);

@@ -18,7 +18,13 @@ export function bindInput(g) {
   );
   addEventListener("keydown", (e) => {
     const k = e.key.toLowerCase();
-    if (["arrowup", "arrowdown", "arrowleft", "arrowright", " "].includes(k))
+    const editing =
+      e.target instanceof Element &&
+      e.target.matches('input,select,textarea,[contenteditable="true"]');
+    if (
+      !editing &&
+      ["arrowup", "arrowdown", "arrowleft", "arrowright", " "].includes(k)
+    )
       e.preventDefault();
     if (e.repeat) return;
     if (!g.started) return;
@@ -27,6 +33,7 @@ export function bindInput(g) {
       else g.ui.show("menu");
       return;
     }
+    if (editing) return;
     if (g.ui.open) {
       if (g.ui.dialogueController?.handleKey(e)) return;
       if ((k === "e" || k === " ") && e.target.tagName !== "BUTTON")

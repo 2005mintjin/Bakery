@@ -273,7 +273,7 @@ try {
   };
   await reloadSave(legacy);
   s = await save();
-  assert.equal(s.version, 7);
+  assert.equal(s.version, 8);
   assert.equal(s.baking, null);
   assert.ok(s.oven.seconds >= 24 && s.oven.seconds < 27);
   assert.equal(s.oven.batch.berrybread, 1);

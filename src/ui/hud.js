@@ -9,7 +9,10 @@ export function updateHud(ui, hint) {
     if (label)
       label.textContent =
         "완성까지 " +
-        Math.max(0, Math.ceil(bakeSeconds - s.oven.seconds)) +
+        Math.max(
+          0,
+          Math.ceil((s.oven.duration ?? bakeSeconds) - s.oven.seconds),
+        ) +
         "초";
   }
   const time = `${String(Math.floor(s.minutes / 60)).padStart(2, "0")}:${String(Math.floor(s.minutes % 60)).padStart(2, "0")}`;
@@ -40,6 +43,7 @@ export function updateHud(ui, hint) {
     bakeryKitchen: "♨ 작은 화덕 · 작업실",
     store: "✦ 해봄 잡화점",
     cafe: "☕ 햇살 카페",
+    workshop: "⚒ 해봄 공방",
     city: "❀ 해봄 소도시 · 상점 거리",
     field: "❀ 서쪽 베리 텃밭",
   }[s.scene];

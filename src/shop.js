@@ -1,5 +1,6 @@
 import { productIds } from "./recipeBook.js";
 import { spend } from "./inventory.js";
+import { availableProducts } from "./equipment.js";
 export const breadIds = productIds;
 export function ensureShop(s) {
   s.warehouse ??= { loaf: 0, honeybread: 0, berrybread: 0 };
@@ -21,15 +22,20 @@ export function takeBread(s, id) {
   s.items[id] = (s.items[id] || 0) + 1;
   return true;
 }
-export function chooseOrder(person, random = Math.random) {
-  const weights = breadIds.map((id) => person.preferences?.[id] || 1),
+export function chooseOrder(
+  person,
+  random = Math.random,
+  available = breadIds,
+) {
+  if (!available.length) return null;
+  const weights = available.map((id) => person.preferences?.[id] || 1),
     total = weights.reduce((a, b) => a + b, 0);
   let choice = Math.max(0, Math.min(0.999999, random())) * total;
-  for (let i = 0; i < breadIds.length; i++) {
+  for (let i = 0; i < available.length; i++) {
     choice -= weights[i];
-    if (choice < 0) return breadIds[i];
+    if (choice < 0) return available[i];
   }
-  return breadIds.at(-1);
+  return available.at(-1);
 }
 export function tickShop(s, dt, customers = [], random = Math.random) {
   ensureShop(s);
@@ -42,6 +48,8 @@ export function tickShop(s, dt, customers = [], random = Math.random) {
     }
     return false;
   }
+  const menu = saleProducts(s);
+  if (!menu.length) return false;
   s.shop.elapsed += dt;
   if (s.shop.elapsed < 12) return false;
   s.shop.elapsed = 0;
@@ -53,7 +61,7 @@ export function tickShop(s, dt, customers = [], random = Math.random) {
   s.shop.customer = {
     name: person.name,
     portrait: person.portrait,
-    bread: chooseOrder(person, random),
+    bread: chooseOrder(person, random, menu),
     quantity: 1 + Math.min(2, Math.floor(Math.max(0, random()) * 3)),
     phase: "knocking",
     arrival: 0,
@@ -87,5 +95,21 @@ export function receiveParcel(s) {
   s.items.flour += 4;
   s.items.honey += 1;
   s.parcels.push({ day: s.day, label: "마을 조합의 작은 선물" });
+  return true;
+}
+
+export function saleProducts(s) {
+  const available = availableProducts(s);
+  return (s.shop.menu || available).filter((id) => available.includes(id));
+}
+export function setSaleMenu(s, ids) {
+  if (
+    !Array.isArray(ids) ||
+    !ids.length ||
+    new Set(ids).size !== ids.length ||
+    ids.some((id) => !availableProducts(s).includes(id))
+  )
+    return false;
+  s.shop.menu = [...ids];
   return true;
 }

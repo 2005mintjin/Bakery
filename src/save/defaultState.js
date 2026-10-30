@@ -1,7 +1,8 @@
 import { productCounts } from "../recipeBook.js";
+import { freshEquipment } from "../equipment.js";
 export function fresh() {
   return {
-    version: 7,
+    version: 8,
     scene: "town",
     x: 480,
     y: 430,
@@ -31,7 +32,14 @@ export function fresh() {
     },
     display: {},
     warehouse: productCounts(),
-    shop: { open: false, elapsed: 0, customer: null, sequence: 0 },
+    equipment: freshEquipment(),
+    shop: {
+      open: false,
+      elapsed: 0,
+      customer: null,
+      sequence: 0,
+      menu: ["loaf", "honeybread", "berrybread"],
+    },
     quests: {},
     affinity: {},
     harvestAt: 0,

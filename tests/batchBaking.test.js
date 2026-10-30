@@ -176,7 +176,7 @@ test("legacy baking preserves fraction completed and ready bread remains claimab
       seconds: 2,
     };
     let s = validate(old);
-    assert.equal(s.version, 7);
+    assert.equal(s.version, 8);
     assert.equal(s.oven.seconds, 24);
     assert.equal(s.oven.batch.honeybread, 1);
     assert.equal(s.baking, null);

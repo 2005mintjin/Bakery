@@ -13,5 +13,8 @@
   },
   "cafe": {
     "asset": "assets/backgrounds/interiors/cafe.png"
+  },
+  "workshop": {
+    "asset": "assets/backgrounds/interiors/workshop.svg"
   }
 }

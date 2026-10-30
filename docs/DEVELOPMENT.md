@@ -42,6 +42,11 @@
 | 공통 종류 탭·아이콘·재료·단계 표시 | `src/ui/craftWidgets.js`, `assets/ui/` |
 | 웹페이지·공통 양피지 테마 | `index.html`, `src/styles/theme.css` |
 | 제작·오븐·창고·가방 레이아웃 | `src/styles/crafting.css` |
+| 도구 구매·오븐 개량 가격/규칙 | `src/equipment.js` |
+| 공방 구매 화면 | `src/ui/screens/workshop.js` |
+| 공방 입구·내부 배경 | `data/worldMaps.json`, `data/interiorBackgrounds.json`, `assets/backgrounds/interiors/workshop.svg` |
+| 판매 메뉴 선택/무작위 주문 제한 | `src/ui/screens/bakery.js`, `src/shop.js` |
+| 도구·메뉴 저장 이관/검증 | `src/save/progression.js` |
 | 일괄 오븐·종류별 수량 입력 | `src/ovenUI.js`, `src/baking.js` |
 | 반죽·오븐 저장 검증/이관 | `src/save/bakingState.js` |
 | 반죽 종류·제품 ID·속재료 규칙 | `src/recipeBook.js`, `src/baking.js` |
@@ -89,6 +94,7 @@ node --test tests/server.test.js
 
 | 수정 영역 | 실제 브라우저 검사 |
 | --- | --- |
+| 공방·도구 잠금·9개/45초·메뉴 주문·저장·8명 가림 | `node tools/check-equipment-browser.mjs` |
 | 새 UI·탭/키보드·혼합 선택 유지/제한·좁은 화면 반죽 | `node tools/check-ui-browser.mjs` |
 | 파이·쿠키·건조·8명 방문·수량 판매·진열 배경/UI | `node tools/check-expansion-browser.mjs` |
 | 반죽 재고·혼합 6개·실제 60초·동시 반죽·이관 | `node tools/check-batch-browser.mjs` |
@@ -140,3 +146,10 @@ node --test tests/server.test.js
 
 ### UI 수정 시 주의
 `theme.css`는 공통 색상·프레임, `crafting.css`는 제작/창고/가방 배치만 담당합니다. 기존 스타일 파일 뒤에 불러옵니다. 탭 선택과 오븐의 미확정 수량은 UI 인스턴스에만 두며, 탭 변경으로 게임 재료나 기력을 차감하지 않습니다. 굽기 확정은 기존 `putInOven` 규칙을 사용합니다. 저장을 불러와 상태 객체가 바뀌면 미확정 선택은 초기화합니다.
+
+### 공방 성장 시스템 (저장 v8)
+장비/개량은 `equipment.js`, 이관은 `save/progression.js`를 수정합니다. 새 게임의 틀은 잠겨 있고 구버전에서 이미 제작한 종류만 자동 해금합니다. `ovenLimit(state)`와 `ovenDuration(state)`를 화면/규칙에서 함께 사용하세요. `baking.js`의 6/60 상수는 기본값·구버전 이관용입니다. 시작한 판에는 `oven.duration`을 저장하며, 오븐이 비어 있어야 개량할 수 있습니다. 새 개량 단계를 추가하면 저장 검증 범위와 브라우저 검사를 함께 갱신합니다.
+
+판매 메뉴는 `shop.menu`에 저장합니다. `setSaleMenu`로 변경하고 `tickShop`은 해금된 선택 목록만 주문합니다. 대기 주문은 메뉴 변경으로 다시 추첨하거나 취소하지 않습니다. 재고 0도 메뉴로 선택할 수 있고 실제 지급은 기존 진열 수량 검사를 따릅니다.
+
+글꼴은 `theme.css`의 `--ui-font`, 캔버스 글자는 `render/pixelPainter.js`에서 지정합니다. 휴먼 글꼴은 설치된 경우만 사용하며 라이선스가 필요한 폰트 파일을 배포하지 않습니다. 새 카운터 가림 기준은 `counterArt.js`의 `frontY`(논리 좌표 456)입니다. 배경을 바꾸면 테이블 윗면을 다시 확인하고 방문객 8명의 전경 픽셀 비교 검사를 실행하세요.

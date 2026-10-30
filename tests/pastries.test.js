@@ -25,6 +25,8 @@ const json = (n) =>
   dialogues = json("serviceDialogues");
 function rich() {
   const s = fresh();
+  s.equipment.pieMold = true;
+  s.equipment.cookieMold = true;
   for (const key of [
     "flour",
     "yeast",
@@ -214,7 +216,7 @@ test("v6 save migration preserves original queue, timer, fatigue, quests and one
   };
   old.quests.friend = "done";
   const s = validate(old);
-  assert.equal(s.version, 7);
+  assert.equal(s.version, 8);
   assert.equal(s.doughs.loaf, 2);
   assert.equal(s.doughs.fishpie, 0);
   assert.equal(s.oven.kind, "baking");

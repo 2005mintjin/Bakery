@@ -26,6 +26,8 @@ try {
     return fresh();
   });
   s.scene = "bakeryKitchen";
+  s.equipment.pieMold = true;
+  s.equipment.cookieMold = true;
   s.doughs = { ...productCounts(), loaf: 3, berrypie: 3, cookie: 3 };
   s.items.water = 20;
   s.items.flour = 20;

@@ -1,7 +1,7 @@
 export const counterLayout = {
-  frontY: 490,
+  frontY: 456,
   customer: { x: 288, y: 230, width: 384 },
-  sdCustomer: { centerX: 480, y: 230, height: 300 },
+  sdCustomer: { centerX: 480, y: 210, height: 340 },
 };
 export async function loadCounterArt(actors = []) {
   const images = new Map();
