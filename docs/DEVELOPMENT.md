@@ -212,3 +212,13 @@ node --test tests/server.test.js
 `data/worldMaps.json`의 pond와 `sceneManager.js`가 텃밭 서쪽 연결 및 물 충돌을 담당합니다. 배경은 독립적인 `assets/backgrounds/fishing-pond.svg`입니다. 낚시 규칙·기력/시간 비용·보상은 `fishing.js`, 화면·스페이스 처리는 `ui/screens/fishing.js`, 스타일은 `styles/fishing.css`입니다. 기다림/입질 상태는 `game.state.fishing`에만 두고 `app/gameLoop.js`가 현재 낚시 패널이 열린 활성 탭에서만 진행합니다. 패널 종료/전환 시 취소하고, 잡기 성공은 단계 변경 뒤 기존 items.fish에 한 번만 지급합니다. 브라우저 타이머나 별도 전역 상태를 만들지 않습니다.
 
 세이브 v8의 선택 필드 fishing은 구버전에서 null로 보충합니다. `save/fishingState.js`가 단계·시간·장소를 검증합니다. 생선파이 레시피·공방 해금·오븐 규칙은 그대로 사용합니다. 관련 검사: `node --test tests/fishing.test.js tests/lighting.test.js`, `node tools/check-fishing-lighting-browser.mjs` (임시 정적 호스트/격리된 브라우저 저장).
+
+### 첨부 낚시터와 수면 결산 (데모)
+
+Downloads (12)의 `평화로운 숲속 낚시 연못 지도.png`는 `assets/backgrounds/forest-fishing-pond.png`, `포근한 밤, 꼬리 달린 잠자리.png`는 `assets/backgrounds/interiors/fencer-sleeping.png`로 원본 바이트를 보존했습니다. 낚시터의 부두 위치는 (591,287), 동쪽 입구는 (905,288)이며 `worldMaps.json`의 호수 충돌, `sceneManager.js`의 출입과 `lighting.json`의 세 가로등을 함께 맞췄습니다. 예전 낚시터 저장 위치가 새 호수와 겹치면 기존 repairPosition 경로로 입구에 복구합니다.
+
+수면 그림 경로·설명은 `data/restScene.json`, 결산 화면은 `ui/screens/nightReport.js`, 스타일은 `styles/rest.css`에 있습니다. `ui/screens/rest.js`의 확인 버튼이 `nightSettlement.settleNight`를 한 번 호출하고, 이미 있던 sleepUntilMorning 규칙으로 오전 6시·기력·폐점·오븐 완료를 적용한 뒤 결산 화면을 엽니다. 화면을 닫거나 다시 열 때 시간을 재차 넘기거나 수익을 지급하지 않습니다. 새로운 타이머나 실행 의존성은 없습니다.
+
+`dailyReport.js`가 06:00 기준 영업일을 묶습니다. 거래가 성공한 경로에서만 `shop.serve`/기존 일괄판매, `bakery.buyItem`, `equipment.buyEquipment/upgradeOven`, `wellbeing.buyRefreshment`, `quest.complete`가 매출·보상·지출을 기록합니다. 하루 결산은 실제 구매 지출과 수입의 차액이며 재료 소비의 회계 원가를 추정하지 않습니다. 기존 세이브에는 과거 일별 거래가 없어 이번 버전 이후의 거래만 기록합니다. 누적 revenue를 재사용하지 않습니다.
+
+선택 필드 dailyLedger/lastNight는 저장 v8을 유지하고 `save/dailyState.js`가 검증합니다. 구버전 누락은 null로 보충하고 돈/아이템을 추가하지 않습니다. 잠자리에 들 때 현재 집계의 복사본과 수면 결과를 lastNight에 보관하고 다음 날 집계를 초기화합니다. 관련 검사: `node --test tests/nightSettlement.test.js tests/fishing.test.js`, `node tools/check-night-report-browser.mjs`, `node tools/check-fishing-lighting-browser.mjs`. 두 브라우저 도구는 동일한 정적 빌드 폴더를 쓰므로 순서대로 실행하고, 실제 saves/saves-demo는 사용하지 않습니다.

@@ -8,6 +8,7 @@ import {
   reelLine,
   cancelFishing,
   nearFishingSpot,
+  fishingRules,
 } from "../src/fishing.js";
 import { configureWorld, transition, obstacles } from "../src/sceneManager.js";
 import { move } from "../src/player.js";
@@ -22,7 +23,12 @@ import {
 const maps = JSON.parse(
   readFileSync(new URL("../data/worldMaps.json", import.meta.url)),
 );
-const atPond = () => Object.assign(fresh(), { scene: "pond", x: 574, y: 318 });
+const atPond = () =>
+  Object.assign(fresh(), {
+    scene: "pond",
+    x: fishingRules.x,
+    y: fishingRules.y,
+  });
 test("field west leads to pond, east returns; dock accessible and water blocks walking", () => {
   configureWorld(maps);
   const s = Object.assign(fresh(), { scene: "field", x: 31, y: 310 });
@@ -31,11 +37,11 @@ test("field west leads to pond, east returns; dock accessible and water blocks w
   s.x = 929;
   assert.ok(transition(s));
   assert.equal(s.scene, "field");
-  Object.assign(s, { scene: "pond", x: 905, y: 318 });
+  Object.assign(s, { scene: "pond", x: 905, y: fishingRules.y });
   for (let i = 0; i < 46; i++) move(s, new Set(["a"]), 0.05, []);
   assert.ok(nearFishingSpot(s));
   for (let i = 0; i < 90; i++) move(s, new Set(["a"]), 0.05, []);
-  assert.ok(s.x >= 535, "cannot walk into water west of the dock");
+  assert.ok(s.x >= 572, "cannot walk into water west of the dock");
   assert.ok(obstacles.pond.length > 0);
 });
 test("casting spends once, bite/reel gives exactly one fish and repeat works", () => {

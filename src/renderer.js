@@ -67,8 +67,8 @@ export class Renderer extends PixelPainter {
       this.text("← 호숫가 낚시터", 71, 291, "#fff2c9", 15);
     }
     if (s.scene === "pond") {
-      this.text("낚시터 · E", 574, 235, "#fff2c9", 17);
-      this.text("베리 텃밭 →", 866, 291, "#fff2c9", 17);
+      this.text("낚시터 · E", 615, 214, "#fff2c9", 17);
+      this.text("텃밭 →", 883, 275, "#fff2c9", 15);
     }
     const actors = [
       { ...s, color: "#c48b59", player: true },

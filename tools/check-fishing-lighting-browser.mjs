@@ -199,8 +199,8 @@ try {
     Object.assign(window.testUI.g.state, {
       scene: "pond",
       minutes: 1000,
-      x: 574,
-      y: 318,
+      x: 591,
+      y: 287,
     });
   });
   await p.waitForTimeout(100);

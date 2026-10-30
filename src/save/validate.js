@@ -1,3 +1,4 @@
+import { validateDailyState } from "./dailyState.js";
 import { validateFishingState } from "./fishingState.js";
 import { productIds } from "../recipeBook.js";
 import { validateBakingState } from "./bakingState.js";
@@ -142,6 +143,7 @@ export function validate(input) {
     typeof s.tutorial.bakeryIntroSeen !== "boolean"
   )
     throw Error("손상된 이용 안내 기록");
+  validateDailyState(s);
   validateFishingState(s);
   validateProgression(s);
   validateBakingState(s);

@@ -1,7 +1,7 @@
 import { advanceClock } from "./wellbeing.js";
 export const fishingRules = {
-  x: 574,
-  y: 318,
+  x: 591,
+  y: 287,
   radius: 75,
   stamina: 3,
   minutes: 8,

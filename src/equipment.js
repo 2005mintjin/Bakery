@@ -1,3 +1,4 @@
+import { recordExpense } from "./dailyReport.js";
 import { doughTypes, productIds } from "./recipeBook.js";
 // Prices and upgrade tiers are centralized; screens call these rules directly.
 export const workshopGoods = {
@@ -45,6 +46,7 @@ export function buyEquipment(s, id) {
   )
     return false;
   s.money -= workshopGoods[id].price;
+  recordExpense(s, workshopGoods[id].price);
   s.equipment[id] = true;
   return true;
 }
@@ -64,6 +66,7 @@ export function upgradeOven(s, kind) {
   )
     return false;
   s.money -= prices[s.equipment[key]];
+  recordExpense(s, prices[s.equipment[key]]);
   s.equipment[key]++;
   return true;
 }

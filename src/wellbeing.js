@@ -1,3 +1,4 @@
+import { recordExpense } from "./dailyReport.js";
 import { tickBaking, bakeSeconds } from "./baking.js";
 import { maxStamina } from "./stamina.js";
 export { maxStamina, doughStaminaCost } from "./stamina.js";
@@ -49,6 +50,7 @@ export function buyRefreshment(s, item) {
   if (s.stamina >= maxStamina) return "full";
   if (s.money < item.price) return "poor";
   s.money -= item.price;
+  recordExpense(s, item.price);
   s.stamina = Math.min(maxStamina, s.stamina + item.stamina);
   return "bought";
 }

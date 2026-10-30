@@ -1,3 +1,4 @@
+import { recordSale } from "./dailyReport.js";
 import { productIds } from "./recipeBook.js";
 import { spend } from "./inventory.js";
 import { availableProducts } from "./equipment.js";
@@ -85,6 +86,7 @@ export function serve(s, recipes) {
   s.display[c.bread] -= quantity;
   s.money += recipe.price * quantity;
   s.revenue += recipe.price * quantity;
+  recordSale(s, c.bread, quantity, recipe.price * quantity);
   s.shop.customer = null;
   return true;
 }
