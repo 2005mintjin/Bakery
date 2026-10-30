@@ -2,6 +2,8 @@ import { title } from "../../title.js";
 import { saveSlot, loadSlot } from "../../saveSystem.js";
 import { repairPosition } from "../../sceneManager.js";
 
+import { saveLocation, browserMode } from "../../save/mode.js";
+import { exportSave, importSave } from "../saveTransfer.js";
 export function showAudio(ui) {
   const s = ui.g.state;
   {
@@ -52,17 +54,25 @@ export function showMenu(ui) {
   ui.panel(
     "<h2>잠깐 쉬어가기</h2><p>현재 세이브 " +
       ui.g.slot +
-      " · 게임 폴더 saves에 저장됩니다.</p>",
+      " · " +
+      saveLocation() +
+      "</p>",
     [
       [
         "저장",
         async () => {
           try {
             await saveSlot(ui.g.slot, s);
-            ui.notify("파일에 저장했어요");
+            ui.notify(
+              browserMode ? "이 브라우저에 저장했어요" : "파일에 저장했어요",
+            );
             ui.close();
           } catch {
-            ui.notify("저장 실패: 서버와 폴더 쓰기 권한을 확인하세요");
+            ui.notify(
+              browserMode
+                ? "저장 실패: 브라우저 저장 허용과 남은 공간을 확인하세요"
+                : "저장 실패: 서버와 폴더 쓰기 권한을 확인하세요",
+            );
           }
         },
       ],
@@ -85,6 +95,8 @@ export function showMenu(ui) {
             [["돌아가기", () => title(ui.g)]],
           ),
       ],
+      ["세이브 파일 내보내기", () => exportSave(ui)],
+      ["세이브 파일 가져오기", () => importSave(ui, () => title(ui.g))],
       ["퇴근·잠자기", () => ui.show("sleep")],
       ["음악 설정", () => ui.show("audio")],
       ["플레이어 이미지 불러오기", () => ui.g.spritePicker()],

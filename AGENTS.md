@@ -18,3 +18,9 @@
 - 서버 API는 server/routes/, 공통 파일 쓰기는 server/storage.js를 사용한다. 테스트에는 개인 saves 대신 임시 폴더를 사용한다.
 - 스타일은 styles/의 담당 파일을 수정하고 style.css의 기존 진입 경로를 유지한다.
 - 코드와 JSON을 읽을 수 있는 여러 줄 형식으로 유지한다. 사소한 수정에 전체 프로젝트 재포맷·재생성을 하지 않는다.
+
+## 웹사이트 배포
+- PC 실행용 index.html의 저장 모드는 server로 유지한다. 웹용 변경은 build-web이 browser로 변환한다.
+- 정적 배포에는 src/data/assets/index.html만 포함하며 saves·서버·개발 파일을 올리지 않는다.
+- 웹사이트 갱신을 요청받으면 관련 검사 후 npm run publish:web으로 gh-pages를 갱신한다. 기존 작업 브랜치/인덱스를 덮어쓰지 않는다.
+- 실제 사이트 연결을 확인하지 못했다면 배포 브랜치 업로드와 사이트 활성화/검증을 구분해 보고한다.

@@ -5,3 +5,5 @@ coverage/
 saves/*.json
 saves/*.tmp
 saves/*.png
+
+dist/

@@ -1,3 +1,5 @@
+import { browserMode } from "./save/mode.js";
+import { savedSheet } from "./save/customSheet.js";
 export function spriteFrame(
   atlas,
   width,
@@ -68,7 +70,12 @@ export class PlayerSprite {
       ),
     );
     try {
-      if (localStorage.getItem("hearth-custom-sheet-enabled-v2") === "yes")
+      if (browserMode) {
+        const data = await savedSheet();
+        if (data) await this.setSheet(data);
+      } else if (
+        localStorage.getItem("hearth-custom-sheet-enabled-v2") === "yes"
+      )
         await this.trySaved();
     } catch {}
   }
@@ -90,6 +97,7 @@ export class PlayerSprite {
   }
   useDefault() {
     this.custom = null;
+    if (browserMode) savedSheet(null).catch(() => {});
     try {
       localStorage.removeItem("hearth-custom-sheet-enabled-v2");
     } catch {}
@@ -113,12 +121,15 @@ export class PlayerSprite {
           r.readAsDataURL(f);
         });
         await this.setSheet(data);
-        const r = await fetch("/api/player-sheet", {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ data }),
-        });
-        if (!r.ok) throw Error("서버 저장 실패");
+        if (browserMode) await savedSheet(data);
+        else {
+          const r = await fetch("/api/player-sheet", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ data }),
+          });
+          if (!r.ok) throw Error("서버 저장 실패");
+        }
         try {
           localStorage.setItem("hearth-custom-sheet-enabled-v2", "yes");
         } catch {}

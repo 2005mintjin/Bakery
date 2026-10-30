@@ -21,6 +21,11 @@
 | 실내 클릭 위치·손님 가림·직원 그림 | `src/interior.js`, `src/counterArt.js`, `src/staffArt.js` |
 | 패널 공통 생성·닫기·알림 | `src/ui.js` |
 | 화면 종류 등록 | `src/ui/screens.js` |
+| 웹/PC 저장 선택 | `src/save/mode.js`, `src/save/api.js` |
+| 웹 슬롯 3개 저장 | `src/save/browserSlots.js` |
+| JSON 파일 이식·가져오기/내보내기 UI | `src/save/transfer.js`, `src/ui/saveTransfer.js` |
+| 웹 개인 캐릭터 보관 | `src/save/customSheet.js` |
+| 정적 사이트 빌드/gh-pages 배포 | `tools/build-web.mjs`, `tools/publish-web.mjs` |
 | 저장 메뉴·음악 설정 화면 | `src/ui/screens/settings.js` |
 | 가방·물건 상세 | `src/ui/screens/inventory.js` |
 | 퀘스트 목록 | `src/ui/screens/journal.js` |
@@ -94,6 +99,7 @@ node --test tests/server.test.js
 
 | 수정 영역 | 실제 브라우저 검사 |
 | --- | --- |
+| 정적 /Bakery/·웹 저장/JSON 이동·개인 캐릭터·사용자별 격리 | `node tools/check-web-browser.mjs` |
 | 공방·도구 잠금·9개/45초·메뉴 주문·저장·8명 가림 | `node tools/check-equipment-browser.mjs` |
 | 새 UI·탭/키보드·혼합 선택 유지/제한·좁은 화면 반죽 | `node tools/check-ui-browser.mjs` |
 | 파이·쿠키·건조·8명 방문·수량 판매·진열 배경/UI | `node tools/check-expansion-browser.mjs` |
@@ -153,3 +159,10 @@ node --test tests/server.test.js
 판매 메뉴는 `shop.menu`에 저장합니다. `setSaleMenu`로 변경하고 `tickShop`은 해금된 선택 목록만 주문합니다. 대기 주문은 메뉴 변경으로 다시 추첨하거나 취소하지 않습니다. 재고 0도 메뉴로 선택할 수 있고 실제 지급은 기존 진열 수량 검사를 따릅니다.
 
 글꼴은 `theme.css`의 `--ui-font`, 캔버스 글자는 `render/pixelPainter.js`에서 지정합니다. 휴먼 글꼴은 설치된 경우만 사용하며 라이선스가 필요한 폰트 파일을 배포하지 않습니다. 새 카운터 가림 기준은 `counterArt.js`의 `frontY`(논리 좌표 456)입니다. 배경을 바꾸면 테이블 윗면을 다시 확인하고 방문객 8명의 전경 픽셀 비교 검사를 실행하세요.
+
+### 정적 웹 배포
+`npm run build:web`이 `index.html`의 저장 모드 meta를 `server`에서 `browser`로 바꾸고 `src/data/assets`와 `.nojekyll`만 `dist/web`에 복사합니다. 소스 HTML은 PC 서버 모드를 유지합니다. API 장애 때 웹 저장으로 자동 전환하지 않습니다. 웹 키에는 사이트 경로가 들어가며 슬롯 간·다른 게임 간 충돌을 피합니다. 웹 저장은 브라우저별이고 자동 서버 동기화가 없습니다.
+
+`npm run publish:web`은 별도 임시 Git 인덱스로 정적 트리를 커밋해 `gh-pages`에 push합니다. 기존 `main`/작업 인덱스를 변경하지 않습니다. GitHub Pages는 `gh-pages`의 루트를 소스로 설정합니다. 첫 활성화/배포 상태를 확인할 권한이나 네트워크가 없으면 브랜치 업로드와 실제 사이트 확인을 구분해 보고하세요.
+
+웹 배포 후 검사는 `tools/check-web-browser.mjs`로 API 없는 정적 호스트의 /Bakery/ 경로에서 수행합니다. 세이브 API 검사와 달리 이 도구는 개인 saves를 사용하지 않습니다. 웹 저장 규칙·오류·파일 이동·빌드 제외 범위는 `tests/webSave.test.js`에서 검사합니다. 웹/PC 저장 변경 시 두 실행 방식의 브라우저 검사를 함께 수행합니다.

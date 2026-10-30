@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node server.js",
     "test": "node --test",
-    "check": "node tools/check-source.mjs"
+    "check": "node tools/check-source.mjs",
+    "build:web": "node tools/build-web.mjs",
+    "publish:web": "node tools/publish-web.mjs"
   },
   "engines": {
     "node": ">=20"

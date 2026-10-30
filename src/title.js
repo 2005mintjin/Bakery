@@ -1,5 +1,7 @@
 import { repairPosition } from "./sceneManager.js";
 import { fresh, slots, saveSlot, loadSlot, load } from "./saveSystem.js";
+import { browserMode, saveLocation } from "./save/mode.js";
+import { importSave } from "./ui/saveTransfer.js";
 export async function title(g) {
   g.started = false;
   g.music?.stop();
@@ -10,7 +12,7 @@ export async function title(g) {
       `${slot.id}번 · ${slot.empty ? "새로운 이야기" : slot.corrupt ? "손상된 파일 (복원 필요)" : `${slot.day}일째 / ${slot.money}G`}`,
       async () => {
         if (slot.corrupt) {
-          g.ui.notify("saves 폴더의 파일을 백업하고 복원해 주세요.");
+          g.ui.notify("세이브 파일 가져오기로 백업을 복원해 주세요.");
           return;
         }
         g.music?.start(slot.scene || "town");
@@ -33,6 +35,10 @@ export async function title(g) {
       },
     ]);
     actions.push([
+      "세이브 파일 가져오기",
+      () => importSave(g.ui, () => title(g)),
+    ]);
+    actions.push([
       "이전 브라우저 저장을 빈 슬롯으로 옮기기",
       async () => {
         try {
@@ -50,12 +56,14 @@ export async function title(g) {
       },
     ]);
     g.ui.panel(
-      '<div class="title-mark">✦</div><span class="eyebrow">LITTLE HEARTH · SECOND CHAPTER</span><h2>작은 화덕</h2><p>빵 한 조각, 새로운 이웃, 그리고 당신의 이야기.</p><p class="muted">세이브를 골라 시작하세요. 저장은 게임 폴더 saves/slot-N.json에 보관됩니다.</p>',
+      `<div class="title-mark">✦</div><span class="eyebrow">LITTLE HEARTH · SECOND CHAPTER</span><h2>작은 화덕</h2><p>빵 한 조각, 새로운 이웃, 그리고 당신의 이야기.</p><p class="muted">세이브를 골라 시작하세요. ${saveLocation()}</p>`,
       actions,
     );
   } catch {
     g.ui.panel(
-      "<h2>게임 서버가 필요해요</h2><p>파일 세이브를 사용하려면 최신 게임 폴더의 launch.bat 또는 npm start로 실행해 주세요.</p>",
+      browserMode
+        ? "<h2>브라우저 저장을 사용할 수 없어요</h2><p>이 사이트의 저장소 접근을 허용하고 다시 시도하세요. 시크릿 모드나 저장 공간 부족 여부도 확인해 주세요.</p>"
+        : "<h2>게임 서버가 필요해요</h2><p>파일 세이브를 사용하려면 최신 게임 폴더의 launch.bat 또는 npm start로 실행해 주세요.</p>",
       [["다시 확인", () => title(g)]],
     );
   }

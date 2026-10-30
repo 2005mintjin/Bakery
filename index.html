@@ -2,6 +2,7 @@
 <html lang="ko">
   <head>
     <meta charset="utf-8" />
+    <meta name="bakery-save-mode" content="server" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>작은 화덕 · 달빛마을</title>
     <link rel="stylesheet" href="src/style.css" />
@@ -102,7 +103,12 @@
       </section>
       <div class="page-end" aria-hidden="true">✦</div>
     </main>
-    <div id="overlay" hidden></div>
+    <div id="overlay">
+      <section class="panel" role="status">
+        <h2>달빛마을로 가는 길</h2>
+        <p>그림과 게임 데이터를 불러오고 있어요. 잠시만 기다려 주세요.</p>
+      </section>
+    </div>
     <script type="module" src="src/main.js"></script>
   </body>
 </html>
