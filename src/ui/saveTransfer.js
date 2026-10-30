@@ -8,7 +8,7 @@ export function exportSave(ui) {
       url = URL.createObjectURL(blob),
       a = document.createElement("a");
     a.href = url;
-    a.download = `little-hearth-slot-${ui.g.slot}-day-${ui.g.state.day}.json`;
+    a.download = `fencer-bakery-slot-${ui.g.slot}-day-${ui.g.state.day}.json`;
     document.body.append(a);
     a.click();
     a.remove();

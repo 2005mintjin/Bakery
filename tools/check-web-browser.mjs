@@ -78,6 +78,9 @@ try {
   };
   await p.goto(address);
   await p.getByRole("button", { name: /^1번 ·/ }).waitFor();
+  assert.match(p.url(), /\/Bakery\/fencer-bakery\/$/);
+  assert.match(await p.title(), /펜서 베이커리/);
+  assert.match(await p.locator(".brand").textContent(), /펜서 베이커리/);
   await install();
   await p.getByRole("button", { name: /^3번 ·.*777G/ }).waitFor();
   assert.equal(await p.locator(".demo-badge").count(), demoEdition ? 1 : 0);
@@ -117,6 +120,9 @@ try {
   await choose("닫기 · ESC");
   await p.reload();
   await p.getByRole("button", { name: /^1번 ·/ }).waitFor();
+  assert.match(p.url(), /\/Bakery\/fencer-bakery\/$/);
+  assert.match(await p.title(), /펜서 베이커리/);
+  assert.match(await p.locator(".brand").textContent(), /펜서 베이커리/);
   await install();
   await p.getByRole("button", { name: /^3번 ·.*777G/ }).waitFor();
   assert.equal(await p.locator(".demo-badge").count(), demoEdition ? 1 : 0);

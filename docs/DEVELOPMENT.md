@@ -189,3 +189,8 @@ node --test tests/server.test.js
 정식 브랜치의 demoEdition은 false입니다. `src/edition.js`에서 webSavePrefix를 함께 결정하고 API와 브라우저 검사가 이를 사용합니다. 정식 저장 접두사는 기존 little-hearth:web:를 유지합니다. Windows 배치 파일도 5173으로 맞춥니다. demo 브랜치의 true·5174 설정은 수정하지 않습니다.
 
 정식 검사에서는 demo 배포 차단 테스트만 skip하고 나머지 테스트를 수행합니다. 정적 웹·새 직원·목소리 검사 도구는 현재 edition의 저장 키를 사용하므로 두 채널에서 실행할 수 있습니다. check-web-browser는 기존 키에 저장된 슬롯을 미리 넣어 새 버전에서 인식되는지 확인합니다. 검증 후 main을 올리고 publish:web으로 gh-pages를 갱신한 뒤 해당 commit의 Pages 실행 결과를 확인합니다.
+
+### 펜서 베이커리 이름·주소
+새 진입 주소와 slug, 저장 경로 호환 함수는 `src/brand.js`에 있습니다. build-web은 기존 root에 src/data/assets를 두고 fencer-bakery/index.html에 `<base href="../">`를 추가합니다. 루트 index는 새 진입점으로 redirect합니다. 리소스를 중복 복사하지 않으며 링크를 따라가도 CSS·이미지·음성은 기존 경로에서 읽습니다.
+
+새 URL의 savePath는 이전 설치의 상위 경로로 정규화합니다. `/Bakery/fencer-bakery/`와 `/Bakery/`는 같은 정식 저장을 사용합니다. 접두사 및 저장 포맷은 변경하지 않습니다. `check-web-browser`는 예전 주소에서 새 주소로 이동, 새 타이틀, 기존 슬롯 인식, 저장·삭제·파일 이동을 검사합니다. 서버 정적 파일 처리도 디렉터리 경로의 index.html을 읽도록 지원합니다.

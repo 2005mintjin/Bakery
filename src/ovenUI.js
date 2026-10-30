@@ -21,7 +21,7 @@ export function showOven(ui, { preserveDraft = false } = {}) {
       ready = oven.phase === "ready",
       amount = Object.values(oven.batch).reduce((a, b) => a + b, 0);
     ui.panel(
-      `<div class="panel-eyebrow">OVEN · 따뜻하게 기다리는 시간</div><h2>${ready ? (drying ? "베리 건조 완료!" : "빵 굽기 완료!") : drying ? "베리 건조 중" : "오븐에서 굽는 중"} · ${amount}/${ovenCapacity}개</h2><div class="oven-status"><span class="oven-seal">${ready ? "✦" : "◷"}</span><div><strong>${ready ? "한 판이 완성되었어요" : "작은 화덕이 일하고 있어요"}</strong><p>${ready ? "완성한 제품을 꺼내 다음 판을 준비하세요." : "굽는 동안 다음 반죽을 준비할 수 있어요."}</p></div></div><div class="batch-products">${Object.entries(
+      `<div class="panel-eyebrow">OVEN · 따뜻하게 기다리는 시간</div><h2>${ready ? (drying ? "베리 건조 완료!" : "빵 굽기 완료!") : drying ? "베리 건조 중" : "오븐에서 굽는 중"} · ${amount}/${ovenCapacity}개</h2><div class="oven-status"><span class="oven-seal">${ready ? "✦" : "◷"}</span><div><strong>${ready ? "한 판이 완성되었어요" : "오븐이 일하고 있어요"}</strong><p>${ready ? "완성한 제품을 꺼내 다음 판을 준비하세요." : "굽는 동안 다음 반죽을 준비할 수 있어요."}</p></div></div><div class="batch-products">${Object.entries(
         oven.batch,
       )
         .filter(([, n]) => n)

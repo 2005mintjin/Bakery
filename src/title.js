@@ -7,7 +7,7 @@ import { demoEdition } from "./edition.js";
 export async function title(g) {
   g.started = false;
   g.music?.stop();
-  g.ui.panel("<h2>작은 화덕</h2><p>세이브 파일을 찾고 있어요…</p>");
+  g.ui.panel("<h2>펜서 베이커리</h2><p>세이브 파일을 찾고 있어요…</p>");
   try {
     const list = await slots();
     const actions = list.map((slot) => [
@@ -27,7 +27,7 @@ export async function title(g) {
           g.ui.close();
           if (slot.empty)
             g.ui.panel(
-              "<h2>달빛마을로 온 편지</h2><p>할아버지의 작은 화덕을 물려받은 당신.<br>낯선 골목에도, 오늘은 고소한 빵 냄새가 피어납니다.<br>주민들의 이야기를 듣고 당신만의 하루를 만들어 보세요.</p>",
+              "<h2>달빛마을로 온 편지</h2><p>할아버지의 빵집 펜서 베이커리를 물려받은 당신.<br>낯선 골목에도, 오늘은 고소한 빵 냄새가 피어납니다.<br>주민들의 이야기를 듣고 당신만의 하루를 만들어 보세요.</p>",
               [["나의 첫 아침 시작", () => g.ui.close()]],
             );
         } catch {
@@ -59,7 +59,7 @@ export async function title(g) {
       },
     ]);
     g.ui.panel(
-      `<div class="title-mark">✦</div><span class="eyebrow">LITTLE HEARTH · SECOND CHAPTER</span><h2>작은 화덕${demoEdition ? " · 데모" : ""}</h2><p>빵 한 조각, 새로운 이웃, 그리고 당신의 이야기.</p><p class="muted">세이브를 골라 시작하세요. ${saveLocation()}</p>`,
+      `<div class="title-mark">✦</div><span class="eyebrow">FENCER BAKERY · SECOND CHAPTER</span><h2>펜서 베이커리${demoEdition ? " · 데모" : ""}</h2><p>빵 한 조각, 새로운 이웃, 그리고 당신의 이야기.</p><p class="muted">세이브를 골라 시작하세요. ${saveLocation()}</p>`,
       actions,
     );
   } catch {

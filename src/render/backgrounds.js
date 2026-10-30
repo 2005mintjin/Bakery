@@ -89,7 +89,7 @@ export function drawBackground(renderer, scene) {
       if ((x > 335 && x < 625) || (y > 275 && y < 400))
         renderer.r(x, y, 5, 2, "#c5b68c");
     }
-    house(renderer, 80, 130, 250, "작은 화덕", "#a4664f");
+    house(renderer, 80, 130, 250, "펜서 베이커리", "#a4664f");
     house(renderer, 655, 130, 225, "달빛 우체국", "#7eabc1");
     renderer.r(435, 278, 90, 67, "#9d9e86");
     renderer.r(443, 285, 74, 45, "#7da5a0");
@@ -168,7 +168,7 @@ export function drawBackground(renderer, scene) {
     renderer.r(680, 315, 150, 65, "#d4b780");
     renderer.text("빵 창고", 755, 360, "#715434", 15);
     renderer.text("영업 안내판", 195, 347, "#fff1c5", 14);
-    renderer.text("작은 화덕 · 편히 쉬어가세요", 475, 42, "#745a41", 18);
+    renderer.text("펜서 베이커리 · 편히 쉬어가세요", 475, 42, "#745a41", 18);
     renderer.r(370, 350, 220, 115, "#b98772");
     for (let i = 0; i < 8; i++)
       renderer.r(376 + i * 27, 357, 14, 100, "#c69b80");

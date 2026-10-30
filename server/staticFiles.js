@@ -22,7 +22,10 @@ export async function staticFiles(req, res, name, root) {
     parts.includes("saves-demo")
   )
     throw Error("private");
-  const file = path.resolve(root, "." + (name === "/" ? "/index.html" : name));
+  const file = path.resolve(
+    root,
+    "." + (name.endsWith("/") ? name + "index.html" : name),
+  );
   if (!file.startsWith(root + path.sep)) throw Error("path");
   res.setHeader(
     "Content-Type",

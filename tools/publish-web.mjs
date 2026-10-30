@@ -1,3 +1,4 @@
+import { siteUrl } from "../src/brand.js";
 import { demoEdition } from "../src/edition.js";
 if (demoEdition)
   throw Error(
@@ -42,11 +43,7 @@ try {
   git(["push", "origin", commit + ":refs/heads/gh-pages"], {
     stdio: ["ignore", "pipe", "inherit"],
   });
-  console.log(
-    "Published gh-pages from " +
-      revision +
-      "\nSite: https://2005mintjin.github.io/Bakery/",
-  );
+  console.log("Published gh-pages from " + revision + "\nSite: " + siteUrl);
 } finally {
   await rm(temp, { recursive: true, force: true });
 }

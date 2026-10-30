@@ -106,11 +106,12 @@ test("static build includes game assets and browser mode, and excludes local sav
       ".nojekyll",
       "assets",
       "data",
+      "fencer-bakery",
       "index.html",
       "src",
     ]);
     assert.match(
-      await readFile(path.join(out, "index.html"), "utf8"),
+      await readFile(path.join(out, "fencer-bakery/index.html"), "utf8"),
       /name="bakery-save-mode" content="browser"/,
     );
     assert.match(
@@ -175,4 +176,12 @@ test("edition storage prefix keeps the original production keys separate from de
   assert.equal((await prod.loadSlot(1)).shop.customer.name, "료");
   assert.equal((await prod.loadSlot(1)).shop.customer.quantity, 2);
   assert.equal((await demo.loadSlot(1)).money, 333);
+});
+
+test("branded URL maps to existing save keys without changing other installations", async () => {
+  const { savePath } = await import("../src/brand.js");
+  assert.equal(savePath("/Bakery/fencer-bakery/"), "/Bakery/");
+  assert.equal(savePath("/Bakery/"), "/Bakery/");
+  assert.equal(savePath("/preview/fencer-bakery/"), "/preview/");
+  assert.equal(savePath("/other/"), "/other/");
 });

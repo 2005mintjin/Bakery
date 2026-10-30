@@ -38,9 +38,9 @@ export function updateHud(ui, hint) {
         !["bakery", "bakeryKitchen"].includes(s.scene));
   document.querySelector("#location").textContent = {
     town: "❀ 달빛마을 · 사거리",
-    bakery: "♨ 작은 화덕 · 빵집",
+    bakery: "♨ 펜서 베이커리 · 빵집",
     post: "✉ 달빛 우체국",
-    bakeryKitchen: "♨ 작은 화덕 · 작업실",
+    bakeryKitchen: "♨ 펜서 베이커리 · 작업실",
     store: "✦ 해봄 잡화점",
     cafe: "☕ 햇살 카페",
     workshop: "⚒ 해봄 공방",

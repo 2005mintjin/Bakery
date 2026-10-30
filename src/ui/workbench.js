@@ -15,7 +15,7 @@ export function showWorkbench(ui) {
     type = ui.workbenchTab || "bread",
     d = doughTypes[type];
   ui.panel(
-    `<div class="panel-eyebrow">LITTLE HEARTH · RECIPE BOOK</div><h2>작업실 · 레시피북</h2>${familyTabs(type)}${!canMake(s, type) ? `<p class="lock-notice">🔒 ${type === "pie" ? "파이 틀" : "쿠키 틀"}이 필요해요. 소도시 오른쪽 아래 공방에서 구매하세요.</p>` : ""}${stageRibbon(0)}<section class="workbench-layout"><div class="recipe-illustration"><img src="${foodIcon(type)}" alt="${d.name}"><span>오늘의 작은 정성</span><h3>${d.name} 반죽</h3><p>한 번에 반죽 1개<br>완성한 반죽은 창고에 보관해요.</p></div><div class="recipe-preparation"><h3>필요한 재료</h3>${ingredients(d.cost, s)}<div class="energy-note">소모 기력 <b>${doughStaminaCost}</b> / 현재 <b>${s.stamina}</b></div><h3>이 반죽으로 만들어요</h3><div class="recipe-preview">${Object.values(
+    `<div class="panel-eyebrow">FENCER BAKERY · RECIPE BOOK</div><h2>작업실 · 레시피북</h2>${familyTabs(type)}${!canMake(s, type) ? `<p class="lock-notice">🔒 ${type === "pie" ? "파이 틀" : "쿠키 틀"}이 필요해요. 소도시 오른쪽 아래 공방에서 구매하세요.</p>` : ""}${stageRibbon(0)}<section class="workbench-layout"><div class="recipe-illustration"><img src="${foodIcon(type)}" alt="${d.name}"><span>오늘의 작은 정성</span><h3>${d.name} 반죽</h3><p>한 번에 반죽 1개<br>완성한 반죽은 창고에 보관해요.</p></div><div class="recipe-preparation"><h3>필요한 재료</h3>${ingredients(d.cost, s)}<div class="energy-note">소모 기력 <b>${doughStaminaCost}</b> / 현재 <b>${s.stamina}</b></div><h3>이 반죽으로 만들어요</h3><div class="recipe-preview">${Object.values(
       d.finishes,
     )
       .map(
