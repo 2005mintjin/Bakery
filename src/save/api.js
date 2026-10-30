@@ -1,4 +1,4 @@
-import { demoEdition } from "../edition.js";
+import { webSavePrefix } from "../edition.js";
 import { validate } from "./validate.js";
 import { browserMode } from "./mode.js";
 import { createBrowserSlots } from "./browserSlots.js";
@@ -6,8 +6,7 @@ let webStore;
 const browserStore = () =>
   (webStore ??= createBrowserSlots(
     globalThis.localStorage,
-    (demoEdition ? "little-hearth:demo:web:" : "little-hearth:web:") +
-      new URL("./", globalThis.location.href).pathname,
+    webSavePrefix + new URL("./", globalThis.location.href).pathname,
   ));
 async function request(path, options) {
   const r = await fetch("/api/saves" + path, options);

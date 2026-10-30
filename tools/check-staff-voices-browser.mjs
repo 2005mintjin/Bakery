@@ -1,3 +1,4 @@
+import { webSavePrefix } from "../src/edition.js";
 // Test real MP3 decoding and dialogue synchronization without touching personal saves.
 import assert from "node:assert/strict";
 import http from "node:http";
@@ -32,27 +33,27 @@ try {
   p.on("pageerror", (e) => errors.push(e.message));
   const s = fresh();
   s.scene = "post";
-  await p.addInitScript((state) => {
-    localStorage.setItem(
-      "little-hearth:demo:web:/Bakery/1",
-      JSON.stringify(state),
-    );
-    window.sampleStarts = [];
-    const create = AudioContext.prototype.createBufferSource;
-    AudioContext.prototype.createBufferSource = function () {
-      const node = create.call(this),
-        start = node.start.bind(node);
-      node.start = (...args) => {
-        const voices = window.voiceUI?.g.voices;
-        const key = voices
-          ? [...voices.buffers].find(([, v]) => v.buffer === node.buffer)?.[0]
-          : null;
-        window.sampleStarts.push({ key, offset: args[1], duration: args[2] });
-        return start(...args);
+  await p.addInitScript(
+    ({ state, key }) => {
+      localStorage.setItem(key, JSON.stringify(state));
+      window.sampleStarts = [];
+      const create = AudioContext.prototype.createBufferSource;
+      AudioContext.prototype.createBufferSource = function () {
+        const node = create.call(this),
+          start = node.start.bind(node);
+        node.start = (...args) => {
+          const voices = window.voiceUI?.g.voices;
+          const key = voices
+            ? [...voices.buffers].find(([, v]) => v.buffer === node.buffer)?.[0]
+            : null;
+          window.sampleStarts.push({ key, offset: args[1], duration: args[2] });
+          return start(...args);
+        };
+        return node;
       };
-      return node;
-    };
-  }, s);
+    },
+    { state: s, key: webSavePrefix + "/Bakery/1" },
+  );
   await p.goto(`http://127.0.0.1:${server.address().port}/Bakery/`);
   await p.getByRole("button", { name: /^1번 ·/ }).waitFor();
   await p.evaluate(async () => {
@@ -201,7 +202,7 @@ try {
   assert.deepEqual(errors, []);
   console.log(JSON.stringify(decoded));
   console.log(
-    "PASS: 3 supplied MP3s decode, real staff and bakery dialogues use correct samples per letter, punctuation/narration silent, skip/ESC/mute stop audio; isolated demo only.",
+    "PASS: 3 supplied MP3s decode, real staff and bakery dialogues use correct samples per letter, punctuation/narration silent, skip/ESC/mute stop audio; isolated test context.",
   );
 } finally {
   await browser?.close();

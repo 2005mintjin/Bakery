@@ -1,3 +1,4 @@
+import { webSavePrefix } from "../src/edition.js";
 // A private browser context and static host; no real player saves are touched.
 import assert from "node:assert/strict";
 import http from "node:http";
@@ -36,12 +37,8 @@ try {
   state.scene = "post";
   state.money = 2000;
   await p.addInitScript(
-    (s) =>
-      localStorage.setItem(
-        "little-hearth:demo:web:/Bakery/1",
-        JSON.stringify(s),
-      ),
-    state,
+    ({ state, key }) => localStorage.setItem(key, JSON.stringify(state)),
+    { state, key: webSavePrefix + "/Bakery/1" },
   );
   await p.goto(`http://127.0.0.1:${server.address().port}/Bakery/`);
   await p.getByRole("button", { name: /^1번 ·/ }).waitFor();

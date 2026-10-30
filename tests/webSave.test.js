@@ -1,3 +1,4 @@
+import { demoEdition, webSavePrefix } from "../src/edition.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { mkdtemp, readFile, readdir, rm } from "node:fs/promises";
@@ -145,4 +146,33 @@ test("web deletion removes exactly the chosen slot, including corruption, withou
   assert.equal((await store.slots())[2].empty, true);
   assert.equal(storage.getItem("little-hearth-v1"), "legacy");
   assert.equal(storage.getItem("other:1"), "other");
+});
+
+test("edition storage prefix keeps the original production keys separate from demo saves", async () => {
+  assert.equal(
+    webSavePrefix,
+    demoEdition ? "little-hearth:demo:web:" : "little-hearth:web:",
+  );
+  const storage = memory(),
+    old = fresh();
+  old.money = 777;
+  old.shop.customer = {
+    name: "하나",
+    portrait: "post-clerk",
+    bread: "loaf",
+    quantity: 2,
+    phase: "waiting",
+    arrival: 1.2,
+  };
+  storage.setItem("little-hearth:web:/Bakery/1", JSON.stringify(old));
+  storage.setItem(
+    "little-hearth:demo:web:/Bakery/1",
+    JSON.stringify({ ...fresh(), money: 333 }),
+  );
+  const prod = createBrowserSlots(storage, "little-hearth:web:/Bakery/"),
+    demo = createBrowserSlots(storage, "little-hearth:demo:web:/Bakery/");
+  assert.equal((await prod.loadSlot(1)).money, 777);
+  assert.equal((await prod.loadSlot(1)).shop.customer.name, "료");
+  assert.equal((await prod.loadSlot(1)).shop.customer.quantity, 2);
+  assert.equal((await demo.loadSlot(1)).money, 333);
 });

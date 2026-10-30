@@ -1,3 +1,5 @@
+import { demoEdition, webSavePrefix } from "../src/edition.js";
+import { fresh } from "../src/saveSystem.js";
 // Self-contained static host at /Bakery/: no save API and no personal files touched.
 import assert from "node:assert/strict";
 import http from "node:http";
@@ -35,6 +37,16 @@ try {
   const context = await browser.newContext({ acceptDownloads: true }),
     p = await context.newPage();
   p.on("pageerror", (e) => bad.push(e.message));
+  const old = fresh();
+  old.money = 777;
+  await p.addInitScript(
+    ({ key, old }) => {
+      window.testSaveKey = key + "1";
+      if (!localStorage.getItem(key + "3"))
+        localStorage.setItem(key + "3", JSON.stringify(old));
+    },
+    { key: webSavePrefix + "/Bakery/", old },
+  );
   const address = `http://127.0.0.1:${server.address().port}/Bakery/`;
   const install = async () =>
     p.evaluate(async () => {
@@ -67,6 +79,8 @@ try {
   await p.goto(address);
   await p.getByRole("button", { name: /^1번 ·/ }).waitFor();
   await install();
+  await p.getByRole("button", { name: /^3번 ·.*777G/ }).waitFor();
+  assert.equal(await p.locator(".demo-badge").count(), demoEdition ? 1 : 0);
   await start(1);
   assert.equal(await p.evaluate(() => window.webUI.g.state.version), 8);
   await p.keyboard.down("ArrowRight");
@@ -92,9 +106,7 @@ try {
   assert.match(await p.locator(".panel").textContent(), /이 브라우저에 저장/);
   await choose("저장");
   await p.locator("#overlay").waitFor({ state: "hidden" });
-  const raw = await p.evaluate(() =>
-    localStorage.getItem("little-hearth:demo:web:/Bakery/1"),
-  );
+  const raw = await p.evaluate(() => localStorage.getItem(window.testSaveKey));
   assert.equal(JSON.parse(raw).oven.batch.loaf, 9);
   await menu();
   const downloadPromise = p.waitForEvent("download");
@@ -106,6 +118,8 @@ try {
   await p.reload();
   await p.getByRole("button", { name: /^1번 ·/ }).waitFor();
   await install();
+  await p.getByRole("button", { name: /^3번 ·.*777G/ }).waitFor();
+  assert.equal(await p.locator(".demo-badge").count(), demoEdition ? 1 : 0);
   await start(1);
   assert.equal(await p.evaluate(() => window.webUI.g.state.money), 555);
   assert.equal(await p.evaluate(() => window.webUI.g.state.oven.duration), 45);
@@ -139,9 +153,7 @@ try {
   await choose("1번에 가져오기 · 기존 저장 있음");
   await p.getByRole("heading", { name: "1번 저장을 덮어쓸까요?" }).waitFor();
   assert.equal(
-    await p.evaluate(() =>
-      localStorage.getItem("little-hearth:demo:web:/Bakery/1"),
-    ),
+    await p.evaluate(() => localStorage.getItem(window.testSaveKey)),
     raw,
   );
   await choose("취소");
@@ -161,9 +173,7 @@ try {
     document.querySelector("#toast").textContent.includes("유효한"),
   );
   assert.equal(
-    await p.evaluate(() =>
-      localStorage.getItem("little-hearth:demo:web:/Bakery/1"),
-    ),
+    await p.evaluate(() => localStorage.getItem(window.testSaveKey)),
     raw,
   );
   assert.equal(
@@ -186,17 +196,13 @@ try {
   await choose("1번 세이브 삭제");
   await choose("취소");
   assert.equal(
-    await p.evaluate(() =>
-      localStorage.getItem("little-hearth:demo:web:/Bakery/1"),
-    ),
+    await p.evaluate(() => localStorage.getItem(window.testSaveKey)),
     raw,
   );
   await choose("1번 세이브 삭제");
   await choose("삭제하기");
   assert.equal(
-    await p.evaluate(() =>
-      localStorage.getItem("little-hearth:demo:web:/Bakery/1"),
-    ),
+    await p.evaluate(() => localStorage.getItem(window.testSaveKey)),
     null,
   );
   assert.equal(await p.evaluate(() => window.webUI.g.slot), 2);

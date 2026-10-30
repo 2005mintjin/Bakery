@@ -184,3 +184,8 @@ node --test tests/server.test.js
 새 방문객 ID는 soma/crematory이고, 우체국은 기존 post-clerk ID를 유지합니다. 저장의 기존 post-clerk 대기 주문은 이름만 료로 정규화하고 품목·수량·도착 단계는 유지합니다. 데이터 구조가 달라지지 않아 저장 버전은 8입니다. 세 신규 인물의 음성은 Downloads (11)의 MP3로 연결합니다. post-clerk 키의 asset은 ryo.mp3로 교체하고 료 별칭을 사용합니다. soma/crematory 키를 추가하고 크레마·크리마는 crematory의 별칭으로 처리합니다. 회귀 검사는 staffStory/pastries 테스트와 check-new-staff-browser 도구를 사용합니다.
 
 음성 검사는 개인 저장을 쓰지 않는 `check-staff-voices-browser.mjs`를 우선 사용합니다. 이 도구는 실제 AudioBufferSource 시작과 버퍼 키를 기록하여 직원/빵집 손님 모두 글자 수만큼 올바른 샘플이 시작되는지 검사합니다. 정적 데모 호스트를 자체 실행하며 세이브 형식은 바꾸지 않습니다.
+
+### 정식 승격 (현재 승인된 데모 반영)
+정식 브랜치의 demoEdition은 false입니다. `src/edition.js`에서 webSavePrefix를 함께 결정하고 API와 브라우저 검사가 이를 사용합니다. 정식 저장 접두사는 기존 little-hearth:web:를 유지합니다. Windows 배치 파일도 5173으로 맞춥니다. demo 브랜치의 true·5174 설정은 수정하지 않습니다.
+
+정식 검사에서는 demo 배포 차단 테스트만 skip하고 나머지 테스트를 수행합니다. 정적 웹·새 직원·목소리 검사 도구는 현재 edition의 저장 키를 사용하므로 두 채널에서 실행할 수 있습니다. check-web-browser는 기존 키에 저장된 슬롯을 미리 넣어 새 버전에서 인식되는지 확인합니다. 검증 후 main을 올리고 publish:web으로 gh-pages를 갱신한 뒤 해당 commit의 Pages 실행 결과를 확인합니다.
