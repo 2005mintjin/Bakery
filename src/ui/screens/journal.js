@@ -1,17 +1,4 @@
-import { names } from "../../inventory.js";
-
-export function showInventory(ui) {
-  const s = ui.g.state;
-  ui.panel(
-    "<h2>나의 가방</h2>" +
-      Object.entries(s.items)
-        .map(
-          ([k, v]) =>
-            `<div class="row"><span>${names[k]}</span><b>${v}개</b></div>`,
-        )
-        .join(""),
-  );
-}
+export { showInventory } from "./inventory.js";
 
 export function showJournal(ui) {
   const s = ui.g.state;

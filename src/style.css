@@ -3,3 +3,6 @@
 @import url("./styles/interiors.css");
 @import url("./styles/baking.css");
 @import url("./styles/dialogue.css");
+
+@import url("./styles/theme.css");
+@import url("./styles/crafting.css");

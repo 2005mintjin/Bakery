@@ -61,7 +61,7 @@ test("prepared dough queues by type and consumes ingredients/stamina only once p
     },
   });
   assert.match(html, /밀빵 · 준비 반죽 2개/);
-  assert.match(html, /구운 빵 0개/);
+  assert.match(html, /구운 재고<\/dt><dd>0<\/dd>/);
 });
 test("one mixed batch holds up to six and rejects empty, excessive, fractional or unavailable selections atomically", () => {
   const s = stock();

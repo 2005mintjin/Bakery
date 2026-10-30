@@ -101,6 +101,9 @@ try {
   }
   async function prepare(type, finish) {
     await p.locator(".spot-oven").click();
+    await p
+      .getByRole("tab", { name: type === "bread" ? "빵" : type, exact: true })
+      .click();
     await choose(
       type === "bread" ? "재료 섞어 반죽 시작" : type + " 반죽 시작",
     );
@@ -231,15 +234,14 @@ try {
   ])
     assert.equal(s.warehouse[id], 1);
   await p.locator(".spot-warehouse").click();
+  await p.getByRole("tab", { name: "쿠키", exact: true }).click();
   await choose("초콜릿 쿠키 꺼내기");
   await close();
   await p.locator(".room-arrow").click();
   await p.locator(".spot-shelf").click();
-  const row = p
-    .locator(".shelf-row")
-    .filter({
-      has: p.getByRole("button", { name: "초콜릿 쿠키 진열", exact: true }),
-    });
+  const row = p.locator(".shelf-row").filter({
+    has: p.getByRole("button", { name: "초콜릿 쿠키 진열", exact: true }),
+  });
   await row.locator("input").fill("3");
   await choose("초콜릿 쿠키 진열");
   await close();

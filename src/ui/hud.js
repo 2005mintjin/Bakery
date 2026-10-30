@@ -12,8 +12,27 @@ export function updateHud(ui, hint) {
         Math.max(0, Math.ceil(bakeSeconds - s.oven.seconds)) +
         "초";
   }
-  document.querySelector("#status").textContent =
-    `${s.day}일째 · ${String(Math.floor(s.minutes / 60)).padStart(2, "0")}:${String(Math.floor(s.minutes % 60)).padStart(2, "0")}　${daylight(s.minutes).phase}　${s.money} G · 기력 ${s.stamina}/100`;
+  const time = `${String(Math.floor(s.minutes / 60)).padStart(2, "0")}:${String(Math.floor(s.minutes % 60)).padStart(2, "0")}`;
+  const status = document.querySelector("#status"),
+    phase = daylight(s.minutes).phase;
+  const update = (selector, text) => {
+    const el = status.querySelector(selector);
+    if (el && el.textContent !== text) el.textContent = text;
+  };
+  update("[data-day]", `${s.day}일째`);
+  update(
+    "[data-clock]",
+    `${phase === "밤" ? "☾" : phase === "노을" ? "◒" : "☀"} ${time} · ${phase}`,
+  );
+  update("[data-money]", `◈ ${s.money} G`);
+  update("[data-energy]", `기력 ${s.stamina}/100`);
+  const meter = status.querySelector("[data-energy-bar]");
+  if (meter) meter.value = s.stamina;
+  for (const b of document.querySelectorAll("[data-panel]"))
+    b.disabled =
+      (!ui.g.started && b.dataset.panel !== "audio") ||
+      (b.hasAttribute("data-room-required") &&
+        !["bakery", "bakeryKitchen"].includes(s.scene));
   document.querySelector("#location").textContent = {
     town: "❀ 달빛마을 · 사거리",
     bakery: "♨ 작은 화덕 · 빵집",

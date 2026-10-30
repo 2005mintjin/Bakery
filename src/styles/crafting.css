@@ -1,0 +1,500 @@
+/* Recipe book, oven tray and pantry: presentation only. */
+.craft-tabs,
+.inventory-filters {
+  display: flex;
+  gap: 8px;
+  margin: 18px 0;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #c19b70;
+  padding-bottom: 10px;
+}
+.craft-tabs button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  flex: 1;
+  min-width: 90px;
+}
+.craft-tabs img {
+  width: 34px;
+  height: 30px;
+  object-fit: contain;
+}
+.craft-tabs [aria-selected="true"],
+.inventory-filters [aria-pressed="true"] {
+  background: linear-gradient(#76513b, #493024);
+  color: #fff0d2;
+  box-shadow: inset 0 0 0 1px #d5ae74;
+}
+.craft-stages {
+  display: flex;
+  list-style: none;
+  gap: 8px;
+  padding: 0;
+  margin: 18px 0 24px;
+  counter-reset: step;
+}
+.craft-stages li {
+  flex: 1;
+  color: #987557;
+  font-size: 12px;
+  border-bottom: 2px solid #ceb795;
+  padding-bottom: 9px;
+  counter-increment: step;
+}
+.craft-stages li::before {
+  content: counter(step);
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid #ba9571;
+  border-radius: 50%;
+  margin-right: 7px;
+}
+.craft-stages li.active {
+  color: #79462c;
+  border-color: #9e6740;
+  font-weight: bold;
+}
+.workbench-layout {
+  display: grid;
+  grid-template-columns: 230px 1fr;
+  gap: 26px;
+  margin-bottom: 20px;
+}
+.recipe-illustration {
+  text-align: center;
+  background: #c59d6c20;
+  border: 1px solid #c8a580;
+  padding: 20px;
+  border-radius: 5px;
+}
+.recipe-illustration > img {
+  width: 135px;
+  height: 110px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 3px #62432525);
+}
+.recipe-illustration > span {
+  display: block;
+  font-size: 11px;
+  color: #93714e;
+  margin-top: 12px;
+  letter-spacing: 2px;
+}
+.recipe-illustration h3 {
+  font-size: 23px;
+  margin: 10px 0;
+}
+.recipe-illustration p {
+  font-size: 12px;
+  line-height: 1.8;
+  color: #83674f;
+}
+.recipe-preparation h3 {
+  font-size: 15px;
+  margin: 12px 0;
+}
+.ingredient-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ingredient-chip {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid #cbb08d;
+  background: #fff8e66e;
+  border-radius: 3px;
+  font-size: 13px;
+}
+.ingredient-chip small {
+  color: #8c755d;
+}
+.ingredient-chip.insufficient {
+  color: #aa4035;
+  border-color: #bd7b69;
+}
+.energy-note {
+  font-size: 12px;
+  margin: 15px 0 24px;
+  color: #8c6847;
+}
+.recipe-preview {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.recipe-preview > span {
+  font-size: 12px;
+  border-top: 1px solid #ccb18f;
+  padding-top: 10px;
+}
+.recipe-preview small {
+  display: block;
+  color: #977656;
+  margin-top: 6px;
+}
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 18px 0;
+}
+.recipe-card {
+  padding: 16px 12px;
+  border: 1px solid #c8a480;
+  outline: 1px solid #fff6df;
+  outline-offset: -4px;
+  border-radius: 4px;
+  background: linear-gradient(#fff9ea80, #e2c39a40);
+  text-align: center;
+  min-width: 0;
+}
+.recipe-card > img {
+  width: 90px;
+  height: 70px;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 2px #62432522);
+}
+.recipe-card h3 {
+  font-size: 17px;
+  margin: 9px 0;
+}
+.recipe-card p {
+  font-size: 12px;
+  line-height: 1.7;
+}
+.recipe-card button {
+  width: 100%;
+  font-size: 12px;
+  margin-top: 8px;
+}
+.recipe-card .ingredient-chips {
+  justify-content: center;
+}
+.recipe-card .ingredient-chip {
+  padding: 6px;
+  font-size: 11px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3px;
+}
+.recipe-card .ingredient-chip small {
+  font-size: 10px;
+}
+.stock-overview {
+  display: flex;
+  justify-content: space-around;
+  gap: 12px;
+  background: #77513812;
+  padding: 14px;
+  border-top: 1px solid #c8ab87;
+  border-bottom: 1px solid #c8ab87;
+  font-size: 13px;
+}
+.stock-overview b {
+  margin-left: 8px;
+  color: #8f542f;
+}
+.stock-counts {
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+  margin: 16px 0;
+}
+.stock-counts dt {
+  font-size: 11px;
+  color: #947153;
+}
+.stock-counts dd {
+  margin: 5px 0 0;
+  font-size: 22px;
+}
+.card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.oven-selection {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.oven-choice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #c5a17b;
+  background: #fff8e64d;
+  padding: 15px;
+  gap: 8px;
+  min-width: 0;
+}
+.oven-choice img {
+  width: 70px;
+  height: 55px;
+}
+.oven-choice input {
+  width: 80px;
+  text-align: center;
+  background: #fff7e6;
+  border: 1px solid #b99470;
+  color: #5a3b29;
+  font-size: 19px;
+  padding: 7px;
+}
+.oven-choice small {
+  color: #8e7056;
+}
+.tray-summary {
+  margin: 20px 0;
+  padding: 16px;
+  border: 1px solid #a6815a;
+  background: #c09b6b20;
+}
+.tray-summary h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+.tray-summary ul {
+  padding-left: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 24px;
+  font-size: 13px;
+}
+.tray-summary strong {
+  color: #88502e;
+}
+.oven-status {
+  text-align: center;
+  border: 1px solid #c7a27d;
+  padding: 18px;
+  margin: 18px 0;
+}
+.batch-products {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+.batch-products span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+}
+.batch-products img {
+  width: 42px;
+  height: 36px;
+}
+.oven-status progress {
+  width: 90%;
+  margin: 15px 0;
+}
+.empty-state {
+  padding: 25px;
+  font-size: 13px;
+  color: #927052;
+}
+.inventory-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 215px;
+  gap: 22px;
+  min-height: 270px;
+}
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 9px;
+  align-content: start;
+}
+.inventory-slot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 5px !important;
+  min-width: 0;
+  background: #caa77c30 !important;
+  min-height: 94px;
+}
+.inventory-slot.selected {
+  outline: 2px solid #98623c;
+  outline-offset: -4px;
+}
+.inventory-slot img {
+  width: 54px;
+  height: 43px;
+  object-fit: contain;
+}
+.inventory-slot b {
+  position: absolute;
+  right: 8px;
+  top: 7px;
+  color: #6f452b;
+  font-size: 12px;
+}
+.inventory-slot span {
+  font-size: 11px;
+  margin-top: 8px;
+}
+.item-detail {
+  border-left: 1px solid #c7a680;
+  padding: 12px 0 12px 20px;
+}
+.item-detail > img {
+  width: 105px;
+  height: 80px;
+  object-fit: contain;
+}
+.item-detail h3 {
+  font-size: 22px;
+  margin: 12px 0;
+}
+.item-kind {
+  font-size: 11px;
+  padding: 3px 10px;
+  background: #c6a07444;
+  border-radius: 3px;
+}
+.item-detail p {
+  font-size: 12px;
+  line-height: 1.8;
+  margin: 18px 0;
+}
+.item-detail dl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  font-size: 12px;
+}
+.item-detail dd {
+  margin: 0;
+  text-align: right;
+}
+@media (max-width: 620px) {
+  .workbench-layout {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .recipe-illustration {
+    display: none;
+  }
+  .craft-stages {
+    gap: 4px;
+  }
+  .craft-stages li {
+    font-size: 9px;
+  }
+  .craft-stages li::before {
+    width: 17px;
+    height: 17px;
+    margin-right: 3px;
+  }
+  .recipe-grid {
+    gap: 7px;
+  }
+  .recipe-card {
+    padding: 13px 7px;
+  }
+  .recipe-card > img {
+    width: 62px;
+    height: 49px;
+  }
+  .recipe-card h3 {
+    font-size: 13px;
+  }
+  .recipe-card button {
+    font-size: 10px;
+    padding: 8px 4px;
+  }
+  .stock-overview {
+    font-size: 11px;
+    gap: 7px;
+    padding: 10px 5px;
+  }
+  .stock-overview b {
+    margin-left: 3px;
+  }
+  .oven-selection {
+    gap: 6px;
+  }
+  .oven-choice {
+    padding: 10px 5px;
+    font-size: 11px;
+  }
+  .oven-choice input {
+    width: 60px;
+  }
+  .inventory-layout {
+    grid-template-columns: 1fr;
+  }
+  .inventory-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .item-detail {
+    border-left: 0;
+    border-top: 1px solid #c7a680;
+    padding: 15px 0;
+  }
+  .item-detail > img {
+    float: left;
+    width: 80px;
+    height: 65px;
+    margin-right: 15px;
+  }
+  .item-detail p {
+    clear: both;
+  }
+  .craft-tabs button {
+    font-size: 12px;
+    padding: 9px;
+  }
+  .craft-tabs img {
+    width: 27px;
+    height: 25px;
+  }
+}
+.quantity-field {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 12px;
+  flex-wrap: wrap;
+}
+.quantity-field input {
+  width: 65px;
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #bb946e;
+  background: #fff7e6;
+  color: #5a3926;
+  border-radius: 3px;
+  font-size: 17px;
+}
+.drying-card {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  margin: 25px 0;
+  padding: 20px;
+  background: #c09b6b20;
+  border: 1px solid #c7a27d;
+}
+.drying-card > img {
+  width: 100px;
+}
+.drying-card h3 {
+  font-size: 17px;
+}
+.drying-card p {
+  font-size: 13px;
+  line-height: 1.8;
+}

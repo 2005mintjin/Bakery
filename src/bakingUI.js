@@ -1,69 +1,22 @@
-import { doughTypes } from "./recipeBook.js";
-import { doughStaminaCost } from "./stamina.js";
-import { names } from "./inventory.js";
-import { beginDough, knead, addTopping } from "./baking.js";
+import { knead } from "./baking.js";
+import { showWorkbench, showToppings } from "./ui/workbench.js";
+import { stageRibbon } from "./ui/craftWidgets.js";
 export function showBaking(ui) {
   const s = ui.g.state,
     b = s.baking;
   if (!b) {
-    ui.panel(
-      "<h2>작은 화덕 · 반죽 준비</h2><p>빵·파이·쿠키 중 만들 반죽을 선택하세요.</p>" +
-        Object.entries(doughTypes)
-          .map(
-            ([key, d]) =>
-              `<p><b>${d.name} 반죽</b> · ${Object.entries(d.cost)
-                .map(([id, n]) => names[id] + " " + n)
-                .join(" + ")}</p>`,
-          )
-          .join("") +
-        `<p>반죽 1회 기력 ${doughStaminaCost} · 현재 ${s.stamina} · 최대 6개를 모아 오븐에서 구워요.</p>`,
-      [
-        ...Object.entries(doughTypes).map(([key, d]) => [
-          key === "bread" ? "재료 섞어 반죽 시작" : d.name + " 반죽 시작",
-          () => {
-            if (!beginDough(s, key))
-              ui.notify(
-                s.stamina < doughStaminaCost
-                  ? "기력이 부족해요."
-                  : "반죽 재료가 부족해요. 잡화점에서 구매해 주세요.",
-              );
-            ui.show("oven");
-          },
-        ]),
-        ["오븐 관리 · 최대 6개 굽기", () => ui.show("ovenBatch")],
-        ["반죽·빵 창고 확인", () => ui.show("warehouse")],
-      ],
-    );
+    showWorkbench(ui);
     return;
   }
-  if (b.phase === "kneading") {
-    ui.panel(
-      '<h2>반죽 치대기</h2><p>반죽 위에서 마우스를 누른 채 좌우로 여러 번 문질러 주세요.</p><canvas id="dough" width="520" height="230" aria-label="마우스로 드래그하여 반죽하기"></canvas><progress id="knead-progress" max="100" value="' +
-        b.progress +
-        '"></progress><p id="knead-label">반죽 ' +
-        Math.floor(b.progress) +
-        '%</p><p class="muted">닫아도 반죽과 사용한 재료는 유지됩니다. 메뉴에서 저장할 수 있어요.</p>',
-    );
-    attachDough(ui);
-    return;
-  }
+  ui.workbenchTab = b.type || "bread";
   if (b.phase === "topping") {
-    ui.panel(
-      `<h2>토핑 선택</h2><p>${doughTypes[b.type || "bread"].name} 반죽 완성! 속재료 또는 토핑을 하나 선택하세요.</p>`,
-      Object.entries(doughTypes[b.type || "bread"].finishes).map(
-        ([type, finish]) => [finish.name, () => choose(type)],
-      ),
-    );
+    showToppings(ui);
     return;
   }
-  function choose(type) {
-    if (!addTopping(s, type)) ui.notify("토핑 재료가 부족해요");
-    else
-      ui.notify(
-        "완성한 반죽을 창고에 보관했어요. 다음 반죽을 만들거나 오븐에 넣어 주세요.",
-      );
-    ui.show("oven");
-  }
+  ui.panel(
+    `<div class="panel-eyebrow">작업실 · 손끝으로 만드는 한 조각</div><h2>반죽 치대기</h2>${stageRibbon(1)}<p>반죽 위에서 마우스를 누른 채 좌우로 문질러 주세요.</p><canvas id="dough" width="520" height="230" aria-label="마우스로 드래그하여 반죽하기"></canvas><progress id="knead-progress" max="100" value="${b.progress}"></progress><p id="knead-label">반죽 ${Math.floor(b.progress)}%</p><p class="muted">닫아도 진행도와 사용한 재료가 유지됩니다.</p>`,
+  );
+  attachDough(ui);
 }
 function attachDough(ui) {
   const canvas = ui.overlay.querySelector("#dough"),

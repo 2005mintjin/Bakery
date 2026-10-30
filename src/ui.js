@@ -37,7 +37,7 @@ export class UI {
     this.g.keys.clear();
     this.overlay.hidden = false;
     this.overlay.innerHTML =
-      '<section class="panel">' +
+      '<section class="panel" role="dialog" aria-modal="true">' +
       html +
       '<div class="actions panel-actions"></div></section>';
     for (const [label, fn] of [
@@ -50,7 +50,33 @@ export class UI {
       b.onclick = fn;
       this.overlay.querySelector(".panel-actions").append(b);
     }
-    this.overlay.querySelector("button")?.focus();
+    const heading = this.overlay.querySelector("h2");
+    if (heading) {
+      heading.id = "panel-heading";
+      this.overlay
+        .querySelector(".panel")
+        .setAttribute("aria-labelledby", "panel-heading");
+    }
+    this.overlay.onkeydown = (e) => {
+      if (e.key !== "Tab") return;
+      const focusable = [
+        ...this.overlay.querySelectorAll(
+          'button:not(:disabled):not([tabindex="-1"]),input:not(:disabled),select:not(:disabled),[tabindex="0"]',
+        ),
+      ].filter((el) => !el.hidden && el.getClientRects().length);
+      if (!focusable.length) return;
+      if (e.shiftKey && document.activeElement === focusable[0]) {
+        e.preventDefault();
+        focusable.at(-1).focus();
+      } else if (!e.shiftKey && document.activeElement === focusable.at(-1)) {
+        e.preventDefault();
+        focusable[0].focus();
+      }
+    };
+    (
+      this.overlay.querySelector('[role="tab"][aria-selected="true"]') ||
+      this.overlay.querySelector("button")
+    )?.focus({ preventScroll: true });
   }
   show(type) {
     if (!["parcel", "supplies", "cafe"].includes(type))

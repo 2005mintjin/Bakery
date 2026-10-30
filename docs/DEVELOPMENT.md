@@ -22,8 +22,10 @@
 | 패널 공통 생성·닫기·알림 | `src/ui.js` |
 | 화면 종류 등록 | `src/ui/screens.js` |
 | 저장 메뉴·음악 설정 화면 | `src/ui/screens/settings.js` |
-| 가방·퀘스트 목록 화면 | `src/ui/screens/journal.js` |
-| 창고·진열·개점 화면 | `src/ui/screens/bakery.js` |
+| 가방·물건 상세 | `src/ui/screens/inventory.js` |
+| 퀘스트 목록 | `src/ui/screens/journal.js` |
+| 반죽·빵 창고 | `src/ui/screens/warehouse.js` |
+| 진열·개점 화면 | `src/ui/screens/bakery.js` |
 | 재료 구매·소포 화면 | `src/ui/screens/services.js` |
 | 상태 표시·상호작용 안내 | `src/ui/hud.js`, `src/ui/hints.js` |
 | 글자별 목소리·별칭·샘플 | `src/dialogueVoice.js`, `data/voices.json`, `assets/audio/voices/` |
@@ -36,6 +38,10 @@
 | 기력·수면·폐점·시계 경과 | `src/stamina.js`, `src/wellbeing.js`, `src/ui/screens/rest.js` |
 | 시간별 노을·밤·새벽 | `src/render/daylight.js` |
 | 카페 상품·기력 회복 화면 | `data/cafeItems.json`, `src/ui/screens/cafe.js` |
+| 레시피북·토핑 카드 | `src/ui/workbench.js` |
+| 공통 종류 탭·아이콘·재료·단계 표시 | `src/ui/craftWidgets.js`, `assets/ui/` |
+| 웹페이지·공통 양피지 테마 | `index.html`, `src/styles/theme.css` |
+| 제작·오븐·창고·가방 레이아웃 | `src/styles/crafting.css` |
 | 일괄 오븐·종류별 수량 입력 | `src/ovenUI.js`, `src/baking.js` |
 | 반죽·오븐 저장 검증/이관 | `src/save/bakingState.js` |
 | 반죽 종류·제품 ID·속재료 규칙 | `src/recipeBook.js`, `src/baking.js` |
@@ -83,6 +89,7 @@ node --test tests/server.test.js
 
 | 수정 영역 | 실제 브라우저 검사 |
 | --- | --- |
+| 새 UI·탭/키보드·혼합 선택 유지/제한·좁은 화면 반죽 | `node tools/check-ui-browser.mjs` |
 | 파이·쿠키·건조·8명 방문·수량 판매·진열 배경/UI | `node tools/check-expansion-browser.mjs` |
 | 반죽 재고·혼합 6개·실제 60초·동시 반죽·이관 | `node tools/check-batch-browser.mjs` |
 | 실제 목소리 디코딩·글자 동기화·무음·중단 | `node tools/check-voices-browser.mjs` |
@@ -130,3 +137,6 @@ node --test tests/server.test.js
 건조는 `oven.kind: "drying"`과 `batch.driedberry`를 사용합니다. 시작 시 생베리를 차감하고 수령 시에만 재료 가방에 말린 베리를 넣습니다. 굽기와 건조는 같은 슬롯을 사용하며 동시에 실행하지 않습니다. 상태 검증은 `save/bakingState.js`에서 종류별로 처리합니다.
 
 새 판매실은 첨부된 배경 그대로 그립니다. `counterArt.js`는 손님과 계산대 앞 레이어만 그리며 음식 재고를 배경에 추가하지 않습니다. 재고·주문은 `bakeryHud.js`의 DOM 패널, 수량 진열·회수는 `ui/screens/shelf.js`가 담당합니다. 이미지 속 음식 수와 실제 재고를 연결하지 않습니다.
+
+### UI 수정 시 주의
+`theme.css`는 공통 색상·프레임, `crafting.css`는 제작/창고/가방 배치만 담당합니다. 기존 스타일 파일 뒤에 불러옵니다. 탭 선택과 오븐의 미확정 수량은 UI 인스턴스에만 두며, 탭 변경으로 게임 재료나 기력을 차감하지 않습니다. 굽기 확정은 기존 `putInOven` 규칙을 사용합니다. 저장을 불러와 상태 객체가 바뀌면 미확정 선택은 초기화합니다.
