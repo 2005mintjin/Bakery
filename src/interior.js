@@ -28,7 +28,14 @@ export function changeBakeryRoom(s) {
   return false;
 }
 export const interiorActions = {
-  workshop: [["workshop", "⚒ 도구와 오븐 개량", "도구를 사고 오븐을 개선해요"]],
+  workshop: [
+    ["moldTalk", "소마와 대화 · 제빵용 틀", "왼쪽 틀 상인과 대화해요"],
+    [
+      "furnaceTalk",
+      "크레마토리와 대화 · 오븐 개량",
+      "오른쪽 화로 장인과 대화해요",
+    ],
+  ],
   cafe: [
     [
       "cafeTalk",
@@ -46,7 +53,11 @@ export const interiorActions = {
     ["warehouse", "빵 창고", "보관한 빵을 꺼내요"],
   ],
   post: [
-    ["postTalk", "우체국 직원과 대화", "대화한 뒤 오늘 도착한 소포를 받아요"],
+    [
+      "postTalk",
+      "우체국 직원 료와 대화",
+      "대화한 뒤 오늘 도착한 소포를 받아요",
+    ],
   ],
   store: [
     [

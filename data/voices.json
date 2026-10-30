@@ -16,8 +16,8 @@
       "aliases": ["데셰네", "바리스타"]
     },
     "post-clerk": {
-      "asset": "assets/audio/voices/post-clerk.mp3",
-      "aliases": ["하나", "우체국 직원"]
+      "asset": "assets/audio/voices/ryo.mp3",
+      "aliases": ["료", "ryo", "우체국 직원"]
     },
     "arien": {
       "asset": "assets/audio/voices/arien.mp3",
@@ -33,6 +33,14 @@
       "asset": "assets/audio/voices/erina.mp3",
       "aliases": ["에리나"],
       "gain": 2
+    },
+    "soma": {
+      "asset": "assets/audio/voices/soma.mp3",
+      "aliases": ["소마", "제빵용 틀 상인"]
+    },
+    "crematory": {
+      "asset": "assets/audio/voices/crematory.mp3",
+      "aliases": ["크레마토리", "크레마", "크리마"]
     }
   }
 }

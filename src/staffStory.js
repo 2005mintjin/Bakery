@@ -32,11 +32,12 @@ export function validateStaffStories(stories) {
   return true;
 }
 export class StaffStory {
-  constructor(g, scene) {
+  constructor(g, key) {
     this.g = g;
-    this.scene = scene;
-    this.staff = g.data.serviceDialogues.staff[scene];
-    this.story = g.data.staffStories[scene];
+    this.key = key;
+    this.staff = g.data.serviceDialogues.staff[key];
+    this.scene = this.staff.location || key;
+    this.story = g.data.staffStories[key];
     this.lastPage = { text: "" };
   }
   start() {
@@ -101,9 +102,15 @@ export class StaffStory {
       );
       return;
     }
-    if (node.action === "shop" && ["store", "cafe"].includes(this.scene)) {
-      g.ui.serviceAccess = this.scene;
-      g.ui.show(this.scene === "store" ? "supplies" : "cafe");
+    if (node.action === "shop") {
+      const panel =
+        this.staff.shopPanel || { store: "supplies", cafe: "cafe" }[this.scene];
+      if (!panel) {
+        g.ui.close();
+        return;
+      }
+      g.ui.serviceAccess = this.key;
+      g.ui.show(panel);
       return;
     }
     if (node.next) {

@@ -1,3 +1,4 @@
+import { webSavePrefix } from "../edition.js";
 import { validate } from "./validate.js";
 import { browserMode } from "./mode.js";
 import { createBrowserSlots } from "./browserSlots.js";
@@ -5,7 +6,7 @@ let webStore;
 const browserStore = () =>
   (webStore ??= createBrowserSlots(
     globalThis.localStorage,
-    "little-hearth:web:" + new URL("./", globalThis.location.href).pathname,
+    webSavePrefix + new URL("./", globalThis.location.href).pathname,
   ));
 async function request(path, options) {
   const r = await fetch("/api/saves" + path, options);
@@ -24,3 +25,8 @@ export const saveSlot = async (id, s) =>
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(validate(s)),
       });
+
+export const deleteSlot = async (id) =>
+  browserMode
+    ? browserStore().deleteSlot(id)
+    : request("/" + id, { method: "DELETE" });

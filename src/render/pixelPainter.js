@@ -4,7 +4,7 @@ export class PixelPainter {
     this.c.fillStyle = color;
     this.c.fillRect(Math.round(x), Math.round(y), w, h);
   }
-  text(t, x, y, color = "#fff4d4", size = 12) {
+  text(t, x, y, color = "#fff4d4", size = 16) {
     this.c.fillStyle = color;
     this.c.font = `${size}px "휴먼편지체", "Human Pyeonji", "Malgun Gothic", sans-serif`;
     this.c.textAlign = "center";

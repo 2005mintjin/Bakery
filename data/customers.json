@@ -28,11 +28,11 @@
     }
   },
   {
-    "name": "하나",
+    "name": "료",
     "portrait": "post-clerk",
-    "portraitAsset": "assets/characters/clerks/post-clerk.png",
-    "spriteAsset": "assets/characters/visitors/post-clerk-sd.png",
-    "spriteBounds": [0, 25, 1275, 1189],
+    "portraitAsset": "assets/characters/clerks/ryo.png",
+    "spriteAsset": "assets/characters/visitors/ryo-sd.png",
+    "spriteBounds": [0, 0, 1151, 1338],
     "preferences": {
       "fishpie": 4
     }
@@ -76,5 +76,25 @@
     "preferences": {
       "chococookie": 2
     }
+  },
+  {
+    "name": "소마",
+    "portrait": "soma",
+    "portraitAsset": "assets/characters/clerks/soma.png",
+    "spriteAsset": "assets/characters/visitors/soma-sd.png",
+    "preferences": {
+      "fishpie": 4
+    },
+    "spriteBounds": [0, 0, 1192, 1293]
+  },
+  {
+    "name": "크레마토리",
+    "portrait": "crematory",
+    "portraitAsset": "assets/characters/clerks/crematory.png",
+    "spriteAsset": "assets/characters/visitors/crematory-sd.png",
+    "preferences": {
+      "honeybread": 2
+    },
+    "spriteBounds": [0, 12, 1296, 1187]
   }
 ]

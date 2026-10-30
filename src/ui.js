@@ -1,5 +1,9 @@
 import { presentDialogue } from "./dialogueView.js";
-import { hasStaffAccess, openStaffDialogue } from "./serviceDialogue.js";
+import {
+  hasStaffAccess,
+  openStaffDialogue,
+  staffServices,
+} from "./serviceDialogue.js";
 import { screens } from "./ui/screens.js";
 import { updateHud } from "./ui/hud.js";
 export class UI {
@@ -79,15 +83,11 @@ export class UI {
     )?.focus({ preventScroll: true });
   }
   show(type) {
-    if (!["parcel", "supplies", "cafe"].includes(type))
-      this.serviceAccess = null;
-    if (["parcel", "supplies", "cafe"].includes(type)) {
-      const scene =
-        type === "parcel" ? "post" : type === "supplies" ? "store" : "cafe";
-      if (!hasStaffAccess(this.g, type)) {
-        openStaffDialogue(this.g, scene);
-        return;
-      }
+    const target = staffServices[type];
+    if (!target) this.serviceAccess = null;
+    else if (!hasStaffAccess(this.g, type)) {
+      openStaffDialogue(this.g, target.key);
+      return;
     }
     this.currentPanel = type;
     screens[type]?.(this);

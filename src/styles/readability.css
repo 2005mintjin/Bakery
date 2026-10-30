@@ -1,0 +1,363 @@
+/* Shared readable text sizes; loaded last so small-screen rules do not shrink labels. */
+:root {
+  --text-body: 16px;
+  --text-small: 14px;
+  font-size: 16px;
+}
+body,
+button,
+input,
+select {
+  font-size: var(--text-body);
+}
+p,
+.muted,
+.panel p,
+.row p {
+  font-size: var(--text-body);
+  line-height: 1.8;
+}
+h1 {
+  font-size: 34px;
+}
+.panel h2 {
+  font-size: 28px;
+}
+.panel h3 {
+  font-size: 21px;
+}
+.eyebrow,
+.heading .eyebrow,
+.chapter-label,
+.panel-eyebrow,
+.brand small,
+.masthead-note,
+.plaque-label,
+.sidebar-note,
+.cards article > span,
+footer,
+kbd {
+  font-size: var(--text-small);
+  letter-spacing: 0.06em;
+}
+.brand {
+  font-size: 30px;
+}
+.brand small {
+  letter-spacing: 0.1em;
+}
+.header-tools button,
+.side-menu button,
+.craft-tabs button,
+.inventory-filters button {
+  font-size: 16px;
+}
+.side-menu h2 {
+  font-size: 26px;
+}
+.side-menu h2 small {
+  font-size: 14px;
+}
+.side-menu button {
+  white-space: normal;
+  text-align: left;
+}
+#status [data-day] {
+  font-size: 28px;
+}
+#status [data-clock],
+#status [data-money],
+.energy-meter span {
+  font-size: 16px;
+}
+#location,
+#toast,
+#hint {
+  font-size: 14px;
+  line-height: 1.5;
+}
+#hint {
+  max-width: 90%;
+  white-space: normal;
+  text-align: center;
+}
+#interior-actions button,
+#interior-actions .room-arrow {
+  font-size: 16px;
+  max-width: 42%;
+  white-space: normal;
+  line-height: 1.5;
+}
+#bakery-console .bakery-summary,
+#bakery-console button,
+.shelf-row span,
+.shelf-row button {
+  font-size: 16px;
+}
+#bakery-console .bakery-stock span,
+#bakery-console small {
+  font-size: 14px;
+}
+.panel-actions button,
+.recipe-card button,
+.dialogue-choice,
+.card-actions button {
+  font-size: 16px;
+  line-height: 1.5;
+  min-height: 42px;
+  white-space: normal;
+}
+#typed-dialogue {
+  font-size: 20px;
+  line-height: 1.85;
+  min-height: 110px;
+}
+.speaker-chip,
+#dialogue-page {
+  font-size: 15px;
+}
+:is(.panel, .game-sidebar, #bakery-console) small {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.craft-stages li {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.craft-stages li::before {
+  min-width: 22px;
+}
+.recipe-illustration > span,
+.recipe-illustration p,
+.recipe-preparation h3,
+.recipe-preview > span,
+.energy-note,
+.ingredient-chip,
+.recipe-card p,
+.recipe-card .ingredient-chip,
+.stock-overview,
+.stock-counts dt,
+.batch-products span,
+.empty-state,
+.quantity-field,
+.item-detail p,
+.item-detail dl,
+.sale-menu span {
+  font-size: 16px;
+  line-height: 1.65;
+}
+.recipe-card h3,
+.workshop-goods h3 {
+  font-size: 21px;
+}
+.recipe-card .ingredient-chip {
+  gap: 6px;
+  overflow-wrap: anywhere;
+}
+.recipe-preview small {
+  font-size: 14px;
+}
+.inventory-slot {
+  min-height: 112px;
+}
+.inventory-slot span,
+.inventory-slot b,
+.item-kind {
+  font-size: 14px;
+}
+.inventory-slot span {
+  overflow-wrap: anywhere;
+}
+.inventory-slot b {
+  background: #f4dfbc;
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+.item-detail h3 {
+  font-size: 25px;
+}
+.quantity-field input {
+  font-size: 18px;
+}
+.sale-menu label {
+  align-items: flex-start;
+}
+.sale-menu small {
+  font-size: 14px;
+}
+.stock-overview {
+  flex-wrap: wrap;
+}
+.demo-badge {
+  font-size: 14px;
+  color: #f5e4c7;
+  border: 1px solid #b7935c;
+  background: #5b4230;
+  padding: 7px 12px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+@media (max-width: 1000px) {
+  .play-layout {
+    grid-template-columns: minmax(0, 1fr) 220px;
+  }
+  .header-tools kbd {
+    display: none;
+  }
+}
+@media (max-width: 760px) {
+  .heading {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .heading h1 {
+    font-size: 29px;
+  }
+  .brand {
+    font-size: 25px;
+    letter-spacing: 1px;
+  }
+  .brand small {
+    font-size: 11px;
+  }
+  .site-masthead {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .header-tools button {
+    font-size: 14px;
+  }
+  .game-sidebar {
+    grid-template-columns: 1fr;
+  }
+  .side-menu {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .side-menu h2,
+  .side-menu .menu-divider {
+    grid-column: 1/-1;
+  }
+  .side-menu button {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
+  .panel {
+    padding: 26px 18px;
+  }
+  .panel h2 {
+    font-size: 25px;
+  }
+  .panel-actions button {
+    font-size: 16px;
+  }
+  .cards p,
+  .cards article > span,
+  footer {
+    font-size: 14px;
+  }
+  .craft-stages {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .craft-stages li {
+    font-size: 14px;
+  }
+  .recipe-preview {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .recipe-grid {
+    grid-template-columns: 1fr;
+  }
+  .recipe-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 18px;
+    gap: 5px;
+  }
+  .recipe-card > img {
+    width: 85px;
+    height: 65px;
+  }
+  .recipe-card button {
+    font-size: 16px;
+  }
+  .recipe-card .ingredient-chips {
+    gap: 10px;
+  }
+  .inventory-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .sale-menu {
+    grid-template-columns: 1fr;
+  }
+  .sale-menu span {
+    font-size: 16px;
+  }
+  .workbench-layout {
+    grid-template-columns: 1fr;
+  }
+  .recipe-illustration {
+    display: none;
+  }
+  .drying-card {
+    flex-wrap: wrap;
+  }
+  .dialogue-next-row {
+    flex-wrap: wrap;
+  }
+  #typed-dialogue {
+    font-size: 19px;
+  }
+  #location {
+    font-size: 13px;
+    max-width: 60%;
+  }
+  #toast {
+    font-size: 14px;
+    max-width: 80%;
+    top: 45px;
+  }
+  #hint {
+    font-size: 13px;
+    bottom: 5px;
+  }
+  #interior-actions button,
+  #interior-actions .room-arrow {
+    font-size: 14px;
+    padding: 6px 9px;
+  }
+  .craft-tabs button {
+    min-width: 0;
+    gap: 5px;
+    padding: 10px 6px;
+  }
+  .stock-counts {
+    gap: 24px;
+  }
+}
+.panel .panel-eyebrow,
+.side-menu button kbd {
+  font-size: 14px;
+}
+.cards p {
+  font-size: 16px;
+}
+.cards h3 {
+  font-size: 21px;
+}
+.heading h1 {
+  font-size: 34px;
+}
+@media (max-width: 760px) {
+  .heading h1 {
+    font-size: 29px;
+  }
+  .cards p {
+    font-size: 16px;
+  }
+}

@@ -2,6 +2,8 @@ import { repairPosition } from "./sceneManager.js";
 import { fresh, slots, saveSlot, loadSlot, load } from "./saveSystem.js";
 import { browserMode, saveLocation } from "./save/mode.js";
 import { importSave } from "./ui/saveTransfer.js";
+import { showSaveDelete } from "./ui/saveDelete.js";
+import { demoEdition } from "./edition.js";
 export async function title(g) {
   g.started = false;
   g.music?.stop();
@@ -34,6 +36,7 @@ export async function title(g) {
         }
       },
     ]);
+    actions.push(["세이브 삭제", () => showSaveDelete(g.ui, () => title(g))]);
     actions.push([
       "세이브 파일 가져오기",
       () => importSave(g.ui, () => title(g)),
@@ -56,7 +59,7 @@ export async function title(g) {
       },
     ]);
     g.ui.panel(
-      `<div class="title-mark">✦</div><span class="eyebrow">LITTLE HEARTH · SECOND CHAPTER</span><h2>작은 화덕</h2><p>빵 한 조각, 새로운 이웃, 그리고 당신의 이야기.</p><p class="muted">세이브를 골라 시작하세요. ${saveLocation()}</p>`,
+      `<div class="title-mark">✦</div><span class="eyebrow">LITTLE HEARTH · SECOND CHAPTER</span><h2>작은 화덕${demoEdition ? " · 데모" : ""}</h2><p>빵 한 조각, 새로운 이웃, 그리고 당신의 이야기.</p><p class="muted">세이브를 골라 시작하세요. ${saveLocation()}</p>`,
       actions,
     );
   } catch {

@@ -1,9 +1,17 @@
+import { demoEdition } from "./edition.js";
 import { loadGameData } from "./app/loadData.js";
 import { createGame } from "./app/createGame.js";
 import { bindInput } from "./app/input.js";
 import { startGameLoop } from "./app/gameLoop.js";
 import { title } from "./title.js";
 async function boot() {
+  if (demoEdition) {
+    document.title += " · 데모";
+    const badge = document.createElement("span");
+    badge.className = "demo-badge";
+    badge.textContent = "DEMO · 테스트판";
+    document.querySelector(".heading").append(badge);
+  }
   const data = await loadGameData();
   const { game, renderer } = await createGame(data);
   title(game);

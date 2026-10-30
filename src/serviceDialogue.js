@@ -26,9 +26,20 @@ export function resolveCustomerReply(s, action, recipes) {
   }
   return "unavailable";
 }
+export const staffServices = {
+  parcel: { key: "post", scene: "post" },
+  supplies: { key: "store", scene: "store" },
+  cafe: { key: "cafe", scene: "cafe" },
+  workshopMolds: { key: "mold", scene: "workshop" },
+  workshopOven: { key: "furnace", scene: "workshop" },
+};
 export function hasStaffAccess(g, panel) {
-  const scene = { parcel: "post", supplies: "store", cafe: "cafe" }[panel];
-  return !!scene && g.state.scene === scene && g.ui.serviceAccess === scene;
+  const target = staffServices[panel];
+  return (
+    !!target &&
+    g.state.scene === target.scene &&
+    g.ui.serviceAccess === target.key
+  );
 }
 function escape(text) {
   return String(text).replace(
@@ -109,7 +120,8 @@ export function openCustomerDialogue(g) {
   render();
 }
 export function openStaffDialogue(g, scene) {
-  if (!g.data.serviceDialogues.staff[scene] || g.state.scene !== scene) {
+  const staff = g.data.serviceDialogues.staff[scene];
+  if (!staff || g.state.scene !== (staff.location || scene)) {
     g.ui.notify("해당 장소의 직원에게 먼저 말을 걸어 주세요");
     return;
   }
