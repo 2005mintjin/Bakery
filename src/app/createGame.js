@@ -1,3 +1,4 @@
+import { DialogueVoice } from "../dialogueVoice.js";
 import { loadResidentArt } from "../residentArt.js";
 import { loadStaffArt } from "../staffArt.js";
 import { gardenAssets } from "../gardenArt.js";
@@ -21,6 +22,10 @@ export async function createGame(data) {
   g.music.audio.hidden = true;
   document.body.append(g.music.audio);
   g.fx = new Effects(g.music);
+  g.voices = new DialogueVoice(data.voices, g.music, {
+    getContext: () => g.fx.context,
+    onError: (message) => g.ui.notify(message),
+  });
 
   configureWorld(data.worldMaps);
   const backgrounds = { ...data.worldMaps, ...data.interiorBackgrounds };

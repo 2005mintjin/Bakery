@@ -7,7 +7,7 @@ export function showAudio(ui) {
   {
     const music = ui.g.music;
     ui.panel(
-      '<h2>배경음악</h2><p id="music-title"></p><label class="volume-label">음량 <input id="music-volume" aria-label="배경음악 음량" type="range" min="0" max="100" step="1"><output id="music-value"></output></label><p class="muted">마을: Sunlight on Cobblestones / 빵집: Midnight at the Parlour<br>판매실과 작업실 사이에서는 같은 곡이 이어집니다.</p>',
+      '<h2>배경음악</h2><p id="music-title"></p><label class="volume-label">음량 <input id="music-volume" aria-label="배경음악 음량" type="range" min="0" max="100" step="1"><output id="music-value"></output></label><p class="muted">마을: Sunlight on Cobblestones / 빵집: Midnight at the Parlour<br>판매실과 작업실 사이에서는 같은 곡이 이어집니다.<br>음량·음소거는 대화 목소리와 노크음에도 적용됩니다.</p>',
       [
         [
           music.muted ? "음소거 해제" : "음소거",

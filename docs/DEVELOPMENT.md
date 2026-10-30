@@ -26,6 +26,7 @@
 | 창고·진열·개점 화면 | `src/ui/screens/bakery.js` |
 | 재료 구매·소포 화면 | `src/ui/screens/services.js` |
 | 상태 표시·상호작용 안내 | `src/ui/hud.js`, `src/ui/hints.js` |
+| 글자별 목소리·별칭·샘플 | `src/dialogueVoice.js`, `data/voices.json`, `assets/audio/voices/` |
 | 대화 글자 출력·페이지·선택지 표시 | `src/dialogueSequence.js`, `src/dialogueView.js` |
 | 카페 바리스타·주문·대화 분기 | `data/staffStories.json`의 `cafe`, `data/serviceDialogues.json`의 `staff.cafe`, `src/staffStory.js` |
 | 직원 이야기와 분기 | `data/staffStories.json`, `src/staffStory.js` |
@@ -77,6 +78,7 @@ node --test tests/server.test.js
 
 | 수정 영역 | 실제 브라우저 검사 |
 | --- | --- |
+| 실제 목소리 디코딩·글자 동기화·무음·중단 | `node tools/check-voices-browser.mjs` |
 | 카페 원본 이미지·데셰네 전체 분기·주문·퇴장 | `node tools/check-cafe-browser.mjs` |
 | 시간대·기력·퇴근/수면·카페·손님 SD/초상 | `node tools/check-wellbeing-browser.mjs` |
 | 마리아·이시도로 이미지/부탁/취소/재방문·저장 | `node tools/check-town-browser.mjs` |
@@ -85,7 +87,7 @@ node --test tests/server.test.js
 | 캐릭터 크기·색감·좌우 반전 | `node tools/check-player-browser.mjs` |
 | 손님 상반신·계산대 가림·진열 그림 | `node tools/check-counter-browser.mjs` |
 
-별도 설치된 도구는 `BAKERY_PLAYWRIGHT_MODULE`에 Playwright 모듈 URL, `BAKERY_BROWSER`에 Chromium 실행 경로를 지정할 수 있습니다. 카페/기력/주민/서비스/제작 검사는 슬롯 3을 잠시 사용하고 원본을 복원합니다. 이 검사들은 동시에 실행하지 않고, 다른 플레이어가 슬롯 3을 사용하는 중에도 실행하지 않습니다. 서버 API 테스트는 임시 폴더와 임시 포트를 사용하며 개인 세이브를 건드리지 않습니다.
+별도 설치된 도구는 `BAKERY_PLAYWRIGHT_MODULE`에 Playwright 모듈 URL, `BAKERY_BROWSER`에 Chromium 실행 경로를 지정할 수 있습니다. 목소리/카페/기력/주민/서비스/제작 검사는 슬롯 3을 잠시 사용하고 원본을 복원합니다. 이 검사들은 동시에 실행하지 않고, 다른 플레이어가 슬롯 3을 사용하는 중에도 실행하지 않습니다. 서버 API 테스트는 임시 폴더와 임시 포트를 사용하며 개인 세이브를 건드리지 않습니다.
 
 ## 패치와 저장 호환
 
@@ -99,3 +101,9 @@ node --test tests/server.test.js
 ## 이번 구조 정리 검증
 
 기존 시스템 42개와 격리된 서버 API 테스트 4개, 전체 JavaScript 구문 검사를 통과했습니다. Chromium에서 대화·거래·제빵·농사·저장 복원·좁은 화면, 캐릭터 프레임과 카운터 가림을 검사했습니다. Windows PC에서 배치 파일을 직접 실행하지는 못했으며, 두 배치 파일의 바이트와 ASCII/CRLF 형식은 기존 그대로입니다.
+
+## 목소리 변경
+
+`voices.json`의 `speakers`에 샘플 경로와 캐릭터 이름 별칭을 지정합니다. 배우 이름은 `page.speaker`를 우선하고 없으면 `actor.name`을 사용합니다. 세 자매처럼 한 페이지에 여러 화자가 있으면 줄 앞의 이름표로 구분합니다. 이름표 자체와 구두점은 소리 내지 않습니다. 나레이션에는 `kind: "narration"`을 지정합니다. 임의의 주민에게 다른 인물의 목소리를 대신 붙이지 않습니다.
+
+`dialogueView.js`는 자연 출력으로 새로 나타난 글자만 재생 모듈에 전달합니다. 건너뛰기로 늘어난 글자 수를 오디오에 전달하지 않습니다. 닫기·페이지 전환·탭 숨김 시 예약된 소리까지 중단해야 하며, 음성 캐시나 오디오 노드는 세이브에 넣지 않습니다. 긴 샘플도 한 글자 간격보다 길게 겹치지 않습니다.

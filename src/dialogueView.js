@@ -1,3 +1,4 @@
+import { voicePlan } from "./dialogueVoice.js";
 import { DialogueSequence } from "./dialogueSequence.js";
 function escape(text) {
   return String(text).replace(
@@ -25,6 +26,11 @@ export function presentDialogue(ui, actor, pages, actions = [], options = {}) {
     `<div class="portrait-scene indoor dialogue-portrait"><img src="${escape(asset)}" alt="${escape(actor.name)}"></div><div class="speaker-chips">${chips}</div><h2><span id="dialogue-speaker"></span> <small class="muted">${escape(options.role || actor.role || "")}</small></h2><div id="typed-dialogue" class="dialogue-text" aria-live="polite"></div><div class="dialogue-next-row"><span id="dialogue-page" class="muted"></span><button id="dialogue-next" type="button" aria-label="다음">다음 <kbd>SPACE</kbd></button></div><div id="dialogue-choices" class="actions" hidden></div>`,
     [],
   );
+  const voices = ui.g.voices;
+  const voiceSession = voices?.begin();
+  const voicePlans = voices
+    ? model.pages.map((page) => voicePlan(page, actor, voices.config))
+    : [];
   const root = ui.overlay,
     body = root.querySelector("#typed-dialogue"),
     speaker = root.querySelector("#dialogue-speaker"),
@@ -41,9 +47,11 @@ export function presentDialogue(ui, actor, pages, actions = [], options = {}) {
       if (disposed) return;
       disposed = true;
       cancelAnimationFrame(frame);
+      voices?.end(voiceSession);
     },
     advance() {
       if (disposed) return;
+      voices?.silence(voiceSession);
       model.advance();
       render();
     },
@@ -130,7 +138,16 @@ export function presentDialogue(ui, actor, pages, actions = [], options = {}) {
     if (disposed) return;
     const dt = Math.min(now - last, 100);
     last = now;
-    if (!document.hidden) model.tick(dt);
+    if (!document.hidden) {
+      const before = model.count;
+      model.tick(dt);
+      if (model.count > before)
+        voices?.type(
+          voiceSession,
+          voicePlans[model.index].slice(before, model.count),
+          model.interval / 1000,
+        );
+    }
     render();
     if (!disposed) frame = requestAnimationFrame(animate);
   }

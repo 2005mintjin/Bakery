@@ -1,10 +1,14 @@
 import { isInterior } from "../interior.js";
 import { interact } from "./interactions.js";
 export function bindInput(g) {
-  document.addEventListener("pointerdown", () => g.fx.unlock(), {
+  const unlockAudio = () => {
+    g.fx.unlock();
+    g.voices?.unlock();
+  };
+  document.addEventListener("pointerdown", unlockAudio, {
     capture: true,
   });
-  document.addEventListener("keydown", () => g.fx.unlock(), { capture: true });
+  document.addEventListener("keydown", unlockAudio, { capture: true });
   document.querySelectorAll("[data-panel]").forEach(
     (b) =>
       (b.onclick = () => {
@@ -42,6 +46,7 @@ export function bindInput(g) {
   addEventListener("blur", () => g.keys.clear());
   document.addEventListener("visibilitychange", () => {
     g.keys.clear();
+    if (document.hidden) g.voices?.silence();
     g.music.setSuspended(document.hidden);
   });
 }
