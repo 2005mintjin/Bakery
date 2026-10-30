@@ -106,7 +106,7 @@ node --test tests/server.test.js
 | 새 UI·탭/키보드·혼합 선택 유지/제한·좁은 화면 반죽 | `node tools/check-ui-browser.mjs` |
 | 파이·쿠키·건조·8명 방문·수량 판매·진열 배경/UI | `node tools/check-expansion-browser.mjs` |
 | 반죽 재고·혼합 6개·실제 60초·동시 반죽·이관 | `node tools/check-batch-browser.mjs` |
-| 실제 목소리 디코딩·글자 동기화·무음·중단 | `node tools/check-voices-browser.mjs` |
+| 새 직원·방문객 MP3 디코딩·글자 동기화·무음·중단 | `node tools/check-staff-voices-browser.mjs` |
 | 카페 원본 이미지·데셰네 전체 분기·주문·퇴장 | `node tools/check-cafe-browser.mjs` |
 | 시간대·기력·퇴근/수면·카페·손님 SD/초상 | `node tools/check-wellbeing-browser.mjs` |
 | 마리아·이시도로 이미지/부탁/취소/재방문·저장 | `node tools/check-town-browser.mjs` |
@@ -181,4 +181,6 @@ node --test tests/server.test.js
 
 `StaffStory`는 직원 키와 실제 장소를 분리합니다. `mold`/`furnace` 직원의 location은 모두 workshop이며, shopPanel은 각각 workshopMolds/workshopOven입니다. UI는 `staffServices` 매핑의 장소·직원 키로 접근 권한을 확인합니다. 매번 대화를 시작하면 권한을 초기화하고 상점 선택 후에만 해당 직원 키를 허용합니다. 틀 구매 화면에서 오븐 개량으로 바로 우회하지 않도록 확인하세요. 기존 post/store/cafe는 장소와 직원 키가 같습니다.
 
-새 방문객 ID는 soma/crematory이고, 우체국은 기존 post-clerk ID를 유지합니다. 저장의 기존 post-clerk 대기 주문은 이름만 료로 정규화하고 품목·수량·도착 단계는 유지합니다. 데이터 구조가 달라지지 않아 저장 버전은 8입니다. 세 신규 인물의 음성은 새 샘플이 제공되기 전까지 무음이며 기존 인물 음성을 재사용하지 않습니다. 회귀 검사는 staffStory/pastries 테스트와 check-new-staff-browser 도구를 사용합니다.
+새 방문객 ID는 soma/crematory이고, 우체국은 기존 post-clerk ID를 유지합니다. 저장의 기존 post-clerk 대기 주문은 이름만 료로 정규화하고 품목·수량·도착 단계는 유지합니다. 데이터 구조가 달라지지 않아 저장 버전은 8입니다. 세 신규 인물의 음성은 Downloads (11)의 MP3로 연결합니다. post-clerk 키의 asset은 ryo.mp3로 교체하고 료 별칭을 사용합니다. soma/crematory 키를 추가하고 크레마·크리마는 crematory의 별칭으로 처리합니다. 회귀 검사는 staffStory/pastries 테스트와 check-new-staff-browser 도구를 사용합니다.
+
+음성 검사는 개인 저장을 쓰지 않는 `check-staff-voices-browser.mjs`를 우선 사용합니다. 이 도구는 실제 AudioBufferSource 시작과 버퍼 키를 기록하여 직원/빵집 손님 모두 글자 수만큼 올바른 샘플이 시작되는지 검사합니다. 정적 데모 호스트를 자체 실행하며 세이브 형식은 바꾸지 않습니다.

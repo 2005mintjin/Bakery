@@ -79,8 +79,8 @@ function setup() {
   });
   return { ctx, voices, music, sources, gains, calls, errors };
 }
-test("all seven named MP3s are bundled with explicit character aliases and unknown people stay silent", () => {
-  assert.equal(Object.keys(config.speakers).length, 7);
+test("all nine named MP3s are bundled with explicit character aliases and unknown people stay silent", () => {
+  assert.equal(Object.keys(config.speakers).length, 9);
   for (const [key, record] of Object.entries(config.speakers)) {
     assert.ok(existsSync(new URL("../" + record.asset, import.meta.url)));
     for (const name of record.aliases)
@@ -150,8 +150,8 @@ test("sample loading caches decoded MP3s and unavailable audio does not break di
   const t = setup();
   await t.voices.unlock();
   await t.voices.unlock();
-  assert.equal(t.calls.length, 7);
-  assert.equal(t.voices.buffers.size, 7);
+  assert.equal(t.calls.length, Object.keys(config.speakers).length);
+  assert.equal(t.voices.buffers.size, Object.keys(config.speakers).length);
   assert.deepEqual(t.errors, []);
   const missing = new DialogueVoice(config, t.music, {
     getContext: () => null,
@@ -255,7 +255,7 @@ test("default browser fetch keeps the global receiver when loading named samples
       getContext: () => t.ctx,
     });
     await voices.unlock();
-    assert.equal(voices.buffers.size, 7);
+    assert.equal(voices.buffers.size, Object.keys(config.speakers).length);
   } finally {
     globalThis.fetch = original;
   }
@@ -274,4 +274,46 @@ test("only the three sisters get the configured twofold gain", async () => {
         (["arien", "sasha", "erina"].includes(key) ? 2 : 1),
     );
   }
+});
+
+test("new staff and bakery visitor names resolve to the supplied voices, with ellipses and narration silent", () => {
+  const service = JSON.parse(
+      readFileSync(new URL("../data/serviceDialogues.json", import.meta.url)),
+    ),
+    customers = JSON.parse(
+      readFileSync(new URL("../data/customers.json", import.meta.url)),
+    );
+  for (const [staff, id, key] of [
+    ["post", "post-clerk", "post-clerk"],
+    ["mold", "soma", "soma"],
+    ["furnace", "crematory", "crematory"],
+  ]) {
+    for (const actor of [
+      service.staff[staff],
+      customers.find((c) => c.portrait === id),
+    ])
+      assert.deepEqual(voicePlan({ text: "안녕!" }, actor, config), [
+        key,
+        key,
+        null,
+      ]);
+    assert.ok(
+      voicePlan({ text: "..." }, service.staff[staff], config).every(
+        (k) => k === null,
+      ),
+    );
+    assert.ok(
+      voicePlan(
+        { text: "고개를 돌린다.", kind: "narration" },
+        service.staff[staff],
+        config,
+      ).every((k) => k === null),
+    );
+  }
+  assert.ok(config.speakers["post-clerk"].asset.endsWith("/ryo.mp3"));
+  assert.ok(
+    voicePlan({ text: "안녕" }, { name: "하나" }, config).every(
+      (k) => k === null,
+    ),
+  );
 });
