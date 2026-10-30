@@ -185,8 +185,8 @@ test("three-piece order is atomic, pays unit price times quantity and cannot be 
   assert.equal(s.revenue, 42 * 3);
   assert.equal(serve(s, recipes), false);
 });
-test("all eight visitors have matching speech, quantity templates and supplied SD/portrait resources", () => {
-  assert.equal(customers.length, 8);
+test("all ten visitors have matching speech, quantity templates and supplied SD/portrait resources", () => {
+  assert.equal(customers.length, 10);
   for (const c of customers) {
     const line = orderText(dialogues, { ...c, bread: "berrypie", quantity: 3 });
     assert.ok(line.includes("베리 파이"));

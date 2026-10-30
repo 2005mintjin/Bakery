@@ -6,7 +6,7 @@
     "asset": "assets/backgrounds/interiors/reference-2.png"
   },
   "post": {
-    "asset": "assets/backgrounds/services/post-office.png"
+    "asset": "assets/backgrounds/services/ryo-post-office.png"
   },
   "store": {
     "asset": "assets/backgrounds/services/general-store.png"
@@ -15,6 +15,6 @@
     "asset": "assets/backgrounds/interiors/cafe.png"
   },
   "workshop": {
-    "asset": "assets/backgrounds/interiors/workshop.svg"
+    "asset": "assets/backgrounds/interiors/staff-workshop.png"
   }
 }

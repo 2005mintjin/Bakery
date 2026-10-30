@@ -172,3 +172,22 @@
   font-size: 11px;
   padding: 8px;
 }
+/* The supplied workshop already includes Soma on the left and Crematory on the right. */
+#interior-actions .spot-moldTalk {
+  left: 24%;
+  top: 66%;
+  max-width: 30%;
+}
+#interior-actions .spot-furnaceTalk {
+  right: 5%;
+  top: 59%;
+  max-width: 38%;
+}
+@media (max-width: 760px) {
+  #interior-actions .spot-moldTalk {
+    top: 58%;
+  }
+  #interior-actions .spot-furnaceTalk {
+    top: 40%;
+  }
+}

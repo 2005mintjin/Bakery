@@ -82,6 +82,8 @@ export function validate(input) {
           "sasha",
           "erina",
           "barista",
+          "soma",
+          "crematory",
         ].includes(customer.portrait))
     )
       throw Error("손상된 손님");
@@ -120,6 +122,7 @@ export function validate(input) {
   if (s.version < 5) s.stamina = base.stamina;
   else if (!nonnegative(s.stamina) || s.stamina > 100)
     throw Error("손상된 기력");
+  if (s.shop?.customer?.portrait === "post-clerk") s.shop.customer.name = "료";
   if (s.shop?.customer) {
     if (s.version < 7) s.shop.customer.quantity = 1;
     else if (

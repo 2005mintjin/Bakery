@@ -91,6 +91,8 @@ test("all quoted source lines and branch targets are included in the JSON story"
   for (const [scene, file] of [
     ["post", "post-dialogue.txt"],
     ["store", "store-dialogue.txt"],
+    ["mold", "mold-dialogue.txt"],
+    ["furnace", "furnace-dialogue.txt"],
   ]) {
     const source = readFileSync(
       new URL("../data/source/" + file, import.meta.url),
@@ -107,7 +109,7 @@ test("all quoted source lines and branch targets are included in the JSON story"
       );
   }
   assert.equal(stories.post.nodes.compliment.pages.length, 2);
-  assert.equal(stories.post.nodes.sister.pages.length, 3);
+  assert.equal(stories.post.nodes.sister.pages.length, 4);
   assert.equal(stories.store.nodes["erina-hesitate"].pages.length, 4);
   assert.equal(stories.store.nodes["erina-pet"].pages.length, 3);
 });
@@ -115,7 +117,7 @@ test("postal signing grants a parcel only after its response is advanced, once p
   const t = game("post"),
     s = t.g.state;
   openStaffDialogue(t.g, "post");
-  assert.equal(t.shown.pages[0].text, "안녕, 오늘도 소포가 왔던데?");
+  assert.equal(t.shown.pages[0].text, "너구리 왔네, 오늘도 소포 왔다?");
   t.choose("네, 서명할게요.");
   assert.equal(s.parcelDay, 0);
   assert.equal(s.items.flour, 12);
@@ -138,7 +140,7 @@ test("declining exits; unclaimed parcel remains available on a revisit; chat ret
   assert.equal(s.parcelDay, 0);
   s.scene = "post";
   openStaffDialogue(t.g, "post");
-  assert.equal(t.shown.pages[0].text, "어머, 못 받은 게 있었니?");
+  assert.equal(t.shown.pages[0].text, "뭐고, 못 받은 거 있었나?");
   assert.ok(t.shown.actions.some((x) => x[0] === "네, 서명할게요."));
   t.choose("잡담하기.");
   t.finish();
@@ -146,7 +148,7 @@ test("declining exits; unclaimed parcel remains available on a revisit; chat ret
   assert.equal(t.shown.pages.length, 2);
   t.finish();
   t.choose("저희 누나한테 편지는 안 오나요?");
-  assert.equal(t.shown.pages.length, 3);
+  assert.equal(t.shown.pages.length, 4);
   t.finish();
   t.choose("아무것도 아니에요.");
   t.finish();
@@ -204,4 +206,75 @@ test("v3 saves migrate visit records while keeping dough, crop and money; v4 pre
   assert.equal(validate(migrated).dialogueVisits.postDay, 1);
   migrated.dialogueVisits.postDay = -1;
   assert.throws(() => validate(migrated));
+});
+
+test("Soma dialogue handles fiance/hug/clothes loops and unlocks only the molds shop", () => {
+  const t = game("workshop"),
+    g = t.g;
+  openStaffDialogue(g, "mold");
+  assert.equal(t.shown.actor.name, "소마");
+  assert.equal(hasStaffAccess(g, "workshopMolds"), false);
+  t.choose("말 걸기");
+  t.finish();
+  t.choose("이시도로 씨한테 밭 빌려줘서 고맙다고 전해줘요.");
+  assert.equal(t.shown.pages.length, 3);
+  t.choose("곰한테 안기면 어떤 느낌이에요?");
+  assert.equal(t.shown.pages.length, 5);
+  assert.equal(t.shown.pages[2].text, "...");
+  t.finish();
+  t.choose("그렇구나.");
+  t.choose("옷이 되게 얇으시네요.");
+  assert.equal(t.shown.pages.length, 4);
+  t.finish();
+  t.choose("..됐어요.");
+  t.choose("제빵용 틀이 필요해서요.");
+  assert.equal(t.shown.type, "workshopMolds");
+  assert.equal(hasStaffAccess(g, "workshopMolds"), true);
+  assert.equal(hasStaffAccess(g, "workshopOven"), false);
+  g.ui.close();
+  assert.equal(hasStaffAccess(g, "workshopMolds"), false);
+});
+test("Crematory dialogue handles cafe/clothes and unlocks only oven upgrades; farewell exits the workshop", () => {
+  const t = game("workshop"),
+    g = t.g;
+  openStaffDialogue(g, "furnace");
+  assert.equal(t.shown.actor.name, "크레마토리");
+  t.choose("말을 걸어본다.");
+  t.finish();
+  t.choose("카페는 자주 들르시나요?");
+  assert.equal(t.shown.pages.length, 3);
+  t.finish();
+  t.choose("옷이 되게 두꺼우시네요.");
+  assert.equal(t.shown.pages.length, 5);
+  t.finish();
+  t.choose("..됐어요.");
+  assert.equal(g.state.scene, "city");
+  g.state.scene = "workshop";
+  openStaffDialogue(g, "furnace");
+  t.choose("저희 빵집 오븐을 손봐주셨으면 해요.");
+  assert.equal(t.shown.type, "workshopOven");
+  assert.equal(hasStaffAccess(g, "workshopOven"), true);
+  assert.equal(hasStaffAccess(g, "workshopMolds"), false);
+  g.state.scene = "city";
+  assert.equal(hasStaffAccess(g, "workshopOven"), false);
+});
+test("new workshop visitors survive saves and legacy postal customer keeps its order under Ryo's name", () => {
+  for (const portrait of ["soma", "crematory", "post-clerk"]) {
+    const s = fresh();
+    s.shop.customer = {
+      name: portrait === "post-clerk" ? "하나" : "직원",
+      portrait,
+      bread: "loaf",
+      quantity: 3,
+      phase: "waiting",
+      arrival: 1.2,
+    };
+    const result = validate(s);
+    assert.equal(result.shop.customer.quantity, 3);
+    assert.equal(result.shop.customer.bread, "loaf");
+    assert.equal(result.shop.customer.portrait, portrait);
+    if (portrait === "post-clerk")
+      assert.equal(result.shop.customer.name, "료");
+    assert.deepEqual(validate(result), result);
+  }
 });

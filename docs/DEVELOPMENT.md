@@ -51,7 +51,7 @@
 | 제작·오븐·창고·가방 레이아웃 | `src/styles/crafting.css` |
 | 도구 구매·오븐 개량 가격/규칙 | `src/equipment.js` |
 | 공방 구매 화면 | `src/ui/screens/workshop.js` |
-| 공방 입구·내부 배경 | `data/worldMaps.json`, `data/interiorBackgrounds.json`, `assets/backgrounds/interiors/workshop.svg` |
+| 공방 입구·내부 배경 | `data/worldMaps.json`, `data/interiorBackgrounds.json`, `assets/backgrounds/interiors/staff-workshop.png` |
 | 판매 메뉴 선택/무작위 주문 제한 | `src/ui/screens/bakery.js`, `src/shop.js` |
 | 도구·메뉴 저장 이관/검증 | `src/save/progression.js` |
 | 일괄 오븐·종류별 수량 입력 | `src/ovenUI.js`, `src/baking.js` |
@@ -102,7 +102,7 @@ node --test tests/server.test.js
 | 수정 영역 | 실제 브라우저 검사 |
 | --- | --- |
 | 정적 /Bakery/·웹 저장/JSON 이동·슬롯 삭제·사용자별 격리 | `node tools/check-web-browser.mjs` |
-| 공방·도구 잠금·9개/45초·메뉴 주문·저장·8명 가림 | `node tools/check-equipment-browser.mjs` |
+| 료·공방 2인 전 대사·직원별 구매 권한·새 방문객·가림 | `node tools/check-new-staff-browser.mjs` |
 | 새 UI·탭/키보드·혼합 선택 유지/제한·좁은 화면 반죽 | `node tools/check-ui-browser.mjs` |
 | 파이·쿠키·건조·8명 방문·수량 판매·진열 배경/UI | `node tools/check-expansion-browser.mjs` |
 | 반죽 재고·혼합 6개·실제 60초·동시 반죽·이관 | `node tools/check-batch-browser.mjs` |
@@ -122,7 +122,7 @@ node --test tests/server.test.js
 - 실행 파일의 이름·ASCII/CRLF 인코딩·실행 명령을 유지합니다. 런타임 의존성을 추가하지 않습니다.
 - 세이브 버전은 현재 7이며 버전 1~6 이관을 지원합니다. 버전 7은 반죽 종류·건조 작업·1~3개 주문을 저장합니다. 버전 6은 준비 반죽과 최대 6개 판의 오븐을 별도 저장합니다. 버전 5부터 기력을 저장합니다. 구버전 기력은 100으로 한 번 초기화하며 기존 시간·재고·퀘스트를 보존합니다.
 - 저장 형식 변경 시 초기값·검증·이관·관련 테스트를 함께 검토합니다. 가져온 값에 새 기본값을 매번 중복 지급하지 않습니다.
-- 파일 저장은 임시 파일 작성 후 교체하며, 세이브와 사용자 이미지 쓰기는 하나의 서버 큐로 직렬화합니다.
+- 파일 저장은 임시 파일 작성 후 교체하며, 세이브 쓰기와 삭제는 하나의 서버 큐로 직렬화합니다.
 - 패치는 변경한 파일을 Git으로 관리합니다. 새 배포 폴더에서는 기존 `saves/`를 복사해 이어 합니다. 사용자 세이브를 Git에 넣거나 초기화하지 않습니다.
 - `npm run check`, `npm test`, 관련 브라우저 검사 결과와 확인하지 못한 환경을 변경 내역에 남깁니다.
 
@@ -175,3 +175,10 @@ node --test tests/server.test.js
 세이브 삭제는 `deleteSlot` API를 통해 처리합니다. 서버는 슬롯 파일 쓰기와 삭제를 같은 큐에 넣어 쓰기 중 삭제한 파일이 다시 생기는 문제를 막습니다. 슬롯은 1~3으로 제한하며 삭제 시 손상 파일도 읽어 검증하지 않고 해당 파일만 지웁니다. 현재 슬롯 삭제 후에는 타이틀로 이동해 자동 재저장을 방지합니다. 테스트에는 실제 saves/saves-demo를 사용하지 않습니다.
 
 이미지 교체 UI·spritePicker·customSheet·player-sheet API를 제거했습니다. 예전 개인 이미지의 저장 플래그와 파일은 읽지 않습니다. 기본 스프라이트만 `PlayerSprite.draw`에서 사용합니다. 수정 검사는 `node tools/check-demo-browser.mjs`와 `node tools/check-web-browser.mjs`로 수행합니다. 과거의 정식 서버 대상 검사 도구는 5173/saves를 사용할 수 있으므로 이 데모에서는 위 두 도구를 우선 사용하세요.
+
+### 료와 공방 직원 추가
+첨부 원본은 새 파일명으로 보존하고, 사용 경로는 `interiorBackgrounds.json`, `serviceDialogues.json`, `customers.json`에서 지정합니다. 배경에 인물이 포함되어 있어 직원은 `embeddedInBackground: true`로 설정합니다. SD는 빵집 카운터 전용, 상반신은 대화 전용입니다. 원본 대사 세 파일은 `data/source/`에 보관합니다.
+
+`StaffStory`는 직원 키와 실제 장소를 분리합니다. `mold`/`furnace` 직원의 location은 모두 workshop이며, shopPanel은 각각 workshopMolds/workshopOven입니다. UI는 `staffServices` 매핑의 장소·직원 키로 접근 권한을 확인합니다. 매번 대화를 시작하면 권한을 초기화하고 상점 선택 후에만 해당 직원 키를 허용합니다. 틀 구매 화면에서 오븐 개량으로 바로 우회하지 않도록 확인하세요. 기존 post/store/cafe는 장소와 직원 키가 같습니다.
+
+새 방문객 ID는 soma/crematory이고, 우체국은 기존 post-clerk ID를 유지합니다. 저장의 기존 post-clerk 대기 주문은 이름만 료로 정규화하고 품목·수량·도착 단계는 유지합니다. 데이터 구조가 달라지지 않아 저장 버전은 8입니다. 세 신규 인물의 음성은 새 샘플이 제공되기 전까지 무음이며 기존 인물 음성을 재사용하지 않습니다. 회귀 검사는 staffStory/pastries 테스트와 check-new-staff-browser 도구를 사용합니다.

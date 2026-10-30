@@ -19,10 +19,10 @@
       "decline": "그래? 아쉽네. 남편한테는 다음에 사 간다고 해야겠다."
     },
     "post-clerk": {
-      "order": "안녕, 오늘은 내가 손님이네? {bread} {count}개 부탁해도 될까?",
-      "thanks": "고마워! 이거 먹고 남은 소포도 얼른 정리해야겠다.",
-      "later": "괜찮아, 서두르지 마. 잠깐 쉬고 있을게.",
-      "decline": "아, 오늘은 다 나갔구나. 그럼 다음에 올게!"
+      "order": "너구리, 오늘은 내가 빵 사러 왔다 아이가. {bread} {count}개만 챙겨 주이소.",
+      "thanks": "참 맛있게 구웠네! 이거 먹고 소포 마저 정리해야겠구마.",
+      "later": "그라믄 좀 기다릴게. 천천히 구워 온나!",
+      "decline": "다 팔렸나? 그럼 다음에 올게. 장사 잘 하래이!"
     },
     "arien": {
       "order": "우와, 좋은 냄새! 저 {bread} {count}개 주세요!",
@@ -47,14 +47,26 @@
       "thanks": "...잘 먹겠슴다. 이 정도는 먹어야 커피도 만들지 말임다.",
       "later": "...기다리겠슴다. 급한 건 아니지 말임다.",
       "decline": "...다 나간 검까. 그럼 카페로 돌아가겠슴다."
+    },
+    "soma": {
+      "order": "안녕, 틀 다듬다 배고파서 왔어. {bread} {count}개 줄래?",
+      "thanks": "고마워, 잘 구웠네. 남는 건 그 곰탱이랑 나눠 먹어야겠다.",
+      "later": "그래? 그럼 잠깐 기다릴게. 천천히 해.",
+      "decline": "아, 오늘은 안 되는구나. 다음에 다시 올게."
+    },
+    "crematory": {
+      "order": "뭘 그렇게 놀라. 화로 앞에만 있었더니 배가 고프네. {bread} {count}개 줘.",
+      "thanks": "잘 구웠네. 오븐 다룰 때는 뜨거우니까 조심하고.",
+      "later": "그래, 기다릴게. 급하게 굽다가 데이지 말고.",
+      "decline": "그럼 됐어. 다음에 와서 사 가지, 뭐."
     }
   },
   "staff": {
     "post": {
-      "name": "하나",
+      "name": "료",
       "role": "우체국 직원",
-      "portrait": "sora",
-      "portraitAsset": "assets/characters/clerks/post-clerk.png",
+      "portrait": "post-clerk",
+      "portraitAsset": "assets/characters/clerks/ryo.png",
       "embeddedInBackground": true
     },
     "store": {
@@ -68,6 +80,24 @@
       "name": "데셰네",
       "role": "카페 바리스타",
       "portraitAsset": "assets/characters/clerks/barista.png",
+      "embeddedInBackground": true
+    },
+    "mold": {
+      "name": "소마",
+      "role": "제빵용 틀 상인",
+      "location": "workshop",
+      "shopPanel": "workshopMolds",
+      "portrait": "soma",
+      "portraitAsset": "assets/characters/clerks/soma.png",
+      "embeddedInBackground": true
+    },
+    "furnace": {
+      "name": "크레마토리",
+      "role": "화로 장인 · 크레마",
+      "location": "workshop",
+      "shopPanel": "workshopOven",
+      "portrait": "crematory",
+      "portraitAsset": "assets/characters/clerks/crematory.png",
       "embeddedInBackground": true
     }
   }

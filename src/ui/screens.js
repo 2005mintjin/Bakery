@@ -8,9 +8,17 @@ import { showInventory, showJournal } from "./screens/journal.js";
 import { showWarehouse, showShop, showShelf } from "./screens/bakery.js";
 import { showParcel, showSupplies } from "./screens/services.js";
 
-import { showWorkshop } from "./screens/workshop.js";
+import {
+  showWorkshop,
+  showWorkshopMolds,
+  showWorkshopOven,
+} from "./screens/workshop.js";
 export const screens = {
   workshop: showWorkshop,
+  workshopMolds: showWorkshopMolds,
+  workshopOven: showWorkshopOven,
+  moldTalk: (ui) => openStaffDialogue(ui.g, "mold"),
+  furnaceTalk: (ui) => openStaffDialogue(ui.g, "furnace"),
   sleep: showSleep,
   cafe: showCafe,
   cafeTalk: (ui) => openStaffDialogue(ui.g, "cafe"),
