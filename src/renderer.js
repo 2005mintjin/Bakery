@@ -1,4 +1,4 @@
-import { drawDaylight } from "./render/daylight.js";
+import { drawSceneLighting } from "./render/lighting.js";
 import { drawResident } from "./residentArt.js";
 import { drawStaff } from "./staffArt.js";
 import { drawCounter } from "./counterArt.js";
@@ -35,6 +35,7 @@ export class Renderer extends PixelPainter {
       "city",
       "store",
       "field",
+      "pond",
       "cafe",
       "workshop",
     ]) {
@@ -57,9 +58,18 @@ export class Renderer extends PixelPainter {
       if (s.scene === "bakery") drawCounter(this, s);
       else if (["post", "store", "cafe"].includes(s.scene))
         drawStaff(this, s, g.data.serviceDialogues.staff[s.scene]);
+      drawSceneLighting(this, s.scene, s.minutes);
       return;
     }
-    if (s.scene === "field") drawGarden(this, s);
+    if (s.scene === "field") {
+      drawGarden(this, s);
+      this.r(6, 269, 130, 34, "#654b32");
+      this.text("← 호숫가 낚시터", 71, 291, "#fff2c9", 15);
+    }
+    if (s.scene === "pond") {
+      this.text("낚시터 · E", 574, 235, "#fff2c9", 17);
+      this.text("베리 텃밭 →", 866, 291, "#fff2c9", 17);
+    }
     const actors = [
       { ...s, color: "#c48b59", player: true },
       ...residents(g),
@@ -83,6 +93,6 @@ export class Renderer extends PixelPainter {
           );
       }
     }
-    drawDaylight(this.c, s.minutes);
+    drawSceneLighting(this, s.scene, s.minutes);
   }
 }

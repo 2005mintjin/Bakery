@@ -153,5 +153,36 @@
     "safeSpawn": [880, 310],
     "asset": "assets/backgrounds/berry-garden.png",
     "sourceSize": [1619, 971]
+  },
+  "pond": {
+    "asset": "assets/backgrounds/fishing-pond.svg",
+    "safeSpawn": [880, 310],
+    "doors": [],
+    "obstacles": [
+      {
+        "x": 40,
+        "y": 80,
+        "w": 575,
+        "h": 204
+      },
+      {
+        "x": 40,
+        "y": 356,
+        "w": 575,
+        "h": 148
+      },
+      {
+        "x": 40,
+        "y": 284,
+        "w": 485,
+        "h": 72
+      },
+      {
+        "x": 790,
+        "y": 70,
+        "w": 100,
+        "h": 100
+      }
+    ]
   }
 }

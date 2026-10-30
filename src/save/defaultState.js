@@ -46,6 +46,7 @@ export function fresh() {
     harvestAt: 0,
     parcels: [],
     parcelDay: 0,
+    fishing: null,
     baking: null,
     doughs: productCounts(),
     oven: null,

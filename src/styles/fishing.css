@@ -1,0 +1,36 @@
+.fishing-water {
+  min-height: 110px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  background: repeating-linear-gradient(
+    0deg,
+    #487f91 0 12px,
+    #518b9a 12px 24px
+  );
+  border: 4px solid #9a764e;
+  border-radius: 8px;
+  color: #daefe4;
+  font-size: 2rem;
+}
+.fishing-water b {
+  transform: rotate(-10deg);
+}
+.fishing-water.has-bite {
+  background: #286477;
+  box-shadow: inset 0 0 0 4px #f7cf73;
+}
+.fishing-water.has-bite b {
+  animation: fishing-bob 0.3s infinite alternate;
+}
+@keyframes fishing-bob {
+  to {
+    transform: translateY(10px) rotate(12deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fishing-water.has-bite b {
+    animation: none;
+  }
+}

@@ -204,3 +204,11 @@ node --test tests/server.test.js
 튜토리얼은 `data/tutorial.json`의 4쪽 안내입니다. `Interior.update`가 started·판매실·다른 UI 닫힘·미확인 조건을 만족할 때 열고, 실제 표시할 때 state.tutorial.bakeryIntroSeen=true를 기록합니다. 상태는 해당 세이브에만 저장합니다. 구버전에 필드가 없으면 false를 추가하고 잘못된 타입은 거부합니다. ESC로 닫아도 세션에서는 반복하지 않으며 저장하지 않고 종료하면 다음에 다시 안내할 수 있습니다. 설명만 보여주며 재료/돈/진행을 바꾸지 않습니다. 판매실과 ESC 메뉴에서 다시 볼 수 있습니다.
 
 `check-guide-sisters-browser`는 별도 정적 호스트·브라우저 저장으로만 검사합니다. 튜토리얼과 무관한 검사에서 빵집에 바로 진입하려면 테스트용 상태에 tutorial.bakeryIntroSeen=true를 설정하세요. 실제 사용자 저장을 수정해서 안내를 숨기지 않습니다.
+
+### 실내 조명과 낚시터 (데모)
+
+시간대는 기존 `render/daylight.js`를 공유하고, 실내 환경광·창문 마스크·전등과 실외 가로등은 `render/lighting.js`에서 그립니다. 위치·반경·창문 폴리곤은 `data/lighting.json`의 논리 좌표 960×576으로 편집합니다. 실내 인물/카운터 전경까지 그린 뒤 한 번만 조명을 적용하며 DOM 대화/버튼은 어둡게 만들지 않습니다. 새 배경으로 바꾸면 창문/등 좌표를 함께 확인하세요. 19:00 점등, 05:00~06:00 소등이며 낮에는 추가 레이어를 그리지 않습니다.
+
+`data/worldMaps.json`의 pond와 `sceneManager.js`가 텃밭 서쪽 연결 및 물 충돌을 담당합니다. 배경은 독립적인 `assets/backgrounds/fishing-pond.svg`입니다. 낚시 규칙·기력/시간 비용·보상은 `fishing.js`, 화면·스페이스 처리는 `ui/screens/fishing.js`, 스타일은 `styles/fishing.css`입니다. 기다림/입질 상태는 `game.state.fishing`에만 두고 `app/gameLoop.js`가 현재 낚시 패널이 열린 활성 탭에서만 진행합니다. 패널 종료/전환 시 취소하고, 잡기 성공은 단계 변경 뒤 기존 items.fish에 한 번만 지급합니다. 브라우저 타이머나 별도 전역 상태를 만들지 않습니다.
+
+세이브 v8의 선택 필드 fishing은 구버전에서 null로 보충합니다. `save/fishingState.js`가 단계·시간·장소를 검증합니다. 생선파이 레시피·공방 해금·오븐 규칙은 그대로 사용합니다. 관련 검사: `node --test tests/fishing.test.js tests/lighting.test.js`, `node tools/check-fishing-lighting-browser.mjs` (임시 정적 호스트/격리된 브라우저 저장).

@@ -45,6 +45,7 @@ export function updateHud(ui, hint) {
     cafe: "☕ 햇살 카페",
     workshop: "⚒ 해봄 공방",
     city: "❀ 해봄 소도시 · 상점 거리",
+    pond: "♧ 서쪽 호숫가 · 낚시터",
     field: "❀ 서쪽 베리 텃밭",
   }[s.scene];
   document.querySelector("#hint").textContent = hint;

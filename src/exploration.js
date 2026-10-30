@@ -1,3 +1,4 @@
+import { nearFishingSpot } from "./fishing.js";
 import { plotPositions } from "./garden.js";
 import { nearby, residents } from "./npc.js";
 import { nearbyDoor } from "./sceneManager.js";
@@ -10,6 +11,8 @@ export function target(g) {
     if (index >= 0)
       return { label: index + 1 + "번 베리 밭 관리", plot: index };
   }
+  if (nearFishingSpot(s))
+    return { label: "호숫가에서 낚시하기", type: "fishing" };
   const door = nearbyDoor(s);
   if (door) return { label: door.name + " 들어가기", door };
   const n = nearby(s, residents(g));

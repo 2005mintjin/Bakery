@@ -1,3 +1,4 @@
+import { validateFishingState } from "./fishingState.js";
 import { productIds } from "../recipeBook.js";
 import { validateBakingState } from "./bakingState.js";
 import { fresh } from "./defaultState.js";
@@ -16,6 +17,7 @@ export function validate(input) {
       "city",
       "store",
       "field",
+      "pond",
       "cafe",
       "workshop",
     ].includes(s.scene)
@@ -140,6 +142,7 @@ export function validate(input) {
     typeof s.tutorial.bakeryIntroSeen !== "boolean"
   )
     throw Error("손상된 이용 안내 기록");
+  validateFishingState(s);
   validateProgression(s);
   validateBakingState(s);
   return {

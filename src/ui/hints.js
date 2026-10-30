@@ -14,7 +14,9 @@ export function updateHint(g) {
             : g.state.scene === "bakery"
               ? "창고에서 빵 꺼내기 → 진열 → 개점 → 주문 응대"
               : g.state.scene === "field"
-                ? "밭 아래에서 E · 씨앗 심기 → 물 주기 → 수확 / 오른쪽 길 → 마을"
-                : "← 베리 텃밭 · 해봄 소도시 →",
+                ? "← 낚시터 · 밭 아래에서 E · 오른쪽 길 → 마을"
+                : g.state.scene === "pond"
+                  ? "부두에서 E · 낚시하기 / 오른쪽 길 → 베리 텃밭"
+                  : "← 베리 텃밭 · 해봄 소도시 →",
   );
 }

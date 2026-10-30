@@ -1,3 +1,4 @@
+import { tickFishing } from "../fishing.js";
 import { advanceClock } from "../wellbeing.js";
 import { move } from "../player.js";
 import { transition } from "../sceneManager.js";
@@ -39,6 +40,14 @@ export function startGameLoop(g, renderer) {
       if (g.ui.open && g.ui.currentPanel === "ovenBatch")
         g.ui.show("ovenBatch");
     }
+    if (
+      g.started &&
+      !document.hidden &&
+      g.ui.open &&
+      g.ui.currentPanel === "fishing" &&
+      tickFishing(g.state, dt)
+    )
+      g.ui.show("fishing");
     if (g.started) g.music.update(g.state.scene);
     renderer.draw(g, walking, now / 1000);
     g.interior.update();
