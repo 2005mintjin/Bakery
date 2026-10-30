@@ -1,11 +1,13 @@
 [
   {
-    "name": "미라",
+    "name": "아나스타샤",
     "portrait": "mira",
-    "portraitAsset": "assets/characters/mira.svg",
+    "portraitAsset": "assets/characters/residents/anastasia-portrait.png",
     "preferences": {
       "loaf": 2
-    }
+    },
+    "spriteAsset": "assets/characters/residents/anastasia-sd.png",
+    "spriteBounds": [0, 15, 1210, 1264]
   },
   {
     "name": "이시도로",

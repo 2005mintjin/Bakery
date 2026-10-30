@@ -1,3 +1,4 @@
+import { validateAnastasiaState } from "./anastasiaState.js";
 import { validateDailyState } from "./dailyState.js";
 import { validateFishingState } from "./fishingState.js";
 import { productIds } from "../recipeBook.js";
@@ -143,6 +144,9 @@ export function validate(input) {
     typeof s.tutorial.bakeryIntroSeen !== "boolean"
   )
     throw Error("손상된 이용 안내 기록");
+  validateAnastasiaState(s);
+  if (s.shop?.customer?.portrait === "mira")
+    s.shop.customer.name = "아나스타샤";
   validateDailyState(s);
   validateFishingState(s);
   validateProgression(s);

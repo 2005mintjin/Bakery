@@ -4,6 +4,7 @@ export function fresh() {
   return {
     version: 8,
     tutorial: { bakeryIntroSeen: false },
+    anastasia: { introDay: null, daily: null },
     scene: "town",
     x: 480,
     y: 430,

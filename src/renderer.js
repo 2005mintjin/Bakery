@@ -4,7 +4,7 @@ import { drawStaff } from "./staffArt.js";
 import { drawCounter } from "./counterArt.js";
 import { drawGarden } from "./gardenArt.js";
 import { isInterior } from "./interior.js";
-import { residents } from "./npc.js";
+import { residents, residentQuestStatus } from "./npc.js";
 import { PixelPainter } from "./render/pixelPainter.js";
 import { drawBackground } from "./render/backgrounds.js";
 import { drawCharacter } from "./render/characters.js";
@@ -83,9 +83,10 @@ export class Renderer extends PixelPainter {
         drawCharacter(this, a.x, a.y, a.color, false, t);
       if (!a.player) {
         this.text(a.name, a.x, a.y - (a.spriteHeight || 53) - 8, "#fff8dc");
-        if (a.quest && s.quests[a.quest] !== "done")
+        const questStatus = residentQuestStatus(s, a);
+        if (a.quest && questStatus !== "done")
           this.text(
-            s.quests[a.quest] === "active" ? "⋯" : "!",
+            questStatus === "active" ? "⋯" : "!",
             a.x,
             a.y - (a.spriteHeight || 53) - 25,
             "#fff4b3",

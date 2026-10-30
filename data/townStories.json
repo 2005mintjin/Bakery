@@ -334,5 +334,285 @@
         ]
       }
     }
+  },
+  "mira": {
+    "entry": "first",
+    "active": "active",
+    "after": "after",
+    "daily": {
+      "offer": "dailyOffer",
+      "active": "dailyActive",
+      "after": "dailyAfter"
+    },
+    "nodes": {
+      "first": {
+        "pages": [
+          {
+            "text": "안녕하세요, 오늘부터 빵집 주인이 바뀌었다면서요? 부탁드릴 게 하나 있는데."
+          }
+        ],
+        "choices": [
+          {
+            "label": "네, 맞아요. 무슨 부탁이 있으시죠?",
+            "next": "offer"
+          },
+          {
+            "label": "..네, 그럼 이만.",
+            "next": "bye"
+          }
+        ]
+      },
+      "bye": {},
+      "offer": {
+        "pages": [
+          {
+            "text": "그럼 아무것도 안 넣은 밀빵 하나만 주세요. 저희 동생한테 주려고요."
+          },
+          {
+            "text": "동생이 빵 맛을 잘 보거든요, 주인이 바뀌었으니 한번 맛을 봐야 한대요."
+          },
+          {
+            "text": "...그러니 갓 구운 제대로 된 빵을 줘야겠죠?"
+          },
+          {
+            "text": "돈은 제대로 챙겨드릴게요."
+          }
+        ],
+        "action": "accept"
+      },
+      "active": {
+        "pages": [
+          {
+            "text": "밀빵은 가져오셨나요?"
+          }
+        ],
+        "choices": [
+          {
+            "label": "그럼요.",
+            "next": "complete"
+          },
+          {
+            "label": "아직 준비중이에요.",
+            "next": "waiting"
+          },
+          {
+            "label": "오늘은 못 갖다드리겠네요.",
+            "next": "cancel"
+          }
+        ]
+      },
+      "waiting": {
+        "pages": [
+          {
+            "text": "그럼 기다리죠, 뭐."
+          }
+        ]
+      },
+      "cancel": {
+        "action": "cancel"
+      },
+      "complete": {
+        "pages": [
+          {
+            "text": "고마워요, 사실 최대한 맛있는 빵을 받으려고 지어냈지만."
+          },
+          {
+            "text": "이래야 갓 구운 빵을 줄 테니까요, 히히."
+          }
+        ],
+        "action": "complete",
+        "missing": "missing"
+      },
+      "missing": {
+        "pages": [
+          {
+            "text": "아직 밀빵이 준비되지 않았네요. 가방에 밀빵 하나를 챙겨 와 주세요."
+          }
+        ]
+      },
+      "after": {
+        "pages": [
+          {
+            "text": "역시 갓 구운 빵이 최고네요."
+          }
+        ],
+        "choices": [
+          {
+            "label": "그럼 동생은 지어낸 건가요?",
+            "next": "secret"
+          },
+          {
+            "label": "빵을 정말 좋아하시나 보네요.",
+            "next": "warmBread"
+          },
+          {
+            "label": "...그래요.",
+            "next": "bye"
+          }
+        ]
+      },
+      "secret": {
+        "pages": [
+          {
+            "text": "으음, 그건 비밀이에요."
+          },
+          {
+            "text": "...언젠가 알게 될 거에요, 지금 말해버리기엔 재미없을 거 같네요."
+          }
+        ],
+        "next": "after"
+      },
+      "warmBread": {
+        "pages": [
+          {
+            "text": "그렇죠, 특히 갓 구운 빵이 너무 좋은걸요."
+          },
+          {
+            "text": "아무 맛 안 나는 밀빵이라도 그냥 먹어서는 느낄 수 없는 풍미가 있다구요."
+          },
+          {
+            "text": "... 어쩌면 따뜻한 빵이 좋은 걸지도요?"
+          }
+        ],
+        "next": "after"
+      },
+      "dailyOffer": {
+        "pages": [
+          {
+            "text": "안녕하세요, 오늘도 갓 구운 빵 하나만 줄 수 있을까요?"
+          }
+        ],
+        "choices": [
+          {
+            "label": "당연하죠, 무슨 빵으로 드릴까요?",
+            "next": "dailyOrder"
+          },
+          {
+            "label": "아직 빵을 굽는 중인걸요.",
+            "next": "dailyNotReady"
+          }
+        ]
+      },
+      "dailyNotReady": {
+        "pages": [
+          {
+            "text": "아, 그런가요..."
+          }
+        ]
+      },
+      "dailyOrder": {
+        "pages": [
+          {
+            "text": "그럼.. {bread}(으)로 주세요."
+          },
+          {
+            "text": "아까 말했듯이, 최대한 갓 구운 빵이면 좋겠네요."
+          }
+        ],
+        "action": "accept",
+        "scope": "daily"
+      },
+      "dailyActive": {
+        "pages": [
+          {
+            "text": "갓 구운 빵은 가져오셨을까요?"
+          }
+        ],
+        "choices": [
+          {
+            "label": "당연하죠, 여기 있어요.",
+            "next": "dailyComplete"
+          },
+          {
+            "label": "아직 굽고 있어요.",
+            "next": "dailyWaiting"
+          },
+          {
+            "label": "오늘은 못 드리겠네요.",
+            "next": "dailyCancel"
+          }
+        ]
+      },
+      "dailyWaiting": {
+        "pages": [
+          {
+            "text": "으음, 그럼 기다릴게요."
+          }
+        ]
+      },
+      "dailyCancel": {
+        "pages": [
+          {
+            "text": "그런가요? 그럼 아쉽게 됐네요."
+          }
+        ],
+        "action": "cancel",
+        "scope": "daily"
+      },
+      "dailyComplete": {
+        "pages": [
+          {
+            "text": "고마워요, 오늘도 잘 먹을게요."
+          }
+        ],
+        "action": "complete",
+        "scope": "daily",
+        "missing": "dailyMissing"
+      },
+      "dailyMissing": {
+        "pages": [
+          {
+            "text": "부탁한 {bread} 한 개가 아직 없네요. 가방에 넣어 와 주세요."
+          }
+        ]
+      },
+      "dailyAfter": {
+        "pages": [
+          {
+            "text": "오늘도 맛있는 갓 구운 빵이었네요..."
+          }
+        ],
+        "choices": [
+          {
+            "label": "고마워요.",
+            "next": "dailyThanks"
+          },
+          {
+            "label": "그냥 저희 빵집에서 사 가면 안 될까요?",
+            "next": "dailySpecial"
+          },
+          {
+            "label": "..그렇군요.",
+            "next": "bye"
+          }
+        ]
+      },
+      "dailyThanks": {
+        "pages": [
+          {
+            "text": "고맙긴요, 제가 더 고맙죠."
+          },
+          {
+            "text": "이런 부탁 들어주는 빵집 주인은 펜서 씨밖에 없는걸요?"
+          }
+        ],
+        "next": "dailyAfter"
+      },
+      "dailySpecial": {
+        "pages": [
+          {
+            "text": "뭐..저도 가끔 사 먹긴 하잖아요."
+          },
+          {
+            "text": "...근데 갓 구운 빵은 이렇게 부탁해서 가져오는 게 더 좋단 말이죠."
+          },
+          {
+            "text": "왜인지는 모르겠는데, 그냥 이게 좀 더 특별한 느낌이랄까요."
+          }
+        ],
+        "next": "dailyAfter"
+      }
+    },
+    "controller": "anastasia"
   }
 }

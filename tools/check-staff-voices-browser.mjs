@@ -69,7 +69,11 @@ try {
   });
   await p.getByRole("button", { name: /^1번 ·/ }).click();
   await p.locator("#overlay").waitFor({ state: "hidden" });
-  await p.waitForFunction(() => window.voiceUI.g.voices.buffers.size === 9);
+  await p.waitForFunction(
+    () =>
+      window.voiceUI.g.voices.buffers.size ===
+      Object.keys(window.voiceUI.g.data.voices.speakers).length,
+  );
   const decoded = await p.evaluate(() =>
     ["post-clerk", "soma", "crematory"].map((key) => {
       const e = window.voiceUI.g.voices.buffers.get(key),
