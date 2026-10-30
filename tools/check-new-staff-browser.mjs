@@ -34,6 +34,7 @@ try {
     errors = [];
   p.on("pageerror", (e) => errors.push(e.message));
   const state = fresh();
+  state.tutorial.bakeryIntroSeen = true;
   state.scene = "post";
   state.money = 2000;
   await p.addInitScript(

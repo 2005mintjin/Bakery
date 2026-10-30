@@ -132,6 +132,14 @@ export function validate(input) {
     )
       throw Error("잘못된 주문 수량");
   }
+  if (s.tutorial === undefined) s.tutorial = { bakeryIntroSeen: false };
+  else if (
+    !s.tutorial ||
+    Array.isArray(s.tutorial) ||
+    typeof s.tutorial !== "object" ||
+    typeof s.tutorial.bakeryIntroSeen !== "boolean"
+  )
+    throw Error("손상된 이용 안내 기록");
   validateProgression(s);
   validateBakingState(s);
   return {

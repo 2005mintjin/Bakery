@@ -84,3 +84,10 @@
     font-size: 14px;
   }
 }
+.dialogue-portrait canvas.dialogue-sprite {
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  align-self: flex-end;
+}

@@ -1,3 +1,4 @@
+import { drawSpriteRegion } from "./spriteRegion.js";
 export const counterLayout = {
   frontY: 456,
   customer: { x: 288, y: 230, width: 384 },
@@ -20,6 +21,7 @@ export async function loadCounterArt(actors = []) {
             image.sdBounds = actor.spriteAsset
               ? actor.spriteBounds || [0, 0, image.width, image.height]
               : null;
+            image.sdClip = actor.spriteClip || null;
             images.set(id, image);
             resolve();
           };
@@ -38,7 +40,16 @@ export function drawCounter(r, s) {
     const [sx, sy, sw, sh] = img.sdBounds,
       p = counterLayout.sdCustomer,
       w = (p.height * sw) / sh;
-    r.c.drawImage(img, sx, sy, sw, sh, p.centerX - w / 2, p.y, w, p.height);
+    drawSpriteRegion(
+      r.c,
+      img,
+      img.sdBounds,
+      img.sdClip,
+      p.centerX - w / 2,
+      p.y,
+      w,
+      p.height,
+    );
   } else {
     const p = counterLayout.customer;
     r.c.drawImage(

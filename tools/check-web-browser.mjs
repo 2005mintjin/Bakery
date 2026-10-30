@@ -92,6 +92,7 @@ try {
   assert.ok(await p.evaluate(() => window.webUI.g.state.x > 480));
   await p.evaluate(async () => {
     const s = window.webUI.g.state;
+    s.tutorial.bakeryIntroSeen = true;
     s.money = 555;
     s.equipment.pieMold = true;
     s.equipment.capacityLevel = 1;

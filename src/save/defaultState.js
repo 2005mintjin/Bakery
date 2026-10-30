@@ -3,6 +3,7 @@ import { freshEquipment } from "../equipment.js";
 export function fresh() {
   return {
     version: 8,
+    tutorial: { bakeryIntroSeen: false },
     scene: "town",
     x: 480,
     y: 430,

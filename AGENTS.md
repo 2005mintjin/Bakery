@@ -32,3 +32,5 @@
 - 승격 검증은 정식 모드로 실행하고, 배포 후 해당 커밋의 GitHub Pages 성공 여부를 확인한다.
 
 - 정식 접속 주소는 src/brand.js의 siteUrl을 사용한다. /Bakery/fencer-bakery/ 진입점과 기존 /Bakery/ 세이브 키 호환을 유지한다.
+
+- 새 기능/수정은 현재 demo 브랜치에서 검토한다. 정식 웹 반영 요청 전에는 main/gh-pages를 갱신하지 않는다.

@@ -1,3 +1,4 @@
+import { needsBakeryGuide } from "./tutorial.js";
 import { BakeryHud } from "./bakeryHud.js";
 import { worldMaps } from "./sceneManager.js";
 export const isInterior = (scene) =>
@@ -131,6 +132,8 @@ export class Interior {
         this.root.append(b);
       }
     }
+    if (g.started && !g.ui.open && needsBakeryGuide(g.state))
+      g.ui.show("bakeryGuide");
     for (const b of this.root.querySelectorAll("button"))
       b.disabled = g.ui.open;
     this.root.setAttribute(

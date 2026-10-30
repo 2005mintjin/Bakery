@@ -99,6 +99,7 @@ export function showMenu(ui) {
       ["세이브 삭제", () => showSaveDelete(ui, () => title(ui.g))],
       ["세이브 파일 내보내기", () => exportSave(ui)],
       ["세이브 파일 가져오기", () => importSave(ui, () => title(ui.g))],
+      ["빵집 이용 안내", () => ui.show("bakeryGuide")],
       ["퇴근·잠자기", () => ui.show("sleep")],
       ["음악 설정", () => ui.show("audio")],
     ],

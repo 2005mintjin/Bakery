@@ -36,6 +36,8 @@
 | 재료 구매·소포 화면 | `src/ui/screens/services.js` |
 | 상태 표시·상호작용 안내 | `src/ui/hud.js`, `src/ui/hints.js` |
 | 글자별 목소리·별칭·샘플 | `src/dialogueVoice.js`, `data/voices.json`, `assets/audio/voices/` |
+| 손님 SD 대화 그림·공유 시트 영역 | `src/dialoguePortrait.js`, `src/spriteRegion.js`, `data/customers.json` |
+| 첫 입장 안내·확인 기록 | `src/tutorial.js`, `src/ui/screens/guide.js`, `data/tutorial.json` |
 | 대화 글자 출력·페이지·선택지 표시 | `src/dialogueSequence.js`, `src/dialogueView.js` |
 | 카페 바리스타·주문·대화 분기 | `data/staffStories.json`의 `cafe`, `data/serviceDialogues.json`의 `staff.cafe`, `src/staffStory.js` |
 | 직원 이야기와 분기 | `data/staffStories.json`, `src/staffStory.js` |
@@ -102,6 +104,7 @@ node --test tests/server.test.js
 | 수정 영역 | 실제 브라우저 검사 |
 | --- | --- |
 | 정적 /Bakery/·웹 저장/JSON 이동·슬롯 삭제·사용자별 격리 | `node tools/check-web-browser.mjs` |
+| 첫 입장/다시 보기/저장·세 자매 개별 SD/응답/음성·잡화점 유지 | `node tools/check-guide-sisters-browser.mjs` |
 | 료·공방 2인 전 대사·직원별 구매 권한·새 방문객·가림 | `node tools/check-new-staff-browser.mjs` |
 | 새 UI·탭/키보드·혼합 선택 유지/제한·좁은 화면 반죽 | `node tools/check-ui-browser.mjs` |
 | 파이·쿠키·건조·8명 방문·수량 판매·진열 배경/UI | `node tools/check-expansion-browser.mjs` |
@@ -194,3 +197,10 @@ node --test tests/server.test.js
 새 진입 주소와 slug, 저장 경로 호환 함수는 `src/brand.js`에 있습니다. build-web은 기존 root에 src/data/assets를 두고 fencer-bakery/index.html에 `<base href="../">`를 추가합니다. 루트 index는 새 진입점으로 redirect합니다. 리소스를 중복 복사하지 않으며 링크를 따라가도 CSS·이미지·음성은 기존 경로에서 읽습니다.
 
 새 URL의 savePath는 이전 설치의 상위 경로로 정규화합니다. `/Bakery/fencer-bakery/`와 `/Bakery/`는 같은 정식 저장을 사용합니다. 접두사 및 저장 포맷은 변경하지 않습니다. `check-web-browser`는 예전 주소에서 새 주소로 이동, 새 타이틀, 기존 슬롯 인식, 저장·삭제·파일 이동을 검사합니다. 서버 정적 파일 처리도 디렉터리 경로의 index.html을 읽도록 지원합니다.
+
+### 세 자매 개별 대화 그림과 첫 안내 (데모)
+`customers.json`에서 dialogueUsesSprite가 참인 손님만 spriteAsset/spriteBounds/spriteClip을 대화에도 사용합니다. `customerActor`가 이 정보를 대화 actor로 전달하며 `dialoguePortrait`는 canvas로 한 영역만 그립니다. 카운터와 대화는 `drawSpriteRegion`을 공유합니다. 사샤/에리나의 인접 그림이 일부 겹쳐 있어 spriteClip 폴리곤으로 이웃 조각을 제외합니다. 좌표는 spriteBounds 내부의 원본 픽셀 좌표입니다. 이미지 원본을 편집하거나 새 합성 이미지를 저장하지 않습니다. 잡화점 staff에는 이 설정을 적용하지 않습니다.
+
+튜토리얼은 `data/tutorial.json`의 4쪽 안내입니다. `Interior.update`가 started·판매실·다른 UI 닫힘·미확인 조건을 만족할 때 열고, 실제 표시할 때 state.tutorial.bakeryIntroSeen=true를 기록합니다. 상태는 해당 세이브에만 저장합니다. 구버전에 필드가 없으면 false를 추가하고 잘못된 타입은 거부합니다. ESC로 닫아도 세션에서는 반복하지 않으며 저장하지 않고 종료하면 다음에 다시 안내할 수 있습니다. 설명만 보여주며 재료/돈/진행을 바꾸지 않습니다. 판매실과 ESC 메뉴에서 다시 볼 수 있습니다.
+
+`check-guide-sisters-browser`는 별도 정적 호스트·브라우저 저장으로만 검사합니다. 튜토리얼과 무관한 검사에서 빵집에 바로 진입하려면 테스트용 상태에 tutorial.bakeryIntroSeen=true를 설정하세요. 실제 사용자 저장을 수정해서 안내를 숨기지 않습니다.

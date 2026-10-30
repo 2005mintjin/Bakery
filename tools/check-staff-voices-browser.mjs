@@ -32,6 +32,7 @@ try {
     errors = [];
   p.on("pageerror", (e) => errors.push(e.message));
   const s = fresh();
+  s.tutorial.bakeryIntroSeen = true;
   s.scene = "post";
   await p.addInitScript(
     ({ state, key }) => {

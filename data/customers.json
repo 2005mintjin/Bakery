@@ -45,27 +45,46 @@
     "spriteBounds": [0, 290, 560, 734],
     "preferences": {
       "fishpie": 4
-    }
+    },
+    "dialogueUsesSprite": true
   },
   {
     "name": "사샤",
     "portrait": "sasha",
     "portraitAsset": "assets/characters/clerks/cat-sisters.png",
     "spriteAsset": "assets/characters/visitors/sisters-sd.png",
-    "spriteBounds": [560, 0, 460, 1024],
+    "spriteBounds": [560, 0, 490, 1024],
     "preferences": {
       "fishpie": 4
-    }
+    },
+    "dialogueUsesSprite": true,
+    "spriteClip": [
+      [0, 0],
+      [430, 0],
+      [430, 530],
+      [490, 530],
+      [490, 1024],
+      [0, 1024]
+    ]
   },
   {
     "name": "에리나",
     "portrait": "erina",
     "portraitAsset": "assets/characters/clerks/cat-sisters.png",
     "spriteAsset": "assets/characters/visitors/sisters-sd.png",
-    "spriteBounds": [1020, 190, 516, 834],
+    "spriteBounds": [990, 180, 546, 844],
     "preferences": {
       "fishpie": 4
-    }
+    },
+    "dialogueUsesSprite": true,
+    "spriteClip": [
+      [0, 0],
+      [546, 0],
+      [546, 844],
+      [60, 844],
+      [60, 350],
+      [0, 350]
+    ]
   },
   {
     "name": "데셰네",

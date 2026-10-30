@@ -13,7 +13,9 @@ import {
   showWorkshopMolds,
   showWorkshopOven,
 } from "./screens/workshop.js";
+import { showBakeryGuide } from "./screens/guide.js";
 export const screens = {
+  bakeryGuide: showBakeryGuide,
   workshop: showWorkshop,
   workshopMolds: showWorkshopMolds,
   workshopOven: showWorkshopOven,
