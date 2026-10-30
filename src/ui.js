@@ -53,9 +53,11 @@ export class UI {
     this.overlay.querySelector("button")?.focus();
   }
   show(type) {
-    if (!["parcel", "supplies"].includes(type)) this.serviceAccess = null;
-    if (type === "parcel" || type === "supplies") {
-      const scene = type === "parcel" ? "post" : "store";
+    if (!["parcel", "supplies", "cafe"].includes(type))
+      this.serviceAccess = null;
+    if (["parcel", "supplies", "cafe"].includes(type)) {
+      const scene =
+        type === "parcel" ? "post" : type === "supplies" ? "store" : "cafe";
       if (!hasStaffAccess(this.g, type)) {
         openStaffDialogue(this.g, scene);
         return;

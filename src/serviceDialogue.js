@@ -28,7 +28,7 @@ export function resolveCustomerReply(s, action, recipes) {
   return "unavailable";
 }
 export function hasStaffAccess(g, panel) {
-  const scene = { parcel: "post", supplies: "store" }[panel];
+  const scene = { parcel: "post", supplies: "store", cafe: "cafe" }[panel];
   return !!scene && g.state.scene === scene && g.ui.serviceAccess === scene;
 }
 function escape(text) {

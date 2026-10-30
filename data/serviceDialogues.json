@@ -33,6 +33,12 @@
       "portrait": "jun",
       "portraitAsset": "assets/characters/clerks/cat-sisters.png",
       "embeddedInBackground": true
+    },
+    "cafe": {
+      "name": "데셰네",
+      "role": "카페 바리스타",
+      "portraitAsset": "assets/characters/clerks/barista.png",
+      "embeddedInBackground": true
     }
   }
 }

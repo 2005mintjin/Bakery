@@ -54,7 +54,7 @@ export class Renderer extends PixelPainter {
     this.c.drawImage(this.bg[s.scene], 0, 0, 960, 576);
     if (isInterior(s.scene)) {
       if (s.scene === "bakery") drawCounter(this, s);
-      else if (s.scene === "post" || s.scene === "store")
+      else if (["post", "store", "cafe"].includes(s.scene))
         drawStaff(this, s, g.data.serviceDialogues.staff[s.scene]);
       return;
     }

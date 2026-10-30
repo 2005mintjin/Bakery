@@ -101,9 +101,9 @@ export class StaffStory {
       );
       return;
     }
-    if (node.action === "shop" && this.scene === "store") {
-      g.ui.serviceAccess = "store";
-      g.ui.show("supplies");
+    if (node.action === "shop" && ["store", "cafe"].includes(this.scene)) {
+      g.ui.serviceAccess = this.scene;
+      g.ui.show(this.scene === "store" ? "supplies" : "cafe");
       return;
     }
     if (node.next) {

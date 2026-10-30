@@ -23,7 +23,13 @@ export function changeBakeryRoom(s) {
   return false;
 }
 export const interiorActions = {
-  cafe: [["cafe", "커피·디저트 주문하기", "잠깐 쉬며 기력을 회복해요"]],
+  cafe: [
+    [
+      "cafeTalk",
+      "바리스타 데셰네와 대화",
+      "직원과 대화하고 커피·디저트를 주문해요",
+    ],
+  ],
   bakery: [
     ["shelf", "빵 진열대", "빵을 진열하거나 꺼낸 빵을 확인해요"],
     ["shop", "영업 안내판", "문을 열거나 닫아요"],

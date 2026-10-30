@@ -1,8 +1,13 @@
+import { hasStaffAccess, openStaffDialogue } from "../../serviceDialogue.js";
 import { buyRefreshment, maxStamina } from "../../wellbeing.js";
 export function showCafe(ui) {
   const s = ui.g.state;
   if (s.scene !== "cafe") {
     ui.notify("소도시 카페에 들어가 주세요.");
+    return;
+  }
+  if (!hasStaffAccess(ui.g, "cafe")) {
+    openStaffDialogue(ui.g, "cafe");
     return;
   }
   ui.panel(

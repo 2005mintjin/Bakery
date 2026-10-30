@@ -1,3 +1,4 @@
+import { advanceDialogue } from "./browser-dialogue.mjs";
 // Uses slot 3 temporarily and restores it byte-for-byte; run sequentially with save checks.
 import assert from "node:assert/strict";
 import { readFile, writeFile, unlink } from "node:fs/promises";
@@ -112,8 +113,10 @@ try {
   s = { ...s, scene: "city", x: 281, y: 270, stamina: 40 };
   await load(s);
   await p.keyboard.press("e");
-  await p.locator(".spot-cafe").waitFor();
-  await p.locator(".spot-cafe").click();
+  await p.locator(".spot-cafeTalk").waitFor();
+  await p.locator(".spot-cafeTalk").click();
+  await advanceDialogue(p);
+  await choose("주문하기");
   await choose("따뜻한 커피 · 8G");
   await choose("베리 케이크 · 12G");
   await close();
@@ -127,7 +130,9 @@ try {
   await hidden();
   assert.match(await p.locator("#status").textContent(), /기력 80\/100/);
   await p.setViewportSize({ width: 600, height: 900 });
-  await p.locator(".spot-cafe").click();
+  await p.locator(".spot-cafeTalk").click();
+  await advanceDialogue(p);
+  await choose("주문하기");
   const b = await p
     .getByRole("button", { name: "따뜻한 커피 · 8G", exact: true })
     .boundingBox();

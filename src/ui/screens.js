@@ -10,6 +10,7 @@ import { showParcel, showSupplies } from "./screens/services.js";
 export const screens = {
   sleep: showSleep,
   cafe: showCafe,
+  cafeTalk: (ui) => openStaffDialogue(ui.g, "cafe"),
   audio: showAudio,
   menu: showMenu,
   inventory: showInventory,
