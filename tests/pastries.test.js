@@ -139,6 +139,7 @@ test("orders choose products independently from visitor sequence and quantity va
   s.shop.open = true;
   for (const quantity of [1, 2, 3]) {
     s.shop.customer = null;
+    s.shop.visitorQueue = [c.portrait];
     let i = 0;
     const random = () => [0.4, (quantity - 1) / 3 + 0.001][i++];
     tickShop(s, 12, customers, random);
@@ -185,8 +186,8 @@ test("three-piece order is atomic, pays unit price times quantity and cannot be 
   assert.equal(s.revenue, 42 * 3);
   assert.equal(serve(s, recipes), false);
 });
-test("all ten visitors have matching speech, quantity templates and supplied SD/portrait resources", () => {
-  assert.equal(customers.length, 10);
+test("all thirteen visitors have matching speech, quantity templates and supplied SD/portrait resources", () => {
+  assert.equal(customers.length, 13);
   for (const c of customers) {
     const line = orderText(dialogues, { ...c, bread: "berrypie", quantity: 3 });
     assert.ok(line.includes("베리 파이"));

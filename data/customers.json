@@ -117,5 +117,44 @@
       "honeybread": 2
     },
     "spriteBounds": [0, 12, 1296, 1187]
+  },
+  {
+    "name": "헨델",
+    "portrait": "hendel",
+    "portraitAsset": "assets/characters/residents/hendel-portrait.png",
+    "spriteAsset": "assets/characters/residents/hendel-sd.png",
+    "spriteBounds": [
+      36,
+      0,
+      1085,
+      1374
+    ]
+  },
+  {
+    "name": "아델",
+    "portrait": "adel",
+    "portraitAsset": "assets/characters/residents/adel-portrait.png",
+    "spriteAsset": "assets/characters/residents/adel-sd.png",
+    "spriteBounds": [
+      0,
+      38,
+      1059,
+      1359
+    ]
+  },
+  {
+    "name": "마틴",
+    "portrait": "martin",
+    "portraitAsset": "assets/characters/residents/martin-portrait.png",
+    "spriteAsset": "assets/characters/residents/martin-sd.png",
+    "spriteBounds": [
+      51,
+      0,
+      997,
+      1451
+    ],
+    "preferences": {
+      "honeybread": 4
+    }
   }
 ]

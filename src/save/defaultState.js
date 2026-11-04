@@ -42,6 +42,8 @@ export function fresh() {
       elapsed: 0,
       customer: null,
       sequence: 0,
+      visitorQueue: [],
+      lastVisitor: null,
       menu: ["loaf", "honeybread", "berrybread"],
     },
     quests: {},

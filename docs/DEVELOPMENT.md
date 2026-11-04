@@ -254,3 +254,7 @@ bakingUI는 한 번에 한 포인터만 반죽에 사용하고 취소/캡처 상
 ### 번화가 지도 2장 (데모)
 
 `data/downtown.json`이 두 번화가 구역의 기본 주민·안내 대사·미구현 건물 목록을 담당한다. 배경·충돌·안전 위치는 `worldMaps.json`, 가로등은 `lighting.json`, 출입 경로는 `sceneManager.js`에 있다. 상점가에서 오른쪽으로 나가 병원·책방 거리, 다시 오른쪽으로 나가 쉼터 광장에 도달한다. 이번 단계는 산책·기본 주민 대화·저장까지만 구현했다. 자세한 좌표·첨부 매핑·후속 범위는 [개발 인계](HANDOFF.md)를 참고한다. 검사는 `node --test tests/downtown.test.js`, 격리 브라우저 검사는 `node tools/check-downtown-browser.mjs`다.
+
+### 방문자 등록과 무작위 순환
+
+방문자는 `data/customers.json`, 말투별 주문·응답은 `serviceDialogues.json`, 저장 허용 ID와 무작위 순환은 `src/visitorOrder.js`에서 관리한다. SD와 일반 초상을 별도로 등록하면 카운터/대화창에서 각각 사용한다. 새 인물마다 별도 손님 등록이 필요하다. 사용자 지시로 로터스는 방문하지 않으며 헨델·아델·마틴은 방문한다. 남은 순서는 game.state.shop의 visitorQueue/lastVisitor에 저장한다. 검사는 `node --test tests/visitorOrder.test.js`, 실제 브라우저 검사는 `node tools/check-civic-visitors-browser.mjs`다.
