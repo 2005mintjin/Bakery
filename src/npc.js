@@ -7,7 +7,7 @@ export function residents(g) {
     ? g.data.npcs
     : g.state.scene === "city"
       ? g.data.city.residents
-      : [];
+      : g.data.downtown?.[g.state.scene]?.residents || [];
 }
 export function nearby(s, npcs) {
   return npcs.find((n) => Math.hypot(s.x - n.x, s.y - n.y) < 64);

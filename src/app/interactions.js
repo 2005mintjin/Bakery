@@ -16,7 +16,7 @@ export function interact(g) {
   }
   if (o.npc) {
     if (o.npc.line)
-      g.ui.say({ name: o.npc.name, portrait: "jun" }, [o.npc.line]);
+      g.ui.say({ ...o.npc, portrait: o.npc.portrait || "jun" }, [o.npc.line]);
     else talk(g, o.npc);
   } else if (o.type === "berry") {
     const s = g.state,

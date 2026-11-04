@@ -250,3 +250,7 @@ bakingUI는 한 번에 한 포인터만 반죽에 사용하고 취소/캡처 상
 ### 마을회관 · 마틴의 선물 · 주간 조합 등급 (데모)
 
 회관·네 인물의 대사와 음성, 마리아 선물 연동, 월요일 평가·등급별 소포 지원의 구조·기본 수치·저장 호환은 [개발 인계](HANDOFF.md)에 정리했다. 기능 검사는 `node --test tests/civic.test.js`, 실제 브라우저 검사는 `node tools/check-civic-browser.mjs`다. 브라우저 도구는 임시 정적 호스트·격리 저장을 사용하며 실제 사용자 세이브를 건드리지 않는다.
+
+### 번화가 지도 2장 (데모)
+
+`data/downtown.json`이 두 번화가 구역의 기본 주민·안내 대사·미구현 건물 목록을 담당한다. 배경·충돌·안전 위치는 `worldMaps.json`, 가로등은 `lighting.json`, 출입 경로는 `sceneManager.js`에 있다. 상점가에서 오른쪽으로 나가 병원·책방 거리, 다시 오른쪽으로 나가 쉼터 광장에 도달한다. 이번 단계는 산책·기본 주민 대화·저장까지만 구현했다. 자세한 좌표·첨부 매핑·후속 범위는 [개발 인계](HANDOFF.md)를 참고한다. 검사는 `node --test tests/downtown.test.js`, 격리 브라우저 검사는 `node tools/check-downtown-browser.mjs`다.

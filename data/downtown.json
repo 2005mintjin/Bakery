@@ -1,0 +1,115 @@
+{
+  "downtown": {
+    "residents": [
+      {
+        "id": "downtown-nurse",
+        "name": "세린",
+        "x": 166,
+        "y": 286,
+        "color": "#8bacc1",
+        "line": "병원과 파출소가 있는 번화가예요. 책방과 음반가게도 이 길에 있어요. 건물 안은 아직 준비 중이랍니다.",
+        "spriteAsset": "assets/characters/townsfolk/downtown-nurse.svg",
+        "portraitAsset": "assets/characters/townsfolk/downtown-nurse.svg",
+        "spriteHeight": 64
+      },
+      {
+        "id": "downtown-reader",
+        "name": "유진",
+        "x": 590,
+        "y": 286,
+        "color": "#a78aaf",
+        "line": "책방 앞에서 잠깐 쉬고 있었어요. 오른쪽으로 더 걸으면 나무가 있는 쉼터 광장이 나와요.",
+        "spriteAsset": "assets/characters/townsfolk/downtown-reader.svg",
+        "portraitAsset": "assets/characters/townsfolk/downtown-reader.svg",
+        "spriteHeight": 64
+      },
+      {
+        "id": "downtown-listener",
+        "name": "소율",
+        "x": 740,
+        "y": 358,
+        "color": "#bd9167",
+        "line": "음반가게 간판이 보이죠? 오늘은 거리를 구경하고 있어요. 나중에 가게 안도 둘러볼 수 있으면 좋겠네요.",
+        "spriteAsset": "assets/characters/townsfolk/downtown-listener.svg",
+        "portraitAsset": "assets/characters/townsfolk/downtown-listener.svg",
+        "spriteHeight": 64
+      }
+    ],
+    "buildings": [
+      {
+        "id": "hospital",
+        "name": "병원",
+        "available": false
+      },
+      {
+        "id": "police",
+        "name": "파출소",
+        "available": false
+      },
+      {
+        "id": "bookstore",
+        "name": "책방",
+        "available": false
+      },
+      {
+        "id": "recordStore",
+        "name": "음반가게",
+        "available": false
+      }
+    ]
+  },
+  "downtownEast": {
+    "residents": [
+      {
+        "id": "downtown-walker",
+        "name": "태오",
+        "x": 181,
+        "y": 330,
+        "color": "#8ea174",
+        "line": "왼쪽으로 돌아가면 병원과 책방 거리예요. 거기서 더 왼쪽으로 가면 원래 상점가로 돌아갈 수 있어요.",
+        "spriteAsset": "assets/characters/townsfolk/downtown-walker.svg",
+        "portraitAsset": "assets/characters/townsfolk/downtown-walker.svg",
+        "spriteHeight": 64
+      },
+      {
+        "id": "downtown-shopper",
+        "name": "나래",
+        "x": 490,
+        "y": 285,
+        "color": "#bc8090",
+        "line": "이쪽은 술집과 24시 가게가 있는 쉼터 광장이에요. 지금은 산책하면서 둘러볼 수 있어요.",
+        "spriteAsset": "assets/characters/townsfolk/downtown-shopper.svg",
+        "portraitAsset": "assets/characters/townsfolk/downtown-shopper.svg",
+        "spriteHeight": 64
+      },
+      {
+        "id": "downtown-neighbor",
+        "name": "도윤",
+        "x": 741,
+        "y": 415,
+        "color": "#888fac",
+        "line": "울타리 안쪽은 작은 쉼터예요. 길을 따라 한 바퀴 산책해 보세요. 해가 지면 가로등도 켜진답니다.",
+        "spriteAsset": "assets/characters/townsfolk/downtown-neighbor.svg",
+        "portraitAsset": "assets/characters/townsfolk/downtown-neighbor.svg",
+        "spriteHeight": 64
+      }
+    ],
+    "buildings": [
+      {
+        "id": "pub",
+        "name": "술집",
+        "available": false
+      },
+      {
+        "id": "convenience",
+        "name": "24시 가게",
+        "available": false
+      },
+      {
+        "id": "repair",
+        "name": "수리점",
+        "available": false
+      }
+    ]
+  }
+}

@@ -18,6 +18,8 @@ export function validate(input) {
       "bakeryKitchen",
       "post",
       "city",
+      "downtown",
+      "downtownEast",
       "store",
       "field",
       "pond",

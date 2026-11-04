@@ -68,3 +68,19 @@ BAKERY_PLAYWRIGHT_MODULE=file:///opt/codex/cua_node/lib/node_modules/playwright/
 사용자가 검토한 이번 버전을 사이트에 적용하도록 요청했다. `demo`의 회관·조합 등급·음성 보정·고해상도 표시를 정식 `main`으로 승격하고, edition=false·5173·saves·기존 little-hearth:web: 키를 복구한다. demo 브랜치의 true·5174·saves-demo는 별도로 유지하며 저장 파일을 자동 복사하거나 삭제하지 않는다.
 
 정식 모드에서 전체 테스트 156개 중 155개 통과, 데모 배포 차단 전용 1개 제외, JavaScript 153개 구문 검사 통과. 정적 웹 브라우저 검사에서 기존 주소/저장 키·PC 이동·저장 재접속·JSON 이동·삭제 취소/격리를 확인했다. 배포에는 저장·서버·개발 파일이 제외되는 기존 `npm run publish:web` 명령을 사용한다. 게시 브랜치 업로드와 실제 GitHub Pages 배포 완료는 구분하여 최종 보고한다.
+
+## 후속 작업 · 번화가 지도 2장 (데모)
+
+이번 요청은 지도와 기본 NPC까지다. 새 기능은 `demo`에서 검토하며 이번 변경으로 정식 main/gh-pages를 갱신하지 않는다. 데모 모드 true·5174·saves-demo·별도 웹 저장 키를 유지한다.
+
+`Downloads (16).zip`의 두 PNG를 원본 바이트로 보관했다. `픽셀 아트 마을 광장 풍경.png`는 `assets/backgrounds/downtown-services.png`로 먼저, 나머지 술집·24시 가게·수리점과 쉼터 그림은 `assets/backgrounds/downtown-square.png`로 다음에 나온다. 동선은 city → downtown → downtownEast이며 왼쪽으로 왕복 가능하다. 마지막 구역의 서쪽 출입구는 원본의 왼쪽 위 좁은 가로길에 맞춰 y=280으로 둔다. 병원·책방 거리로 되돌아올 때는 y=310이다. 각 구역의 safeSpawn은 [480,310]이다.
+
+`data/worldMaps.json`에 원본 크기·배경·충돌·안전 위치를 정의하고, 새 구역의 doors는 비워 두었다. 건물·상점 기능은 구현하지 않았다. 첫 구역의 네 건물과 둘째 구역의 세 건물은 `data/downtown.json`에 available=false로 정리했다. `sceneManager.js`가 새 통로를, renderer/hud/hints가 장소·방향·준비 중 안내를 표시한다. `data/lighting.json`의 가로등은 원본의 가로등 위치에 맞춰 기존 야간 규칙을 적용한다.
+
+주민은 첫 구역 세린·유진·소율, 둘째 구역 태오·나래·도윤으로 총 6명이다. 아직 캐릭터 전용 리소스가 제공되지 않아 `assets/characters/townsfolk/`의 간단한 기본 SVG를 SD와 대화에 함께 쓴다. 기존 named NPC의 초상·음성을 임의로 배정하지 않는다. 이름·좌표·색·대사는 `data/downtown.json`에 있으며 퀘스트나 판매 기능은 없다. `npc.residents`가 새 구역 주민을 선택하고, createGame이 리소스를 읽는다. line 대화는 해당 NPC의 portraitAsset을 전달하도록 보완했다.
+
+저장 v8을 유지하며 validate에서 새 장면 두 개를 허용한다. 추가 진행 필드는 없고 돈·기존 부탁·물품·조합 기록을 바꾸지 않는다. 새 장면에서 저장하고 재접속할 수 있다. 구버전 세이브는 기존 규칙 그대로 읽는다. 이전 버전의 게임 프로그램은 새 장면을 모를 수 있으므로 새 구역 저장은 최신 데모에서 연다.
+
+검사: `node --test tests/downtown.test.js`, `node tools/check-downtown-browser.mjs`. 브라우저 도구는 임시 정적 호스트·독립 브라우저 저장으로 키보드·실제 터치 왕복, 두 구역 저장/재접속, 여섯 주민 대화·본인 기본 초상, 원본 지도 순서·건물/울타리 충돌·야간 조명·390px 화면을 확인한다. 다른 정적 브라우저 도구와 순서대로 실행한다.
+
+번화가 최종 검증: 전체 테스트 161개 통과, JavaScript 155개 구문 검사 통과. 번화가 전용 브라우저 검사에서 실제 키보드/터치 왕복·원본 지도 순서·두 장면의 저장 재접속·주민 6명의 대화/초상·건물/울타리 충돌·야간 조명·390px 화면을 통과했다. 지도 2장은 ZIP 원본과 SHA-256이 동일하다. 새 건물 내부·상점/병원/경찰/음반 기능과 개별 퀘스트는 구현하지 않았다. Windows 직접 실행과 실제 휴대폰 실기 검사는 별도다.
