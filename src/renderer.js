@@ -38,6 +38,7 @@ export class Renderer extends PixelPainter {
       "pond",
       "cafe",
       "workshop",
+      "hall",
     ]) {
       const b = document.createElement("canvas");
       b.width = 1920;

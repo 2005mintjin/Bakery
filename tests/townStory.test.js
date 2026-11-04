@@ -59,15 +59,18 @@ test("all supplied resident quotes, choices, links and distinct original PNGs ar
       new URL("../data/source/" + file, import.meta.url),
       "utf8",
     );
-    const text = Object.values(stories[id].nodes)
+    const nodes = [...Object.values(stories[id].nodes),
+      ...(id === "sora" ? Object.values(json("civicStories").mariaGift.nodes) : [])];
+    const text = nodes
       .flatMap((n) => n.pages || [])
       .map((p) => p.text)
       .join("\n");
     for (const [, line] of source.matchAll(/"([^"]+)"/g))
       assert.ok(text.includes(line), line);
-    const labels = Object.values(stories[id].nodes)
+    const labels = nodes
       .flatMap((n) => n.choices || [])
       .map((c) => c.label);
+    if (id === "sora") labels.push("여기 선물이에요.");
     for (const [, label] of source.matchAll(/\[([^\]]+)\]/g))
       assert.ok(labels.includes(label), label);
     const npc = npcs.find((n) => n.id === id);

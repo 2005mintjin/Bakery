@@ -34,3 +34,4 @@
 - 정식 접속 주소는 src/brand.js의 siteUrl을 사용한다. /Bakery/fencer-bakery/ 진입점과 기존 /Bakery/ 세이브 키 호환을 유지한다.
 
 - 새 기능/수정은 현재 demo 브랜치에서 검토한다. 정식 웹 반영 요청 전에는 main/gh-pages를 갱신하지 않는다.
+- 사용자는 데모를 다운로드해 검토한다. 데모 작업을 GitHub demo 브랜치에 업로드한 뒤 완료 보고에 https://github.com/2005mintjin/Bakery/archive/refs/heads/demo.zip 링크를 포함한다. 업로드가 실패하면 최신 파일을 받을 수 있다고 주장하지 말고 실패를 보고한다.

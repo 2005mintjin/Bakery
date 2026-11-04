@@ -1,3 +1,4 @@
+import { openCivicDialogue } from "../civicStory.js";
 import { showNightReport } from "./screens/nightReport.js";
 import { showFishing } from "./screens/fishing.js";
 import { showOven } from "../ovenUI.js";
@@ -17,6 +18,9 @@ import {
 } from "./screens/workshop.js";
 import { showBakeryGuide } from "./screens/guide.js";
 export const screens = {
+  lotusTalk: (ui) => openCivicDialogue(ui.g, "lotus"),
+  hendelTalk: (ui) => openCivicDialogue(ui.g, "hendel"),
+  adelTalk: (ui) => openCivicDialogue(ui.g, "adel"),
   nightReport: showNightReport,
   fishing: showFishing,
   bakeryGuide: showBakeryGuide,

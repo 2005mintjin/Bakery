@@ -129,15 +129,16 @@ export function presentDialogue(ui, actor, pages, actions = [], options = {}) {
     choices.hidden = model.phase !== "choices";
     if (model.phase === "choices" && !choicesShown) {
       choicesShown = true;
-      for (const [label, fn] of actions) {
+      for (const [label, fn, disabled] of actions) {
         const button = document.createElement("button");
         button.type = "button";
         button.className = "dialogue-choice";
         button.textContent = label;
+        button.disabled = !!disabled;
         button.onclick = () => invoke(fn);
         choices.append(button);
       }
-      choices.querySelector("button")?.focus();
+      choices.querySelector("button:not(:disabled)")?.focus();
     }
   }
   next.onclick = () => controller.advance();

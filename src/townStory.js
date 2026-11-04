@@ -1,3 +1,4 @@
+import { CivicStory, civicState } from "./civicStory.js";
 import { accept, complete } from "./quest.js";
 export function validateTownStories(stories) {
   for (const story of Object.values(stories)) {
@@ -65,10 +66,14 @@ export class TownStory {
       this.finish(node);
       return;
     }
+    const choices = (node.choices || []).map((c) => [c.label, () => this.go(c.next)]);
+    if (npc.id === "sora" && ["first", "active", "after"].includes(id) &&
+        civicState(g.state).martinGift === "carrying")
+      choices.push(["여기 선물이에요.", () => new CivicStory(g, "mariaGift", npc).start()]);
     g.ui.say(
       npc,
       node.pages,
-      (node.choices || []).map((c) => [c.label, () => this.go(c.next)]),
+      choices,
       { role: npc.personality, onComplete: () => this.finish(node) },
     );
   }

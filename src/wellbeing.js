@@ -1,3 +1,4 @@
+import { syncGuild } from "./guild.js";
 import { recordExpense } from "./dailyReport.js";
 import { tickBaking, bakeSeconds } from "./baking.js";
 import { maxStamina } from "./stamina.js";
@@ -6,9 +7,11 @@ export const wakeMinute = 6 * 60;
 export const fullSleepMinutes = 8 * 60;
 export function advanceClock(s, minutes) {
   if (!Number.isFinite(minutes) || minutes <= 0) return;
+  syncGuild(s);
   const total = s.minutes + minutes;
   s.day += Math.floor(total / 1440);
   s.minutes = total % 1440;
+  syncGuild(s);
 }
 export function closeShop(s) {
   s.shop.open = false;

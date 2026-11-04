@@ -45,6 +45,34 @@
     "anastasia": {
       "asset": "assets/audio/voices/anastasia.mp3",
       "aliases": ["아나스타샤", "아냐스타샤", "mira"]
+    },
+    "lotus": {
+      "asset": "assets/audio/voices/lotus.mp3",
+      "aliases": [
+        "로터스",
+        "lotus"
+      ]
+    },
+    "hendel": {
+      "asset": "assets/audio/voices/hendel.mp3",
+      "aliases": [
+        "헨델",
+        "hendel"
+      ]
+    },
+    "adel": {
+      "asset": "assets/audio/voices/adel.mp3",
+      "aliases": [
+        "아델",
+        "adel"
+      ]
+    },
+    "martin": {
+      "asset": "assets/audio/voices/martin.mp3",
+      "aliases": [
+        "마틴",
+        "martin"
+      ]
     }
   }
 }

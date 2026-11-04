@@ -1,3 +1,4 @@
+import { validateCivicState } from "./civicState.js";
 import { validateAnastasiaState } from "./anastasiaState.js";
 import { validateDailyState } from "./dailyState.js";
 import { validateFishingState } from "./fishingState.js";
@@ -22,6 +23,7 @@ export function validate(input) {
       "pond",
       "cafe",
       "workshop",
+      "hall",
     ].includes(s.scene)
   )
     throw Error("지원하지 않는 저장 파일");
@@ -144,6 +146,7 @@ export function validate(input) {
     typeof s.tutorial.bakeryIntroSeen !== "boolean"
   )
     throw Error("손상된 이용 안내 기록");
+  validateCivicState(s);
   validateAnastasiaState(s);
   if (s.shop?.customer?.portrait === "mira")
     s.shop.customer.name = "아나스타샤";

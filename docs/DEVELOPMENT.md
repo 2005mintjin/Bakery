@@ -246,3 +246,7 @@ bakingUI는 한 번에 한 포인터만 반죽에 사용하고 취소/캡처 상
 관련 검사: tests/inputDirections.test.js 및 tools/check-mobile-browser.mjs. 브라우저 도구는 격리된 정적 호스트에서 CDP의 실제 touchStart/Move/End/Cancel로 다중 방향, 해제/메뉴/회전, NPC/실내, 손가락 반죽/취소·재개, 오븐, 낚시, 수면/결산, 저장 재접속을 확인합니다. tools/check-web-browser.mjs로 정식 경로/기존 저장/PC 키보드도 확인합니다. 정적 빌드 폴더를 공유하므로 도구들은 순서대로 실행하세요. 실제 휴대폰 실기와 Safari 엔진 테스트는 별도입니다.
 
 이번 사용자 요청으로 검토된 데모를 정식 반영합니다. demo 브랜치의 true/5174/saves-demo는 유지하고, main 승격 때 edition=false·실행 파일 5173·기존 little-hearth:web:를 복구한 뒤 검사/배포합니다. 세이브를 자동 복사/삭제하지 않습니다. GitHub Pages의 완료 결과와 정적 브라우저 검증을 구분해 기록합니다.
+
+### 마을회관 · 마틴의 선물 · 주간 조합 등급 (데모)
+
+회관·네 인물의 대사와 음성, 마리아 선물 연동, 월요일 평가·등급별 소포 지원의 구조·기본 수치·저장 호환은 [개발 인계](HANDOFF.md)에 정리했다. 기능 검사는 `node --test tests/civic.test.js`, 실제 브라우저 검사는 `node tools/check-civic-browser.mjs`다. 브라우저 도구는 임시 정적 호스트·격리 저장을 사용하며 실제 사용자 세이브를 건드리지 않는다.
