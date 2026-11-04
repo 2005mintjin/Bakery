@@ -32,6 +32,11 @@ export function drawResident(r, npc) {
   const h = npc.spriteHeight || 64,
     w = (h * sw) / sh;
   r.oval(npc.x - 15, npc.y - 3, 30, 8, "#334d4533");
+  const smoothing = r.c.imageSmoothingEnabled, quality = r.c.imageSmoothingQuality;
+  r.c.imageSmoothingEnabled = true;
+  r.c.imageSmoothingQuality = "high";
   r.c.drawImage(image, sx, sy, sw, sh, npc.x - w / 2, npc.y - h, w, h);
+  r.c.imageSmoothingEnabled = smoothing;
+  r.c.imageSmoothingQuality = quality;
   return true;
 }

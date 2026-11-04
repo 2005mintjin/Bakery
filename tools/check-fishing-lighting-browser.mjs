@@ -119,7 +119,7 @@ try {
           requestAnimationFrame(() => requestAnimationFrame(r)),
         );
         const c = document.querySelector("canvas").getContext("2d"),
-          data = c.getImageData(0, 0, 1920, 1152).data;
+          data = c.getImageData(0, 0, c.canvas.width, c.canvas.height).data;
         let sum = 0;
         for (let i = 0; i < data.length; i += 4)
           sum += (data[i] + data[i + 1] + data[i + 2]) / 3;

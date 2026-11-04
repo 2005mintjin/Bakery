@@ -30,7 +30,7 @@ try {
     AudioContext.prototype.createBufferSource = function () {
       const node = create.call(this), start = node.start;
       node.start = function (...args) {
-        window.voiceStarts.push(this.buffer?.duration);
+        window.voiceStarts.push({ buffer: this.buffer, offset: args[1], duration: args[2] });
         return start.apply(this, args);
       };
       return node;
@@ -39,6 +39,28 @@ try {
   const address = `http://127.0.0.1:${server.address().port}/Bakery/`;
   const choose = (text) => p.getByRole("button", { name: text, exact: true }).click();
   const drain = () => advanceDialogue(p, 40);
+  async function verifyVoice(key) {
+    await p.waitForFunction((key) => {
+      const buffer = window.civicGame.voices.buffers.get(key)?.buffer;
+      return buffer && window.voiceStarts.some((s) => s.buffer === buffer);
+    }, key);
+    const stats = await p.evaluate(async (key) => {
+      const g = window.civicGame, entry = g.voices.buffers.get(key);
+      const { audibleWindow } = await import("./src/dialogueVoice.js");
+      const first = audibleWindow(entry.buffer), sr = entry.buffer.sampleRate;
+      const energy = (offset) => {
+        const pcm = entry.buffer.getChannelData(0);
+        const start = Math.floor(offset * sr), n = Math.floor(g.voices.config.sliceSeconds * sr);
+        let sum = 0;
+        for (let i = start; i < Math.min(pcm.length, start + n); i++) sum += pcm[i] ** 2;
+        return Math.sqrt(sum / n);
+      };
+      return { rms: energy(entry.start), original: energy(first.start),
+        gain: g.voices.config.speakers[key].gain || 1 };
+    }, key);
+    assert.ok(stats.rms * stats.gain > .08, `${key}: voice slice too quiet`);
+    if (key === "lotus") assert.ok(stats.rms > stats.original * 5);
+  }
   async function captureGame() {
     await p.evaluate(async () => {
       const { UI } = await import("./src/ui.js");
@@ -59,8 +81,11 @@ try {
   await p.keyboard.press("e");
   await p.waitForFunction(() => window.civicGame.state.scene === "hall");
   await p.getByRole("button", { name: "로터스와 대화 · 이장", exact: true }).waitFor();
+  assert.deepEqual(await p.locator("#world").evaluate((c) => [c.width, c.height]), [2880, 1728]);
+  assert.equal(await p.locator("#world").evaluate((c) => getComputedStyle(c).imageRendering), "auto");
   await p.screenshot({ path: "/tmp/bakery-town-hall.png", fullPage: true });
   await choose("로터스와 대화 · 이장");
+  await verifyVoice("lotus");
   assert.match(await p.locator(".dialogue-portrait img").getAttribute("src"), /lotus-portrait.png/);
   await p.waitForFunction(() => window.civicGame.voices.buffers.has("lotus"));
   await p.waitForTimeout(200);
@@ -77,7 +102,7 @@ try {
   assert.match(await p.locator(".dialogue-portrait img").getAttribute("src"), /hendel-portrait.png/);
   await choose("이야기하러 왔어요."); await drain(); await choose("무슨 일 하는 사람이에요?"); await drain();
   await choose("이장님이랑 일하는 거 어때요?"); await drain(); await choose("됐어요.");
-  await choose("아델과 대화 · 조합 등급"); await drain(); await choose("제 조합원 등급은 어떤가요?");
+  await choose("아델과 대화 · 조합 등급"); await verifyVoice("adel"); await drain(); await choose("제 조합원 등급은 어떤가요?");
   await p.locator("#dialogue-next").click();
   await p.keyboard.press("Escape");
   // Real sale API records 140 pieces; sleeping/clock advancement crosses Monday.
@@ -97,6 +122,8 @@ try {
   assert.equal(await p.evaluate(() => window.civicGame.state.scene), "city");
   // Walk up to the replacement NPC and use the real interaction key.
   await p.evaluate(() => Object.assign(window.civicGame.state, { x: 465, y: 520 }));
+  assert.equal(await p.evaluate(() => window.civicGame.data.city.residents.find((n) => n.id === "artist").spriteHeight), 96);
+  await p.screenshot({ path: "/tmp/bakery-martin-larger.png", fullPage: true });
   await p.keyboard.press("e"); await drain();
   assert.match(await p.locator(".dialogue-portrait img").getAttribute("src"), /martin-portrait.png/);
   await choose("도와드릴 게 있을까요?"); await drain(); await choose("제가 전해줄게요!"); await drain();

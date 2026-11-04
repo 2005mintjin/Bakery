@@ -199,10 +199,11 @@ try {
       image.src = "assets/backgrounds/interiors/stocked-bakery.png";
       await image.decode();
       const bg = document.createElement("canvas");
-      bg.width = 1920;
-      bg.height = 1152;
+      bg.width = document.querySelector("#world").width;
+      bg.height = document.querySelector("#world").height;
       const c = bg.getContext("2d");
-      c.setTransform(2, 0, 0, 2, 0, 0);
+      const scale = bg.width / 960;
+      c.setTransform(scale, 0, 0, scale, 0, 0);
       c.imageSmoothingEnabled = false;
       const { drawScenery } = await import("./src/scenery.js");
       drawScenery(c, image);
@@ -210,8 +211,8 @@ try {
         requestAnimationFrame(() => requestAnimationFrame(r)),
       );
       const actual = document.querySelector("#world").getContext("2d"),
-        a = actual.getImageData(720, 920, 480, 150).data,
-        b = c.getImageData(720, 920, 480, 150).data;
+        a = actual.getImageData(360 * scale, 460 * scale, 240 * scale, 75 * scale).data,
+        b = c.getImageData(360 * scale, 460 * scale, 240 * scale, 75 * scale).data;
       return [...a].every((v, i) => v === b[i]);
     });
     assert.ok(mask);

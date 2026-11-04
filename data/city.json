@@ -44,7 +44,7 @@
       "quest": "martinGift",
       "portraitAsset": "assets/characters/residents/martin-portrait.png",
       "spriteAsset": "assets/characters/residents/martin-sd.png",
-      "spriteHeight": 70,
+      "spriteHeight": 96,
       "spriteBounds": [
         51,
         0,

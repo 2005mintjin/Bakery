@@ -67,7 +67,7 @@ try {
     return [720, 960, 1140, 0, 360].map((minute) => {
       g.state.minutes = minute;
       r.draw(g, false, 0);
-      const pixels = r.c.getImageData(0, 0, 1920, 1152).data;
+      const pixels = r.c.getImageData(0, 0, canvas.width, canvas.height).data;
       let red = 0,
         green = 0,
         blue = 0;

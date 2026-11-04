@@ -21,10 +21,10 @@ export class Renderer extends PixelPainter {
     this.city = city;
     this.scenery = scenery;
     this.maps = maps;
-    canvas.width = 1920;
-    canvas.height = 1152;
+    canvas.width = 2880;
+    canvas.height = 1728;
     this.c = canvas.getContext("2d");
-    this.c.setTransform(2, 0, 0, 2, 0, 0);
+    this.c.setTransform(3, 0, 0, 3, 0, 0);
     this.c.imageSmoothingEnabled = false;
     this.bg = {};
     for (const scene of [
@@ -41,11 +41,11 @@ export class Renderer extends PixelPainter {
       "hall",
     ]) {
       const b = document.createElement("canvas");
-      b.width = 1920;
-      b.height = 1152;
+      b.width = canvas.width;
+      b.height = canvas.height;
       const old = this.c;
       this.c = b.getContext("2d");
-      this.c.setTransform(2, 0, 0, 2, 0, 0);
+      this.c.setTransform(3, 0, 0, 3, 0, 0);
       this.c.imageSmoothingEnabled = false;
       drawBackground(this, scene);
       this.bg[scene] = b;

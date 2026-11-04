@@ -1,3 +1,4 @@
+import { gamePort } from "../src/edition.js";
 // Optional visual regression check. Requires a running local game server and Playwright.
 const { chromium } = await import(
   process.env.BAKERY_PLAYWRIGHT_MODULE || "playwright"
@@ -15,7 +16,7 @@ try {
   const p = await b.newPage({ viewport: { width: 1280, height: 800 } }),
     errors = [];
   p.on("pageerror", (e) => errors.push(e.message));
-  await p.goto("http://127.0.0.1:5173");
+  await p.goto(`http://127.0.0.1:${gamePort}`);
   const result = await p.evaluate(async () => {
     const [
       { Renderer },
@@ -46,7 +47,7 @@ try {
     s.display = { loaf: 2, honeybread: 1, berrybread: 2 };
     const g = { state: s };
     r.draw(g, false, 0);
-    const baseline = r.c.getImageData(0, 0, 1920, 1152).data,
+    const baseline = r.c.getImageData(0, 0, canvas.width, canvas.height).data,
       counts = [];
     for (const portrait of visitors.map((c) => c.portrait)) {
       s.shop.customer = {
@@ -56,18 +57,18 @@ try {
         bread: "loaf",
       };
       r.draw(g, false, 0);
-      const pixels = r.c.getImageData(0, 0, 1920, 1152).data;
+      const pixels = r.c.getImageData(0, 0, canvas.width, canvas.height).data;
       let hiddenChanges = 0,
         visibleChanges = 0;
-      for (let y = 0; y < 1152; y++)
-        for (let x = 0; x < 1920; x++) {
-          const i = (y * 1920 + x) * 4;
+      for (let y = 0; y < canvas.height; y++)
+        for (let x = 0; x < canvas.width; x++) {
+          const i = (y * canvas.width + x) * 4;
           const changed = [0, 1, 2, 3].some(
             (k) => pixels[i + k] !== baseline[i + k],
           );
           if (changed) {
-            if (y >= counterLayout.frontY * 2) hiddenChanges++;
-            if (x > 680 && x < 1200 && y > 460 && y < 750) visibleChanges++;
+            if (y >= counterLayout.frontY * (canvas.height / 576)) hiddenChanges++;
+            if (x > 340 * (canvas.width / 960) && x < 600 * (canvas.width / 960) && y > 230 * (canvas.height / 576) && y < 375 * (canvas.height / 576)) visibleChanges++;
           }
         }
       counts.push({ portrait, hiddenChanges, visibleChanges });
@@ -86,7 +87,7 @@ try {
   });
   assert.deepEqual(errors, []);
   console.log(
-    "PASS: all 8 customers visible above the checkout; all pixels at/below the original counter surface match the unobstructed background, stocked background remains unchanged, no JS errors",
+    "PASS: all supplied customers visible above the checkout; all pixels at/below the original counter surface match the unobstructed background, stocked background remains unchanged, no JS errors",
   );
 } finally {
   await b.close();

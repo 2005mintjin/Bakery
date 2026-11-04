@@ -246,13 +246,14 @@ try {
     compare.height = 576;
     const c = compare.getContext("2d");
     c.drawImage(r.bg.bakery, 0, 0, 960, 576);
-    const a = r.c.getImageData(2 * 350, 2 * 480, 2 * 250, 2 * 40).data;
+    const scale = r.c.canvas.width / 960;
+    const a = r.c.getImageData(scale * 350, scale * 480, scale * 250, scale * 40).data;
     const expected = document.createElement("canvas");
-    expected.width = 1920;
-    expected.height = 1152;
+    expected.width = r.c.canvas.width;
+    expected.height = r.c.canvas.height;
     const e = expected.getContext("2d");
     e.drawImage(r.bg.bakery, 0, 0);
-    const b = e.getImageData(2 * 350, 2 * 480, 2 * 250, 2 * 40).data;
+    const b = e.getImageData(scale * 350, scale * 480, scale * 250, scale * 40).data;
     return a.every((v, i) => v === b[i]);
   });
   assert.ok(foreground);

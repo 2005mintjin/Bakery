@@ -51,7 +51,8 @@
       "aliases": [
         "로터스",
         "lotus"
-      ]
+      ],
+      "sliceSelection": "strongest"
     },
     "hendel": {
       "asset": "assets/audio/voices/hendel.mp3",
@@ -65,7 +66,9 @@
       "aliases": [
         "아델",
         "adel"
-      ]
+      ],
+      "sliceSelection": "strongest",
+      "gain": 3
     },
     "martin": {
       "asset": "assets/audio/voices/martin.mp3",

@@ -260,7 +260,7 @@ test("default browser fetch keeps the global receiver when loading named samples
     globalThis.fetch = original;
   }
 });
-test("only the three sisters get the configured twofold gain", async () => {
+test("speaker gains keep the sisters at twofold and compensate Adel only", async () => {
   const t = setup();
   await t.voices.unlock();
   const id = t.voices.begin();
@@ -271,7 +271,7 @@ test("only the three sisters get the configured twofold gain", async () => {
       gain,
       t.music.volume *
         config.gain *
-        (["arien", "sasha", "erina"].includes(key) ? 2 : 1),
+        (["arien", "sasha", "erina"].includes(key) ? 2 : key === "adel" ? 3 : 1),
     );
   }
 });
@@ -316,4 +316,22 @@ test("new staff and bakery visitor names resolve to the supplied voices, with el
       (k) => k === null,
     ),
   );
+});
+
+
+test("strongest letter slice skips a quiet onset and keeps PCM unchanged", () => {
+  const samples = [0, .02, .02, .02, 0, 0, .5, .6, .5, 0];
+  const b = { numberOfChannels: 1, sampleRate: 100, length: samples.length,
+    getChannelData: () => samples };
+  assert.equal(audibleWindow(b).start, .01);
+  assert.deepEqual(audibleWindow(b, .03), { start: .06, end: .09 });
+  assert.deepEqual(samples, [0, .02, .02, .02, 0, 0, .5, .6, .5, 0]);
+  assert.deepEqual(audibleWindow(b, 1), audibleWindow(b));
+});
+test("strongest slice considers both stereo channels and short clips", () => {
+  const channels = [[0, .05, .05, 0, 0], [0, 0, 0, .5, .5]];
+  const b = { numberOfChannels: 2, sampleRate: 100, length: 5,
+    getChannelData: (i) => channels[i] };
+  assert.deepEqual(audibleWindow(b, .02), { start: .03, end: .05 });
+  assert.equal(audibleWindow(buffer([0, 0, 0]), .028), null);
 });

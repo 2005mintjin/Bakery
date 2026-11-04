@@ -199,6 +199,7 @@ main {
   background: #32271b;
 }
 canvas#world {
+  image-rendering: auto;
   aspect-ratio: 5/3;
   object-fit: contain;
 }

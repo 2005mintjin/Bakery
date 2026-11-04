@@ -91,3 +91,9 @@
   object-fit: contain;
   align-self: flex-end;
 }
+
+/* High-resolution original portraits and SD crops need filtered downscaling. */
+.dialogue-portrait img,
+.dialogue-portrait canvas.dialogue-sprite {
+  image-rendering: auto;
+}
