@@ -1,3 +1,5 @@
+import { guildSupplies, syncGuild } from "../../guild.js";
+import { names } from "../../inventory.js";
 import { buyItem } from "../../bakery.js";
 import { receiveParcel } from "../../shop.js";
 
@@ -5,7 +7,7 @@ export function showParcel(ui) {
   const s = ui.g.state;
   const type = "parcel";
   ui.panel(
-    "<h2>달빛 우체국 · 소포 수령</h2><p>마을 조합이 하루 한 번 밀가루 4개와 꿀 1개를 보내옵니다.</p><p>받은 소포: " +
+    `<h2>달빛 우체국 · 소포 수령</h2><p>마을 조합이 하루 한 번 지원품을 보내옵니다. 현재 ${syncGuild(s).grade}등급: ${Object.entries(guildSupplies(s)).map(([id, n]) => `${names[id] || id} ${n}개`).join(", ")}</p><p>받은 소포: ` +
       s.parcels.length +
       "개</p>",
     [

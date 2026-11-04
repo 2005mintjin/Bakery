@@ -38,7 +38,7 @@ export async function createGame(data) {
       ]),
       loadScenery(gardenAssets),
       loadStaffArt(data.serviceDialogues.staff),
-      loadResidentArt(data.npcs),
+      loadResidentArt([...data.npcs, ...data.city.residents]),
     ]);
   const renderer = new Renderer(
     document.querySelector("canvas"),

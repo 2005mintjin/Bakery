@@ -37,7 +37,7 @@ export function voicePlan(page, actor, config) {
   return plan;
 }
 // Ignore MP3 padding/leading silence without modifying the supplied files.
-export function audibleWindow(buffer) {
+export function audibleWindow(buffer, sliceSeconds = 0) {
   const channels = Array.from({ length: buffer.numberOfChannels }, (_, i) =>
     buffer.getChannelData(i),
   );
@@ -52,6 +52,23 @@ export function audibleWindow(buffer) {
     last = buffer.length - 1;
   while (first < last && !voiced(first)) first++;
   while (last > first && !voiced(last)) last--;
+  // A quiet breath can precede the actual voice. For selected speakers, choose
+  // the strongest complete letter slice rather than replaying that onset forever.
+  if (sliceSeconds > 0) {
+    const size = Math.min(last - first + 1, Math.max(1, Math.floor(sliceSeconds * buffer.sampleRate)));
+    const energy = (i) => channels.reduce((sum, channel) => sum + channel[i] ** 2, 0);
+    let total = 0;
+    for (let i = first; i < first + size; i++) total += energy(i);
+    let bestEnergy = total, best = first;
+    for (let i = first + size; i <= last; i++) {
+      total += energy(i) - energy(i - size);
+      if (total > bestEnergy) {
+        bestEnergy = total;
+        best = i - size + 1;
+      }
+    }
+    first = best;
+  }
   return {
     start: first / buffer.sampleRate,
     end: (last + 1) / buffer.sampleRate,
@@ -90,7 +107,10 @@ export class DialogueVoice {
           const buffer = await ctx.decodeAudioData(
             await response.arrayBuffer(),
           );
-          const window = audibleWindow(buffer);
+          const window = audibleWindow(
+            buffer,
+            speaker.sliceSelection === "strongest" ? this.config.sliceSeconds : 0,
+          );
           if (window) this.buffers.set(key, { buffer, ...window });
         } catch {
           return false;

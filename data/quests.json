@@ -22,5 +22,11 @@
     "item": "honeybread",
     "count": 1,
     "reward": 20
+  },
+  {
+    "id": "martinGift",
+    "name": "하트 스티커가 붙은 선물",
+    "description": "마틴의 선물을 마리아에게 전하고 마을회관 앞의 마틴에게 돌아가 답을 전하세요.",
+    "reward": 0
   }
 ]

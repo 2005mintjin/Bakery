@@ -3,6 +3,8 @@ import { freshEquipment } from "../equipment.js";
 export function fresh() {
   return {
     version: 8,
+    civic: { lotusTaste: false, martinGift: "none" },
+    guild: { grade: "D", joinedDay: 1, evaluated: 1, average: 0, sales: {} },
     tutorial: { bakeryIntroSeen: false },
     anastasia: { introDay: null, daily: null },
     scene: "town",

@@ -1,3 +1,4 @@
+import { recordGuildSale } from "./guild.js";
 import { productIds } from "./recipeBook.js";
 // A working day runs from 06:00 to the following 06:00, including late-night sales.
 export function workDay(s) {
@@ -20,6 +21,7 @@ export function recordSale(s, id, quantity, amount, order = true) {
     amount < 0
   )
     return;
+  recordGuildSale(s, quantity);
   const day = ledger(s);
   day.sales += amount;
   day.sold[id] = (day.sold[id] || 0) + quantity;

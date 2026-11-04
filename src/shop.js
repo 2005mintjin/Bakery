@@ -1,3 +1,4 @@
+import { guildSupplies } from "./guild.js";
 import { recordSale } from "./dailyReport.js";
 import { productIds } from "./recipeBook.js";
 import { spend } from "./inventory.js";
@@ -94,8 +95,8 @@ export function receiveParcel(s) {
   ensureShop(s);
   if (s.parcelDay === s.day) return false;
   s.parcelDay = s.day;
-  s.items.flour += 4;
-  s.items.honey += 1;
+  for (const [id, count] of Object.entries(guildSupplies(s)))
+    s.items[id] = (s.items[id] || 0) + count;
   s.parcels.push({ day: s.day, label: "마을 조합의 작은 선물" });
   return true;
 }

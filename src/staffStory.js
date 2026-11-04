@@ -1,3 +1,5 @@
+import { guildSupplies } from "./guild.js";
+import { names } from "./inventory.js";
 import { receiveParcel } from "./shop.js";
 import { leaveInterior } from "./interior.js";
 export function staffEntry(s, scene, story) {
@@ -97,7 +99,7 @@ export class StaffStory {
       g.ui.close();
       g.ui.notify(
         received
-          ? "서명을 마치고 소포를 받았어요! 밀가루 4개와 꿀 1개를 가방에 넣었습니다."
+          ? `소포 수령 · ${Object.entries(guildSupplies(g.state)).map(([id, n]) => `${names[id]} ${n}개`).join(", ")}`
           : "오늘의 소포는 이미 받았어요.",
       );
       return;

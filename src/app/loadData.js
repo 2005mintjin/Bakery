@@ -1,9 +1,12 @@
+import { validateCivicStories } from "../civicStory.js";
 import { validateTownStories } from "../townStory.js";
 import { validateStaffStories } from "../staffStory.js";
 export async function loadGameData() {
   const data = {};
   for (const key of [
     "npcs",
+    "civicActors",
+    "civicStories",
     "quests",
     "recipes",
     "dialogues",
@@ -28,6 +31,7 @@ export async function loadGameData() {
     if (!r.ok) throw Error(key);
     data[key] = await r.json();
   }
+  validateCivicStories(data.civicStories);
   validateStaffStories(data.staffStories);
   validateTownStories(data.townStories);
   return data;

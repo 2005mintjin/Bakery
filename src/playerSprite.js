@@ -79,6 +79,8 @@ export class PlayerSprite {
     if (!image) return false;
     const rect = spriteDrawRect(f, x, y);
     c.save();
+    c.imageSmoothingEnabled = true;
+    c.imageSmoothingQuality = "high";
     if (f.flip) {
       c.translate(2 * x, 0);
       c.scale(-1, 1);

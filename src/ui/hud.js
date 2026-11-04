@@ -1,3 +1,4 @@
+import { guildDay } from "../guild.js";
 import { bakeSeconds } from "../baking.js";
 import { daylight } from "../render/daylight.js";
 export function updateHud(ui, hint) {
@@ -22,7 +23,7 @@ export function updateHud(ui, hint) {
     const el = status.querySelector(selector);
     if (el && el.textContent !== text) el.textContent = text;
   };
-  update("[data-day]", `${s.day}일째`);
+  update("[data-day]", `${s.day}일째 · ${["월", "화", "수", "목", "금", "토", "일"][(guildDay(s) - 1) % 7]}요일`);
   update(
     "[data-clock]",
     `${phase === "밤" ? "☾" : phase === "노을" ? "◒" : "☀"} ${time} · ${phase}`,
@@ -43,6 +44,7 @@ export function updateHud(ui, hint) {
     bakeryKitchen: "♨ 펜서 베이커리 · 작업실",
     store: "✦ 해봄 잡화점",
     cafe: "☕ 햇살 카페",
+    hall: "마을회관 · 이장과 조합 창구",
     workshop: "⚒ 해봄 공방",
     city: "❀ 해봄 소도시 · 상점 거리",
     pond: "♧ 서쪽 호숫가 · 낚시터",

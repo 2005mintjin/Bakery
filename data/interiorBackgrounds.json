@@ -16,5 +16,8 @@
   },
   "workshop": {
     "asset": "assets/backgrounds/interiors/staff-workshop.png"
+  },
+  "hall": {
+    "asset": "assets/backgrounds/interiors/town-hall.png"
   }
 }

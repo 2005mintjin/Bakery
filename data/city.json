@@ -10,7 +10,7 @@
     },
     {
       "id": "hall",
-      "name": "마을 회관 · 준비 중"
+      "name": "마을회관 · 이장과 조합 창구"
     },
     {
       "id": "workshop",
@@ -36,11 +36,21 @@
     },
     {
       "id": "artist",
-      "name": "하린",
+      "name": "마틴",
       "x": 465,
       "y": 470,
       "color": "#789ec0",
-      "line": "광장 쪽 빵집에서 왔군요! 나중에 그림을 들고 찾아갈게요."
+      "personality": "마을회관 앞 환경미화원",
+      "quest": "martinGift",
+      "portraitAsset": "assets/characters/residents/martin-portrait.png",
+      "spriteAsset": "assets/characters/residents/martin-sd.png",
+      "spriteHeight": 96,
+      "spriteBounds": [
+        51,
+        0,
+        997,
+        1451
+      ]
     }
   ]
 }

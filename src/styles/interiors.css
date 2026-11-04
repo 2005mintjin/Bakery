@@ -191,3 +191,8 @@
     top: 40%;
   }
 }
+
+/* Characters are embedded in the original town hall background. */
+#interior-actions .spot-lotusTalk { left: 43%; top: 48%; }
+#interior-actions .spot-hendelTalk { left: 6%; top: 74%; }
+#interior-actions .spot-adelTalk { right: 4%; top: 74%; }

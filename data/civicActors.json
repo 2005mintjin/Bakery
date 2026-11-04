@@ -1,0 +1,23 @@
+{
+  "lotus": {
+    "id": "lotus",
+    "name": "로터스",
+    "role": "이장",
+    "portraitAsset": "assets/characters/residents/lotus-portrait.png",
+    "spriteAsset": "assets/characters/residents/lotus-sd.png"
+  },
+  "hendel": {
+    "id": "hendel",
+    "name": "헨델",
+    "role": "이장 비서",
+    "portraitAsset": "assets/characters/residents/hendel-portrait.png",
+    "spriteAsset": "assets/characters/residents/hendel-sd.png"
+  },
+  "adel": {
+    "id": "adel",
+    "name": "아델",
+    "role": "마을 조합 담당",
+    "portraitAsset": "assets/characters/residents/adel-portrait.png",
+    "spriteAsset": "assets/characters/residents/adel-sd.png"
+  }
+}

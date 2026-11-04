@@ -6,7 +6,7 @@ export function updateHint(g) {
     g.state.scene === "bakery"
       ? "아래 영업·재고 패널에서 주문과 진열 수량을 관리하세요"
       : isInterior(g.state.scene)
-        ? "원하는 물건을 클릭하세요 · 나가기 버튼으로 광장에 복귀"
+        ? "대화·기능 버튼을 선택하세요 · 나가기 버튼으로 실외에 복귀"
         : o
           ? "E · " + o.label
           : g.state.shop.customer
