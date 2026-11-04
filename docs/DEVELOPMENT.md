@@ -258,3 +258,7 @@ bakingUI는 한 번에 한 포인터만 반죽에 사용하고 취소/캡처 상
 ### 방문자 등록과 무작위 순환
 
 방문자는 `data/customers.json`, 말투별 주문·응답은 `serviceDialogues.json`, 저장 허용 ID와 무작위 순환은 `src/visitorOrder.js`에서 관리한다. SD와 일반 초상을 별도로 등록하면 카운터/대화창에서 각각 사용한다. 새 인물마다 별도 손님 등록이 필요하다. 사용자 지시로 로터스는 방문하지 않으며 헨델·아델·마틴은 방문한다. 남은 순서는 game.state.shop의 visitorQueue/lastVisitor에 저장한다. 검사는 `node --test tests/visitorOrder.test.js`, 실제 브라우저 검사는 `node tools/check-civic-visitors-browser.mjs`다.
+
+### 영업 일정·퇴근과 생선 판매
+
+시설/직원 일정·위치·휴식 대사는 staffSchedule.json, 공통 영업 판단은 schedule.js다. 게임 시작에서 설정한 뒤 출입·서비스·손님 큐·야외 NPC가 같은 규칙을 사용한다. 기관/직원 브라우저 검사는 월~토 영업시간 또는 일요일 휴무 상황을 명시해 준비한다. 생선 총량은 items.fish, 크기별 부분 재고는 fishStock이며 inventory.spend를 통해 함께 소비한다. fishMarket.js가 매입, dailyReport.fishSales가 별도 수익을 기록한다. 검사는 `node --test tests/scheduleFish.test.js`, 격리 브라우저 검사는 `node tools/check-hours-fishing-browser.mjs`다. 구체적인 시간·가격·저장 호환·확인 범위는 HANDOFF.md를 참고한다.

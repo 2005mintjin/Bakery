@@ -21,7 +21,7 @@ try {
   browser=await chromium.launch({executablePath:process.env.BAKERY_BROWSER,args:["--no-sandbox"]});
   const p=await browser.newPage({viewport:{width:1366,height:1000}}),errors=[];
   p.on("pageerror",e=>errors.push(e.message));
-  const initial=Object.assign(fresh(),{scene:"bakery"});initial.tutorial.bakeryIntroSeen=true;
+  const initial=Object.assign(fresh(),{scene:"bakery", day:7, minutes:720});initial.tutorial.bakeryIntroSeen=true;
   await p.addInitScript(({state,key})=>{
     if(!localStorage.getItem(key))localStorage.setItem(key,JSON.stringify(state));
     window.visitorVoiceStarts=[];

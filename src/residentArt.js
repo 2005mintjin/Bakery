@@ -1,3 +1,4 @@
+import { drawSpriteRegion } from "./spriteRegion.js";
 // SD sprites use the original PNG alpha bounds and a shared foot anchor.
 export async function loadResidentArt(npcs) {
   const art = new Map();
@@ -35,7 +36,8 @@ export function drawResident(r, npc) {
   const smoothing = r.c.imageSmoothingEnabled, quality = r.c.imageSmoothingQuality;
   r.c.imageSmoothingEnabled = true;
   r.c.imageSmoothingQuality = "high";
-  r.c.drawImage(image, sx, sy, sw, sh, npc.x - w / 2, npc.y - h, w, h);
+  if (npc.spriteClip) drawSpriteRegion(r.c, image, [sx,sy,sw,sh], npc.spriteClip, npc.x-w/2,npc.y-h,w,h);
+  else r.c.drawImage(image, sx, sy, sw, sh, npc.x - w / 2, npc.y - h, w, h);
   r.c.imageSmoothingEnabled = smoothing;
   r.c.imageSmoothingQuality = quality;
   return true;

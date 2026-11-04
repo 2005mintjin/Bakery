@@ -1,3 +1,4 @@
+import { canVisitBakery } from "./schedule.js";
 import { nextVisitor } from "./visitorOrder.js";
 import { guildSupplies } from "./guild.js";
 import { recordSale } from "./dailyReport.js";
@@ -55,13 +56,15 @@ export function tickShop(s, dt, customers = [], random = Math.random) {
   if (!menu.length) return false;
   s.shop.elapsed += dt;
   if (s.shop.elapsed < 12) return false;
-  s.shop.elapsed = 0;
+  s.shop.elapsed = 12;
   const roster = customers.length ? customers : [
     { name: "아나스타샤", portrait: "mira" },
     { name: "이시도로", portrait: "jun" },
     { name: "마리아", portrait: "sora" },
   ];
-  const person = nextVisitor(s, roster, random);
+  const person = nextVisitor(s, roster, random, (person) => canVisitBakery(s, person));
+  if (!person) return false;
+  s.shop.elapsed = 0;
   s.shop.sequence++;
   s.shop.customer = {
     name: person.name,

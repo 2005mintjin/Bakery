@@ -9,6 +9,7 @@ function validLedger(v, day) {
     v.day >= 1 &&
     v.day <= day &&
     [v.sales, v.rewards, v.expenses].every(money) &&
+    (v.fishSales === undefined || money(v.fishSales)) &&
     count(v.customers) &&
     v.sold &&
     !Array.isArray(v.sold) &&

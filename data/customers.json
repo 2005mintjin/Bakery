@@ -32,6 +32,7 @@
   {
     "name": "료",
     "portrait": "post-clerk",
+    "workplace": "post",
     "portraitAsset": "assets/characters/clerks/ryo.png",
     "spriteAsset": "assets/characters/visitors/ryo-sd.png",
     "spriteBounds": [0, 0, 1151, 1338],
@@ -42,6 +43,7 @@
   {
     "name": "아리엔",
     "portrait": "arien",
+    "workplace": "store",
     "portraitAsset": "assets/characters/clerks/cat-sisters.png",
     "spriteAsset": "assets/characters/visitors/sisters-sd.png",
     "spriteBounds": [0, 290, 560, 734],
@@ -53,6 +55,7 @@
   {
     "name": "사샤",
     "portrait": "sasha",
+    "workplace": "store",
     "portraitAsset": "assets/characters/clerks/cat-sisters.png",
     "spriteAsset": "assets/characters/visitors/sisters-sd.png",
     "spriteBounds": [560, 0, 490, 1024],
@@ -72,6 +75,7 @@
   {
     "name": "에리나",
     "portrait": "erina",
+    "workplace": "store",
     "portraitAsset": "assets/characters/clerks/cat-sisters.png",
     "spriteAsset": "assets/characters/visitors/sisters-sd.png",
     "spriteBounds": [990, 180, 546, 844],
@@ -91,6 +95,7 @@
   {
     "name": "데셰네",
     "portrait": "barista",
+    "workplace": "cafe",
     "portraitAsset": "assets/characters/clerks/barista.png",
     "spriteAsset": "assets/characters/visitors/barista-sd.png",
     "spriteBounds": [21, 0, 1230, 1215],
@@ -101,6 +106,7 @@
   {
     "name": "소마",
     "portrait": "soma",
+    "workplace": "workshop",
     "portraitAsset": "assets/characters/clerks/soma.png",
     "spriteAsset": "assets/characters/visitors/soma-sd.png",
     "preferences": {
@@ -111,6 +117,7 @@
   {
     "name": "크레마토리",
     "portrait": "crematory",
+    "workplace": "workshop",
     "portraitAsset": "assets/characters/clerks/crematory.png",
     "spriteAsset": "assets/characters/visitors/crematory-sd.png",
     "preferences": {
@@ -121,6 +128,7 @@
   {
     "name": "헨델",
     "portrait": "hendel",
+    "workplace": "hall",
     "portraitAsset": "assets/characters/residents/hendel-portrait.png",
     "spriteAsset": "assets/characters/residents/hendel-sd.png",
     "spriteBounds": [
@@ -133,6 +141,7 @@
   {
     "name": "아델",
     "portrait": "adel",
+    "workplace": "hall",
     "portraitAsset": "assets/characters/residents/adel-portrait.png",
     "spriteAsset": "assets/characters/residents/adel-sd.png",
     "spriteBounds": [

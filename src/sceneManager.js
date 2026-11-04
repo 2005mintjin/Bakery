@@ -1,3 +1,4 @@
+import { facilityOpen } from "./schedule.js";
 export const obstacles = {
   town: [],
   city: [],
@@ -25,7 +26,7 @@ export function nearbyDoor(s) {
   );
 }
 export function enterBuilding(s, door) {
-  if (!(worldMaps[s.scene]?.doors || []).includes(door)) return false;
+  if (!(worldMaps[s.scene]?.doors || []).includes(door) || !facilityOpen(s, door.scene)) return false;
   s.scene = door.scene;
   s.x = 480;
   s.y = 500;

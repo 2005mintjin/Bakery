@@ -1,3 +1,4 @@
+import { validateFishStock } from "../fishStock.js";
 import { customerPortraits } from "../visitorOrder.js";
 import { validateCivicState } from "./civicState.js";
 import { validateAnastasiaState } from "./anastasiaState.js";
@@ -154,6 +155,7 @@ export function validate(input) {
     s.shop.customer.name = "아나스타샤";
   validateDailyState(s);
   validateFishingState(s);
+  validateFishStock(s);
   validateProgression(s);
   validateBakingState(s);
   return {

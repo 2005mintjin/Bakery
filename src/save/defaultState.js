@@ -54,6 +54,7 @@ export function fresh() {
     dailyLedger: null,
     lastNight: null,
     fishing: null,
+    fishStock: { large: 0, medium: 0, small: 0 },
     baking: null,
     doughs: productCounts(),
     oven: null,

@@ -9,7 +9,7 @@ import { openCustomerDialogue, openStaffDialogue } from "../serviceDialogue.js";
 import { showAudio, showMenu } from "./screens/settings.js";
 import { showInventory, showJournal } from "./screens/journal.js";
 import { showWarehouse, showShop, showShelf } from "./screens/bakery.js";
-import { showParcel, showSupplies } from "./screens/services.js";
+import { showParcel, showSupplies, showFishMarket } from "./screens/services.js";
 
 import {
   showWorkshop,
@@ -39,6 +39,7 @@ export const screens = {
   warehouse: showWarehouse,
   shop: showShop,
   shelf: showShelf,
+  fishMarket: showFishMarket,
   parcel: showParcel,
   supplies: showSupplies,
   oven: showBaking,

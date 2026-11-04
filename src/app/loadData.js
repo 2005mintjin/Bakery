@@ -11,6 +11,7 @@ export async function loadGameData() {
     "recipes",
     "dialogues",
     "city",
+    "staffSchedule",
     "downtown",
     "playerAtlas",
     "playerAnimations",

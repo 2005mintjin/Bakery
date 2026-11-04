@@ -1,3 +1,4 @@
+import { closedMessage } from "../schedule.js";
 import { target } from "../exploration.js";
 import { showGarden } from "../garden.js";
 import { enterBuilding } from "../sceneManager.js";
@@ -10,7 +11,7 @@ export function interact(g) {
     return;
   }
   if (o.door) {
-    enterBuilding(g.state, o.door);
+    if (!enterBuilding(g.state, o.door)) g.ui.notify(closedMessage(g.state, o.door.scene));
     g.keys.clear();
     return;
   }

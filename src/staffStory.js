@@ -1,3 +1,4 @@
+import { facilityOpen } from "./schedule.js";
 import { guildSupplies } from "./guild.js";
 import { names } from "./inventory.js";
 import { receiveParcel } from "./shop.js";
@@ -53,7 +54,7 @@ export class StaffStory {
   }
   go(id) {
     const { g } = this;
-    if (g.state.scene !== this.scene) {
+    if (g.state.scene !== this.scene || !facilityOpen(g.state, this.scene)) {
       g.ui.close();
       return;
     }
@@ -83,7 +84,7 @@ export class StaffStory {
   }
   finish(node) {
     const { g } = this;
-    if (g.state.scene !== this.scene) {
+    if (g.state.scene !== this.scene || !facilityOpen(g.state, this.scene)) {
       g.ui.close();
       return;
     }
@@ -106,7 +107,7 @@ export class StaffStory {
     }
     if (node.action === "shop") {
       const panel =
-        this.staff.shopPanel || { store: "supplies", cafe: "cafe" }[this.scene];
+        node.panel || this.staff.shopPanel || { store: "supplies", cafe: "cafe" }[this.scene];
       if (!panel) {
         g.ui.close();
         return;

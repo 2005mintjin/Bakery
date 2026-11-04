@@ -361,3 +361,25 @@ kbd {
     font-size: 16px;
   }
 }
+
+/* Dialogue prioritizes Korean legibility over the decorative page lettering. */
+.dialogue-panel,
+.dialogue-panel h2,
+.dialogue-panel small,
+.dialogue-panel button,
+.dialogue-panel .dialogue-text,
+.dialogue-panel .speaker-chip {
+  font-family: "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", system-ui, sans-serif;
+  font-style: normal;
+  letter-spacing: normal;
+}
+.dialogue-panel #typed-dialogue {
+  font-weight: 400;
+  line-height: 1.85;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+@media (min-width: 901px) {
+  .dialogue-panel #typed-dialogue { font-size: 22px; }
+  .dialogue-panel button { font-size: 17px; }
+}

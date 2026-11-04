@@ -11,7 +11,7 @@ function shuffled(ids, random) {
   }
   return result;
 }
-export function nextVisitor(s, customers, random = Math.random) {
+export function nextVisitor(s, customers, random = Math.random, eligible = () => true) {
   const byId = new Map(customers.map((person) => [person.portrait, person]));
   const shop = s.shop;
   shop.visitorQueue = (shop.visitorQueue || []).filter((id) => byId.has(id));
@@ -23,7 +23,11 @@ export function nextVisitor(s, customers, random = Math.random) {
       [shop.visitorQueue[0], shop.visitorQueue[j]] = [shop.visitorQueue[j], shop.visitorQueue[0]];
     }
   }
-  const id = shop.visitorQueue.shift();
+  const fullCycle = shop.visitorQueue.length === byId.size;
+  const index = shop.visitorQueue.findIndex((id) => eligible(byId.get(id)) &&
+    (!fullCycle || byId.size === 1 || id !== shop.lastVisitor));
+  if (index < 0) return null;
+  const [id] = shop.visitorQueue.splice(index, 1);
   shop.lastVisitor = id;
   return byId.get(id);
 }
