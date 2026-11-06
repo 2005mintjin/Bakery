@@ -165,5 +165,17 @@
     "preferences": {
       "honeybread": 4
     }
+  },
+  {
+    "name": "샬롯",
+    "portrait": "charlotte",
+    "portraitAsset": "assets/characters/residents/charlotte-portrait.png",
+    "spriteAsset": "assets/characters/residents/charlotte-sd.png",
+    "spriteBounds": [
+      149,
+      6,
+      246,
+      470
+    ]
   }
 ]

@@ -262,3 +262,7 @@ bakingUI는 한 번에 한 포인터만 반죽에 사용하고 취소/캡처 상
 ### 영업 일정·퇴근과 생선 판매
 
 시설/직원 일정·위치·휴식 대사는 staffSchedule.json, 공통 영업 판단은 schedule.js다. 게임 시작에서 설정한 뒤 출입·서비스·손님 큐·야외 NPC가 같은 규칙을 사용한다. 기관/직원 브라우저 검사는 월~토 영업시간 또는 일요일 휴무 상황을 명시해 준비한다. 생선 총량은 items.fish, 크기별 부분 재고는 fishStock이며 inventory.spend를 통해 함께 소비한다. fishMarket.js가 매입, dailyReport.fishSales가 별도 수익을 기록한다. 검사는 `node --test tests/scheduleFish.test.js`, 격리 브라우저 검사는 `node tools/check-hours-fishing-browser.mjs`다. 구체적인 시간·가격·저장 호환·확인 범위는 HANDOFF.md를 참고한다.
+
+### 샬롯과 GIF/연주 감상
+
+city.reader는 샬롯이다. spriteAnimation/원본 GIF 기반 아틀라스는 residentAnimation.js와 residentArt.js로 재생하며, 일반 초상과 빵집 SD는 별도로 유지한다. 대사는 charlotte.json/charlotteStory.js, 실제 연주 MP3 수명 관리는 performance.js/기존 UI controller.dispose다. Space는 연주를 멈추고 감상 선택지로 진행하며, ESC는 취소한다. Music.holdForPerformance 동안 배경음을 재생하지 않는다. 검사는 `node --test tests/charlotte.test.js tests/audio.test.js`, 브라우저는 `node tools/check-charlotte-browser.mjs`다. 상세 원본 매핑·GIF 준비·음량·문 위치는 HANDOFF.md에 기록했다.

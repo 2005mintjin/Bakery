@@ -26,6 +26,7 @@ export class Renderer extends PixelPainter {
     this.c = canvas.getContext("2d");
     this.c.setTransform(3, 0, 0, 3, 0, 0);
     this.c.imageSmoothingEnabled = false;
+    this.reducedMotion = globalThis.matchMedia?.("(prefers-reduced-motion: reduce)");
     this.bg = {};
     for (const scene of [
       "town",
@@ -90,7 +91,7 @@ export class Renderer extends PixelPainter {
       if (!(
         (a.player &&
           g.sprite?.draw(this.c, a.x, a.y, walking, t, g.direction)) ||
-        (!a.player && drawResident(this, a))
+        (!a.player && drawResident(this, a, t))
       ))
         drawCharacter(this, a.x, a.y, a.color, false, t);
       if (!a.player) {

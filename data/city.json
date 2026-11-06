@@ -20,11 +20,34 @@
   "residents": [
     {
       "id": "reader",
-      "name": "윤",
+      "name": "샬롯",
       "x": 330,
       "y": 265,
       "color": "#ac8cb7",
-      "line": "책방의 문이 열리면 가장 먼저 알려줄게요."
+      "personality": "우쿨렐레를 연주하는 자신만만한 음악가",
+      "portraitAsset": "assets/characters/residents/charlotte-portrait.png",
+      "spriteAsset": "assets/characters/residents/charlotte-sd.png",
+      "spriteBounds": [
+        149,
+        6,
+        246,
+        470
+      ],
+      "spriteHeight": 82,
+      "spriteAnimation": {
+        "asset": "assets/characters/residents/charlotte-idle.png",
+        "sourceAsset": "assets/characters/residents/charlotte-idle.gif",
+        "frameWidth": 512,
+        "frameHeight": 512,
+        "durations": [
+          170,
+          170,
+          170,
+          170,
+          170,
+          170
+        ]
+      }
     },
     {
       "id": "walker",

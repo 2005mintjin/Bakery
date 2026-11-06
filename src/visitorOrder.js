@@ -1,7 +1,7 @@
 // Stable IDs are shared with save validation; the visitor art and speech stay in JSON.
 export const customerPortraits = [
   "mira", "jun", "sora", "post-clerk", "arien", "sasha", "erina",
-  "barista", "soma", "crematory", "hendel", "adel", "martin",
+  "barista", "soma", "crematory", "hendel", "adel", "martin", "charlotte",
 ];
 function shuffled(ids, random) {
   const result = [...ids];
