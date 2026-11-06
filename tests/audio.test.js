@@ -152,3 +152,14 @@ test("supplied interiors and soundtrack assets are bundled at the configured pat
   assert.equal(b.readUInt32BE(16), 1536);
   assert.equal(b.readUInt32BE(20), 1024);
 });
+
+test("a performance holds background music through tab suspension and resumes without restarting the track", async () => {
+  const { music, audio } = setup();
+  music.start("city"); await tick(); audio.currentTime = 12;
+  music.holdForPerformance(true); assert.equal(audio.paused, true);
+  music.update("city"); await tick(); assert.equal(audio.paused, true);
+  music.setSuspended(true); music.setSuspended(false); await tick();
+  assert.equal(audio.paused, true); assert.equal(audio.currentTime, 12);
+  music.holdForPerformance(false); music.update("city"); await tick();
+  assert.equal(audio.paused, false); assert.equal(audio.currentTime, 12);
+});

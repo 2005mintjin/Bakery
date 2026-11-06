@@ -125,7 +125,11 @@
   },
   "store": {
     "entry": "welcome",
-    "speakers": ["아리엔", "사샤", "에리나"],
+    "speakers": [
+      "아리엔",
+      "사샤",
+      "에리나"
+    ],
     "nodes": {
       "welcome": {
         "pages": [
@@ -139,6 +143,10 @@
           {
             "label": "상점을 둘러본다.",
             "next": "shop"
+          },
+          {
+            "label": "잡은 생선을 팔고 싶어요.",
+            "next": "fishMarket"
           },
           {
             "label": "말을 걸어본다.",
@@ -340,6 +348,16 @@
             "next": "main"
           }
         ]
+      },
+      "fishMarket": {
+        "pages": [
+          {
+            "text": "아리엔: 잡은 생선을 보여 주세요! 크기에 맞춰 값을 쳐 드릴게요.",
+            "speaker": "고양이 세 자매"
+          }
+        ],
+        "action": "shop",
+        "panel": "fishMarket"
       }
     }
   },

@@ -1,3 +1,4 @@
+import { facilityOpen, closedMessage } from "./schedule.js";
 import { nearFishingSpot } from "./fishing.js";
 import { plotPositions } from "./garden.js";
 import { nearby, residents } from "./npc.js";
@@ -14,7 +15,7 @@ export function target(g) {
   if (nearFishingSpot(s))
     return { label: "호숫가에서 낚시하기", type: "fishing" };
   const door = nearbyDoor(s);
-  if (door) return { label: door.name + " 들어가기", door };
+  if (door) return { label: facilityOpen(s, door.scene) ? door.name + " 들어가기" : closedMessage(s, door.scene), door };
   const n = nearby(s, residents(g));
   if (n) return { label: n.name + "와 이야기하기", npc: n };
   if (s.scene === "town" && Math.hypot(s.x - 864, s.y - 325) < 65)

@@ -26,6 +26,7 @@ export class Renderer extends PixelPainter {
     this.c = canvas.getContext("2d");
     this.c.setTransform(3, 0, 0, 3, 0, 0);
     this.c.imageSmoothingEnabled = false;
+    this.reducedMotion = globalThis.matchMedia?.("(prefers-reduced-motion: reduce)");
     this.bg = {};
     for (const scene of [
       "town",
@@ -33,6 +34,9 @@ export class Renderer extends PixelPainter {
       "bakeryKitchen",
       "post",
       "city",
+      "downtown",
+      "downtownEast",
+      "park",
       "store",
       "field",
       "pond",
@@ -71,6 +75,16 @@ export class Renderer extends PixelPainter {
       this.text("낚시터 · E", 615, 214, "#fff2c9", 17);
       this.text("텃밭 →", 883, 275, "#fff2c9", 15);
     }
+    const directions = {
+      city: [["번화가 →", 879]],
+      downtown: [["← 상점가", 76], ["쉼터 광장 →", 873]],
+      downtownEast: [["← 병원·책방 거리", 190, 350], ["공원 →", 877]],
+      park: [["← 쉼터 광장", 84, 335]],
+    }[s.scene] || [];
+    for (const [label, x, y = 337] of directions) {
+      this.r(x - 70, y, 140, 25, "#483c2cdb");
+      this.text(label, x, y + 17, "#fff1c9", 14);
+    }
     const actors = [
       { ...s, color: "#c48b59", player: true },
       ...residents(g),
@@ -79,7 +93,7 @@ export class Renderer extends PixelPainter {
       if (!(
         (a.player &&
           g.sprite?.draw(this.c, a.x, a.y, walking, t, g.direction)) ||
-        (!a.player && drawResident(this, a))
+        (!a.player && drawResident(this, a, t))
       ))
         drawCharacter(this, a.x, a.y, a.color, false, t);
       if (!a.player) {

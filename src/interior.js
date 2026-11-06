@@ -1,3 +1,4 @@
+import { scheduledFacility, facilityOpen, closedMessage } from "./schedule.js";
 import { needsBakeryGuide } from "./tutorial.js";
 import { BakeryHud } from "./bakeryHud.js";
 import { worldMaps } from "./sceneManager.js";
@@ -84,6 +85,12 @@ export class Interior {
     this.scene = null;
   }
   update() {
+    if (this.g.started && scheduledFacility(this.g.state.scene) && !facilityOpen(this.g.state, this.g.state.scene)) {
+      const message = closedMessage(this.g.state, this.g.state.scene);
+      this.g.ui.close();
+      leaveInterior(this.g.state);
+      this.g.ui.notify(message);
+    }
     this.bakeryHud.update();
     const g = this.g,
       scene = g.state.scene;

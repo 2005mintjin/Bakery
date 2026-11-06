@@ -59,7 +59,7 @@ try {
   await p.evaluate(() =>
     Object.assign(window.equipmentUI.g.state, {
       scene: "city",
-      x: 750,
+      x: 805,
       y: 548,
     }),
   );

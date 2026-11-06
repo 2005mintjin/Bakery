@@ -250,3 +250,25 @@ bakingUI는 한 번에 한 포인터만 반죽에 사용하고 취소/캡처 상
 ### 마을회관 · 마틴의 선물 · 주간 조합 등급 (데모)
 
 회관·네 인물의 대사와 음성, 마리아 선물 연동, 월요일 평가·등급별 소포 지원의 구조·기본 수치·저장 호환은 [개발 인계](HANDOFF.md)에 정리했다. 기능 검사는 `node --test tests/civic.test.js`, 실제 브라우저 검사는 `node tools/check-civic-browser.mjs`다. 브라우저 도구는 임시 정적 호스트·격리 저장을 사용하며 실제 사용자 세이브를 건드리지 않는다.
+
+### 번화가 지도 2장 (데모)
+
+`data/downtown.json`이 두 번화가 구역의 기본 주민·안내 대사·미구현 건물 목록을 담당한다. 배경·충돌·안전 위치는 `worldMaps.json`, 가로등은 `lighting.json`, 출입 경로는 `sceneManager.js`에 있다. 상점가에서 오른쪽으로 나가 병원·책방 거리, 다시 오른쪽으로 나가 쉼터 광장에 도달한다. 이번 단계는 산책·기본 주민 대화·저장까지만 구현했다. 자세한 좌표·첨부 매핑·후속 범위는 [개발 인계](HANDOFF.md)를 참고한다. 검사는 `node --test tests/downtown.test.js`, 격리 브라우저 검사는 `node tools/check-downtown-browser.mjs`다.
+
+### 방문자 등록과 무작위 순환
+
+방문자는 `data/customers.json`, 말투별 주문·응답은 `serviceDialogues.json`, 저장 허용 ID와 무작위 순환은 `src/visitorOrder.js`에서 관리한다. SD와 일반 초상을 별도로 등록하면 카운터/대화창에서 각각 사용한다. 새 인물마다 별도 손님 등록이 필요하다. 사용자 지시로 로터스는 방문하지 않으며 헨델·아델·마틴은 방문한다. 남은 순서는 game.state.shop의 visitorQueue/lastVisitor에 저장한다. 검사는 `node --test tests/visitorOrder.test.js`, 실제 브라우저 검사는 `node tools/check-civic-visitors-browser.mjs`다.
+
+### 영업 일정·퇴근과 생선 판매
+
+시설/직원 일정·위치·휴식 대사는 staffSchedule.json, 공통 영업 판단은 schedule.js다. 게임 시작에서 설정한 뒤 출입·서비스·손님 큐·야외 NPC가 같은 규칙을 사용한다. 기관/직원 브라우저 검사는 월~토 영업시간 또는 일요일 휴무 상황을 명시해 준비한다. 생선 총량은 items.fish, 크기별 부분 재고는 fishStock이며 inventory.spend를 통해 함께 소비한다. fishMarket.js가 매입, dailyReport.fishSales가 별도 수익을 기록한다. 검사는 `node --test tests/scheduleFish.test.js`, 격리 브라우저 검사는 `node tools/check-hours-fishing-browser.mjs`다. 구체적인 시간·가격·저장 호환·확인 범위는 HANDOFF.md를 참고한다.
+
+### 샬롯과 GIF/연주 감상
+
+city.reader는 샬롯이다. spriteAnimation/원본 GIF 기반 아틀라스는 residentAnimation.js와 residentArt.js로 재생하며, 일반 초상과 빵집 SD는 별도로 유지한다. 대사는 charlotte.json/charlotteStory.js, 실제 연주 MP3 수명 관리는 performance.js/기존 UI controller.dispose다. Space는 연주를 멈추고 감상 선택지로 진행하며, ESC는 취소한다. Music.holdForPerformance 동안 배경음을 재생하지 않는다. 검사는 `node --test tests/charlotte.test.js tests/audio.test.js`, 브라우저는 `node tools/check-charlotte-browser.mjs`다. 상세 원본 매핑·GIF 준비·음량·문 위치는 HANDOFF.md에 기록했다.
+
+### 공원·광장 귀환 경로·연주 이미지 (데모)
+
+공원은 worldMaps/downtown/lighting JSON의 park 항목과 sceneManager의 동서 출입구를 사용한다. 원본 배경은 assets/backgrounds/park.png다. 광장 서쪽 전환은 중앙 길의 왼쪽 건물 충돌 전에 실행하며 도착 위치와 출입구를 겹치지 않게 유지한다. NPC 이동 시 문 앞뿐 아니라 중앙 길과 일요일 휴식 직원의 충돌도 확인한다.
+
+charlotte.json의 performance.imageAsset은 연주 화면 전용이다. performance.js는 해당 필드가 없으면 기존 일반 초상으로 돌아간다. 거리 GIF/일반 대화/빵집 초상과 혼용하지 않는다. 가독성 스타일은 PC 20px·모바일 18px다. 회귀 검사는 tests/park.test.js, 실제 키보드/터치 왕복·주민 대화·저장·야간 조명·연주 이미지는 tools/check-park-browser.mjs로 확인한다. 정적 빌드를 공유하는 다른 브라우저 도구와 순서대로 실행한다.

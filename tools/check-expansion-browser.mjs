@@ -155,7 +155,7 @@ try {
   for (let index = 0; index < visitors.length; index++) {
     s = await save();
     s.scene = "bakery";
-    s.shop = { open: true, elapsed: 11.99, customer: null, sequence: index };
+    s.shop = { open: true, elapsed: 11.99, customer: null, sequence: index, visitorQueue: [visitors[index].portrait], lastVisitor: null };
     await load(s);
     await p.waitForFunction(
       () => window.expansionGame.state.shop.customer?.phase === "waiting",

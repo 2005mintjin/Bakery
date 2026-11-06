@@ -79,8 +79,8 @@ function setup() {
   });
   return { ctx, voices, music, sources, gains, calls, errors };
 }
-test("all fourteen named MP3s are bundled with explicit character aliases and unknown people stay silent", () => {
-  assert.equal(Object.keys(config.speakers).length, 14);
+test("all fifteen named MP3s are bundled with explicit character aliases and unknown people stay silent", () => {
+  assert.equal(Object.keys(config.speakers).length, 15);
   for (const [key, record] of Object.entries(config.speakers)) {
     assert.ok(existsSync(new URL("../" + record.asset, import.meta.url)));
     for (const name of record.aliases)
@@ -260,7 +260,7 @@ test("default browser fetch keeps the global receiver when loading named samples
     globalThis.fetch = original;
   }
 });
-test("speaker gains keep the sisters at twofold and compensate Adel only", async () => {
+test("speaker gains preserve configured voice balancing", async () => {
   const t = setup();
   await t.voices.unlock();
   const id = t.voices.begin();
@@ -271,7 +271,7 @@ test("speaker gains keep the sisters at twofold and compensate Adel only", async
       gain,
       t.music.volume *
         config.gain *
-        (["arien", "sasha", "erina"].includes(key) ? 2 : key === "adel" ? 3 : 1),
+        ({arien:2,sasha:2.5,erina:2,adel:3,isidoro:1.25,"post-clerk":1.3}[key] || 1),
     );
   }
 });

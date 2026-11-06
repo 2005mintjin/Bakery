@@ -14,6 +14,7 @@ export class Music {
     this.currentKey = null;
     this.unlocked = false;
     this.suspended = false;
+    this.performanceActive = false;
     this.blocked = false;
     this.failed = false;
     this.pending = false;
@@ -74,7 +75,7 @@ export class Music {
       this.audio.load?.();
     }
     if (
-      !this.suspended &&
+      !this.suspended && !this.performanceActive &&
       !this.blocked &&
       !this.failed &&
       this.audio.paused &&
@@ -121,6 +122,10 @@ export class Music {
           (s) => this.config.scenes[s] === this.currentKey,
         ),
       );
+  }
+  holdForPerformance(active) {
+    this.performanceActive = !!active;
+    if (active) { this.token++; this.pending = false; this.audio.pause(); }
   }
   stop() {
     this.token++;

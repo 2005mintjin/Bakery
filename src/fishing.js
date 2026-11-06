@@ -19,12 +19,13 @@ export function castLine(s, random = Math.random) {
   if (!nearFishingSpot(s)) return "location";
   if (["waiting", "bite"].includes(s.fishing?.phase)) return "busy";
   if (s.stamina < fishingRules.stamina) return "tired";
-  const roll = random();
-  if (!Number.isFinite(roll) || roll < 0 || roll > 1) return "invalid";
+  const roll = random(), sizeRoll = random();
+  if (![roll, sizeRoll].every((n) => Number.isFinite(n) && n >= 0 && n <= 1)) return "invalid";
   s.stamina -= fishingRules.stamina;
   advanceClock(s, fishingRules.minutes);
   s.fishing = {
     phase: "waiting",
+    size: sizeRoll < .2 ? "large" : sizeRoll < .7 ? "medium" : "small",
     elapsed: 0,
     waitFor:
       fishingRules.waitMin +
@@ -62,6 +63,10 @@ export function reelLine(s) {
   }
   if (s.fishing.phase !== "bite") return false;
   s.fishing.phase = "caught";
+  const size = s.fishing.size || "medium";
+  s.fishing.size = size;
+  s.fishStock ??= { large: 0, medium: 0, small: 0 };
+  s.fishStock[size]++;
   s.items.fish = (s.items.fish || 0) + 1;
   return true;
 }

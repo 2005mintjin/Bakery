@@ -157,6 +157,8 @@ test("workshop door is reachable from the city road and returns outside its obst
   configureWorld(maps);
   const s = fresh();
   Object.assign(s, { scene: "city", x: 750, y: 535 });
+  assert.equal(nearbyDoor(s), undefined, "the old wall position is no longer an entrance");
+  s.x = 805;
   const door = nearbyDoor(s);
   assert.equal(door.scene, "workshop");
   assert.ok(enterBuilding(s, door));

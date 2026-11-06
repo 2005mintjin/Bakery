@@ -1,3 +1,4 @@
+import { consumeFishStock } from "./fishStock.js";
 export const names = {
   flour: "밀가루",
   yeast: "이스트",
@@ -27,6 +28,7 @@ export function has(s, cost) {
 }
 export function spend(s, cost) {
   if (!has(s, cost)) return false;
+  if (cost.fish) consumeFishStock(s, cost.fish);
   for (const [k, v] of Object.entries(cost)) s.items[k] -= v;
   return true;
 }
