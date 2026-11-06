@@ -4,6 +4,7 @@ export const obstacles = {
   city: [],
   downtown: [],
   downtownEast: [],
+  park: [],
   field: [],
   pond: [],
   bakery: [],
@@ -76,9 +77,13 @@ export function transition(s) {
   else if (s.scene === "downtown" && s.x < 39 && s.y > 275 && s.y < 365)
     dest = ["city", 905, 310];
   else if (s.scene === "downtown" && s.x > 920 && s.y > 275 && s.y < 365)
-    dest = ["downtownEast", 48, 280];
-  else if (s.scene === "downtownEast" && s.x < 39 && s.y > 265 && s.y < 295)
+    dest = ["downtownEast", 180, 310];
+  else if (s.scene === "downtownEast" && s.x < 160 && s.y > 275 && s.y < 345)
     dest = ["downtown", 905, 310];
+  else if (s.scene === "downtownEast" && s.x > 920 && s.y > 275 && s.y < 330)
+    dest = ["park", 48, 310];
+  else if (s.scene === "park" && s.x < 39 && s.y > 275 && s.y < 330)
+    dest = ["downtownEast", 905, 310];
   if (dest) {
     [s.scene, s.x, s.y] = dest;
     return true;

@@ -28,12 +28,12 @@ test("rightward route visits services first, then the square; both return paths 
   assert.deepEqual(downtown.downtown.buildings.map((b) => b.id), ["hospital", "police", "bookstore", "recordStore"]);
   walkUntilTransition(s, "d"); assert.equal(s.scene, "downtownEast");
   assert.equal(blocked(s.scene, s.x, s.y), false);
-  assert.deepEqual([s.x, s.y], [48, 280]);
+  assert.deepEqual([s.x, s.y], [180, 310]);
   walkUntilTransition(s, "a"); assert.equal(s.scene, "downtown");
   walkUntilTransition(s, "a"); assert.equal(s.scene, "city");
 });
 test("a transition requires its own road opening and never bounces immediately", () => {
-  for (const [scene,x,y] of [["city",925,250],["downtown",925,250],["downtown",35,400],["downtownEast",35,310],["downtownEast",925,280]]) {
+  for (const [scene,x,y] of [["city",925,250],["downtown",925,250],["downtown",35,400],["downtownEast",35,400]]) {
     const s = Object.assign(fresh(), { scene,x,y });
     assert.equal(transition(s), false); assert.equal(s.scene, scene);
   }
@@ -65,9 +65,9 @@ test("buildings, fountain and fenced square block movement; repair keeps safe po
     assert.equal(blocked(scene,s.x,s.y),false);
   }
 });
-test("six unique townsfolk stand on walkable ground, use their own art and only offer conversation", () => {
+test("nine unique townsfolk stand on walkable ground, use their own art and only offer conversation", () => {
   const all = Object.values(downtown).flatMap((a) => a.residents);
-  assert.equal(new Set(all.map((n) => n.id)).size,6);
+  assert.equal(new Set(all.map((n) => n.id)).size,9);
   for (const scene of Object.keys(downtown)) {
     const npcs = residents({ state:{scene}, data:{downtown} });
     assert.equal(npcs.length,3);

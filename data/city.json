@@ -21,8 +21,8 @@
     {
       "id": "reader",
       "name": "샬롯",
-      "x": 330,
-      "y": 265,
+      "x": 360,
+      "y": 270,
       "color": "#ac8cb7",
       "personality": "우쿨렐레를 연주하는 자신만만한 음악가",
       "portraitAsset": "assets/characters/residents/charlotte-portrait.png",
@@ -53,7 +53,7 @@
       "id": "walker",
       "name": "도하",
       "x": 630,
-      "y": 320,
+      "y": 285,
       "color": "#d39365",
       "line": "잡화점에서 밀가루와 꿀을 살 수 있어요. 오른쪽 위 문으로 들어가 보세요."
     },

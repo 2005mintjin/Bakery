@@ -110,7 +110,7 @@ try {
   assert.ok(night<day);
   await p.screenshot({path:"/tmp/bakery-downtown-square-night.png",fullPage:true});
   await p.setViewportSize({width:390,height:844});
-  await p.evaluate(()=>Object.assign(window.downtownGame.state,{x:72,y:280,minutes:720}));
+  await p.evaluate(()=>Object.assign(window.downtownGame.state,{x:185,y:310,minutes:720}));
   const left=await p.locator('[data-move="a"]').boundingBox();assert.ok(left);
   const cdp=await context.newCDPSession(p);
   await cdp.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[{x:left.x+left.width/2,y:left.y+left.height/2,id:1}]});

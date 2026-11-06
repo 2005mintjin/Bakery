@@ -34,7 +34,7 @@ export function playPerformance(g, actor, song, onComplete, createAudio = () => 
     if (document.hidden) audio.pause(); else play();
   }
   ui.panel(
-    `<h2>샬롯의 연주</h2><div class="portrait-scene indoor dialogue-portrait"><img src="${actor.portraitAsset}" alt="샬롯"></div><p data-performance-status>우쿨렐레 연주를 듣고 있어요.</p><p>스페이스 바 또는 건너뛰기 버튼으로 연주를 마칠 수 있어요. ESC로 대화를 취소할 수 있어요.</p>`,
+    `<h2>샬롯의 연주</h2><div class="portrait-scene indoor dialogue-portrait"><img src="${song.imageAsset || actor.portraitAsset}" alt="샬롯"></div><p data-performance-status>우쿨렐레 연주를 듣고 있어요.</p><p>스페이스 바 또는 건너뛰기 버튼으로 연주를 마칠 수 있어요. ESC로 대화를 취소할 수 있어요.</p>`,
     [["연주 건너뛰기 · Space", finish], ["다시 재생", () => { if (audio.error) audio.load(); audio.currentTime = 0; play(); }]],
   );
   ui.overlay.querySelector(".panel").classList.add("dialogue-panel");

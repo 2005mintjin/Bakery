@@ -36,7 +36,7 @@ try{
   await p.waitForFunction(()=>window.hoursGame.state.scene==="store");
   await choose("잡화점 직원과 대화");await drain();
   const font=await p.locator("#typed-dialogue").evaluate(el=>({family:getComputedStyle(el).fontFamily,size:getComputedStyle(el).fontSize}));
-  assert.match(font.family,/sans-serif/);assert.equal(font.size,"22px");
+  assert.match(font.family,/sans-serif/);assert.equal(font.size,"20px");
   await p.screenshot({path:"/tmp/bakery-readable-dialogue.png",fullPage:true});
   await choose("잡은 생선을 팔고 싶어요.");await drain();
   const before=await p.evaluate(()=>window.hoursGame.state.money);
@@ -125,5 +125,5 @@ try{
   await p.locator("[data-touch-interact]").click();await drain();
   assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
   assert.deepEqual(errors,[]);
-  console.log("PASS: opening/closing and Sunday staff outdoors, door closure/ejection, deferred staff visitors, three real catches and size UI, priced store sales, legacy recipe use, save/reload, sunset/night in all new maps/interiors, readable 22px PC dialogue and mobile NPC interaction.");
+  console.log("PASS: opening/closing and Sunday staff outdoors, door closure/ejection, deferred staff visitors, three real catches and size UI, priced store sales, legacy recipe use, save/reload, sunset/night in all new maps/interiors, readable 20px PC dialogue and mobile NPC interaction.");
 }finally{await browser?.close();await new Promise(r=>server.close(r));}

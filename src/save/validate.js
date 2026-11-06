@@ -22,6 +22,7 @@ export function validate(input) {
       "city",
       "downtown",
       "downtownEast",
+      "park",
       "store",
       "field",
       "pond",

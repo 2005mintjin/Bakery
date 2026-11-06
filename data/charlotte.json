@@ -170,6 +170,7 @@
   },
   "performance": {
     "asset": "assets/audio/charlotte-performance.mp3",
-    "title": "샬롯의 연주"
+    "title": "샬롯의 연주",
+    "imageAsset": "assets/characters/residents/charlotte-performance.png"
   }
 }

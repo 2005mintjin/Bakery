@@ -49,6 +49,7 @@ export function updateHud(ui, hint) {
     city: "❀ 해봄 소도시 · 상점 거리",
     downtown: "번화가 · 병원·책방 거리",
     downtownEast: "번화가 · 쉼터 광장",
+    park: "해봄 공원 · 분수 정원",
     pond: "♧ 서쪽 호숫가 · 낚시터",
     field: "❀ 서쪽 베리 텃밭",
   }[s.scene];

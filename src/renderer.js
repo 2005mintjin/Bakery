@@ -36,6 +36,7 @@ export class Renderer extends PixelPainter {
       "city",
       "downtown",
       "downtownEast",
+      "park",
       "store",
       "field",
       "pond",
@@ -77,7 +78,8 @@ export class Renderer extends PixelPainter {
     const directions = {
       city: [["번화가 →", 879]],
       downtown: [["← 상점가", 76], ["쉼터 광장 →", 873]],
-      downtownEast: [["← 병원·책방 거리", 89, 310]],
+      downtownEast: [["← 병원·책방 거리", 190, 350], ["공원 →", 877]],
+      park: [["← 쉼터 광장", 84, 335]],
     }[s.scene] || [];
     for (const [label, x, y = 337] of directions) {
       this.r(x - 70, y, 140, 25, "#483c2cdb");

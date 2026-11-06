@@ -266,3 +266,9 @@ bakingUI는 한 번에 한 포인터만 반죽에 사용하고 취소/캡처 상
 ### 샬롯과 GIF/연주 감상
 
 city.reader는 샬롯이다. spriteAnimation/원본 GIF 기반 아틀라스는 residentAnimation.js와 residentArt.js로 재생하며, 일반 초상과 빵집 SD는 별도로 유지한다. 대사는 charlotte.json/charlotteStory.js, 실제 연주 MP3 수명 관리는 performance.js/기존 UI controller.dispose다. Space는 연주를 멈추고 감상 선택지로 진행하며, ESC는 취소한다. Music.holdForPerformance 동안 배경음을 재생하지 않는다. 검사는 `node --test tests/charlotte.test.js tests/audio.test.js`, 브라우저는 `node tools/check-charlotte-browser.mjs`다. 상세 원본 매핑·GIF 준비·음량·문 위치는 HANDOFF.md에 기록했다.
+
+### 공원·광장 귀환 경로·연주 이미지 (데모)
+
+공원은 worldMaps/downtown/lighting JSON의 park 항목과 sceneManager의 동서 출입구를 사용한다. 원본 배경은 assets/backgrounds/park.png다. 광장 서쪽 전환은 중앙 길의 왼쪽 건물 충돌 전에 실행하며 도착 위치와 출입구를 겹치지 않게 유지한다. NPC 이동 시 문 앞뿐 아니라 중앙 길과 일요일 휴식 직원의 충돌도 확인한다.
+
+charlotte.json의 performance.imageAsset은 연주 화면 전용이다. performance.js는 해당 필드가 없으면 기존 일반 초상으로 돌아간다. 거리 GIF/일반 대화/빵집 초상과 혼용하지 않는다. 가독성 스타일은 PC 20px·모바일 18px다. 회귀 검사는 tests/park.test.js, 실제 키보드/터치 왕복·주민 대화·저장·야간 조명·연주 이미지는 tools/check-park-browser.mjs로 확인한다. 정적 빌드를 공유하는 다른 브라우저 도구와 순서대로 실행한다.
