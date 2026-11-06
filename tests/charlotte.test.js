@@ -37,7 +37,7 @@ test("street branches return to the original choices and do not award or consume
   assert.deepEqual(g.state,before);
 });
 test("Charlotte is a bakery visitor with SD, separate portrait, original voice and valid saved orders",()=>{
-  const c=customers.find(c=>c.portrait==="charlotte");assert.ok(c);assert.equal(customers.length,14);
+  const c=customers.find(c=>c.portrait==="charlotte");assert.ok(c);assert.equal(customers.length,18);
   assert.notEqual(c.spriteAsset,c.portraitAsset);assert.equal(customerActor(c,c).portraitAsset,c.portraitAsset);
   assert.deepEqual(voicePlan({text:"안녕!"},c,json("voices")),["charlotte","charlotte",null]);
   const s=fresh();s.shop.customer={...c,bread:"honeybread",quantity:2,phase:"waiting",arrival:1.2};

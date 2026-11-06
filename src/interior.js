@@ -3,12 +3,12 @@ import { needsBakeryGuide } from "./tutorial.js";
 import { BakeryHud } from "./bakeryHud.js";
 import { worldMaps } from "./sceneManager.js";
 export const isInterior = (scene) =>
-  ["bakery", "bakeryKitchen", "post", "store", "cafe", "workshop", "hall"].includes(
+  ["bakery", "bakeryKitchen", "post", "store", "cafe", "workshop", "hall", "clinic"].includes(
     scene,
   );
 export function leaveInterior(s) {
   if (!isInterior(s.scene)) return false;
-  const origin = ["store", "cafe", "workshop", "hall"].includes(s.scene)
+  const origin = s.scene === "clinic" ? "downtown" : ["store", "cafe", "workshop", "hall"].includes(s.scene)
       ? "city"
       : "town",
     dest = s.scene === "bakeryKitchen" ? "bakery" : s.scene;
@@ -30,6 +30,11 @@ export function changeBakeryRoom(s) {
   return false;
 }
 export const interiorActions = {
+  clinic: [
+    ["konstanzeTalk", "콘스탄체와 대화 · 의사", "왼쪽 책상의 금발 의사"],
+    ["valeriaTalk", "발레리아와 대화 · 의사", "가운데 단발 의사"],
+    ["catherineTalk", "캐서린과 대화 · 간호사", "오른쪽 강아지 간호사"],
+  ],
   hall: [
     ["lotusTalk", "로터스와 대화 · 이장", "카운터 너머 분홍머리 이장"],
     ["hendelTalk", "헨델과 대화 · 비서", "왼쪽 의자의 하얀 머리 비서"],
@@ -132,7 +137,7 @@ export class Interior {
       if (isInterior(scene)) {
         const b = document.createElement("button");
         b.className = "interior-exit";
-        b.textContent = ["store", "cafe", "workshop", "hall"].includes(scene)
+        b.textContent = scene === "clinic" ? "← 번화가로 나가기" : ["store", "cafe", "workshop", "hall"].includes(scene)
           ? "← 소도시로 나가기"
           : "← 광장으로 나가기";
         b.onclick = () => {
@@ -158,6 +163,7 @@ export class Interior {
         cafe: "햇살 카페",
         workshop: "해봄 공방",
         hall: "마을회관",
+        clinic: "해봄 의원",
       }[scene] || "실내 기능",
     );
   }

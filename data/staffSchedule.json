@@ -24,6 +24,11 @@
       "name": "카페",
       "open": 360,
       "close": 1200
+    },
+    "clinic": {
+      "name": "의원",
+      "open": 360,
+      "close": 1080
     }
   },
   "residents": [
@@ -116,6 +121,33 @@
       "x": 520,
       "y": 440,
       "line": "쉬는 시간에도 마을을 살피는 중이에요. ...그렇다고 지금 업무를 보겠다는 뜻은 아니랍니다."
+    },
+    {
+      "id": "off-duty-konstanze",
+      "portrait": "konstanze",
+      "workplace": "clinic",
+      "scene": "downtown",
+      "x": 210,
+      "y": 335,
+      "line": "..오늘 진료는 끝났어. 급한 일 아니면 다음 영업시간에 보자."
+    },
+    {
+      "id": "off-duty-valeria",
+      "portrait": "valeria",
+      "workplace": "clinic",
+      "scene": "downtown",
+      "x": 820,
+      "y": 335,
+      "line": "오늘 진료는 마쳤어요. 잠깐 바람을 쐬면 내일은 좀 더 잘할 수 있겠죠?"
+    },
+    {
+      "id": "off-duty-catherine",
+      "portrait": "catherine",
+      "workplace": "clinic",
+      "scene": "downtown",
+      "x": 730,
+      "y": 535,
+      "line": "어머, 여기서 만나네? 오늘은 쉬는 중이야. 빵 이야기는 의원 열었을 때 하자!"
     }
   ]
 }

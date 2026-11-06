@@ -40,14 +40,14 @@ test("a transition requires its own road opening and never bounces immediately",
   const s = Object.assign(fresh(), { scene:"city", x:925, y:310 });
   assert.ok(transition(s)); assert.equal(transition(s), false);
 });
-test("new maps load bundled PNGs, have no active buildings and preserve old saves", () => {
+test("downtown maps preserve old saves and enable only the clinic building", () => {
   for (const scene of ["downtown", "downtownEast"]) {
     assert.ok(existsSync(new URL("../" + world[scene].asset, import.meta.url)));
-    assert.deepEqual(world[scene].doors, []);
+    assert.equal(world[scene].doors.length, scene === "downtown" ? 1 : 0);
     const s = Object.assign(fresh(), { scene, x:480, y:310 });
     assert.deepEqual(validate(s), s);
     assert.equal(nearbyDoor(s), undefined);
-    assert.ok(downtown[scene].buildings.every((b) => b.available === false));
+    assert.ok(downtown[scene].buildings.every((b) => b.available === (b.id === "hospital")));
   }
   assert.deepEqual(validate(fresh()), fresh());
   assert.throws(() => validate({ ...fresh(), scene:"unknownDistrict" }));
@@ -65,7 +65,7 @@ test("buildings, fountain and fenced square block movement; repair keeps safe po
     assert.equal(blocked(scene,s.x,s.y),false);
   }
 });
-test("nine unique townsfolk stand on walkable ground, use their own art and only offer conversation", () => {
+test("nine unique townsfolk stand on walkable ground, use their own art with Mikhail replacing the listener", () => {
   const all = Object.values(downtown).flatMap((a) => a.residents);
   assert.equal(new Set(all.map((n) => n.id)).size,9);
   for (const scene of Object.keys(downtown)) {
@@ -73,6 +73,7 @@ test("nine unique townsfolk stand on walkable ground, use their own art and only
     assert.equal(npcs.length,3);
     for (const npc of npcs) {
       assert.equal(blocked(scene,npc.x,npc.y),false,npc.id);
+      if (npc.story === "mikhail") { assert.equal(npc.name,"미하일"); assert.equal(npc.quest,"clinicGift"); continue; }
       assert.equal(npc.quest,undefined);
       assert.ok(npc.line.length>0);
       assert.ok(existsSync(new URL("../"+npc.portraitAsset,import.meta.url)));

@@ -28,7 +28,7 @@
 | 세이브 삭제 확인 UI | `src/ui/saveDelete.js` |
 | 확대 글자·줄바꿈 | `src/styles/readability.css` |
 | 정적 사이트 빌드/gh-pages 배포 | `tools/build-web.mjs`, `tools/publish-web.mjs` |
-| 저장 메뉴·음악 설정 화면 | `src/ui/screens/settings.js` |
+| 저장 메뉴·소리 설정 화면 | `src/ui/screens/settings.js` |
 | 가방·물건 상세 | `src/ui/screens/inventory.js` |
 | 퀘스트 목록 | `src/ui/screens/journal.js` |
 | 반죽·빵 창고 | `src/ui/screens/warehouse.js` |
@@ -272,3 +272,19 @@ city.reader는 샬롯이다. spriteAnimation/원본 GIF 기반 아틀라스는 r
 공원은 worldMaps/downtown/lighting JSON의 park 항목과 sceneManager의 동서 출입구를 사용한다. 원본 배경은 assets/backgrounds/park.png다. 광장 서쪽 전환은 중앙 길의 왼쪽 건물 충돌 전에 실행하며 도착 위치와 출입구를 겹치지 않게 유지한다. NPC 이동 시 문 앞뿐 아니라 중앙 길과 일요일 휴식 직원의 충돌도 확인한다.
 
 charlotte.json의 performance.imageAsset은 연주 화면 전용이다. performance.js는 해당 필드가 없으면 기존 일반 초상으로 돌아간다. 거리 GIF/일반 대화/빵집 초상과 혼용하지 않는다. 가독성 스타일은 PC 20px·모바일 18px다. 회귀 검사는 tests/park.test.js, 실제 키보드/터치 왕복·주민 대화·저장·야간 조명·연주 이미지는 tools/check-park-browser.mjs로 확인한다. 정적 빌드를 공유하는 다른 브라우저 도구와 순서대로 실행한다.
+
+### 의원·미하일·리본 선물 (데모)
+
+인물과 원문 기반 대화 그래프는 data/clinic.json, 진행/정산/저장 검증은 clinicQuests.js, 대화 제어는 clinicStory.js다. 원문 TXT는 data/source의 konstanze/valeria/catherine/mikhail-dialogue.txt로 보관한다. 월~토 06~18시 일정과 퇴근 위치는 staffSchedule.json을 사용한다. 진료실에는 원본 배경에 세 직원이 포함되어 있으므로 중복 SD를 덧그리지 않는다. SD는 퇴근/미하일 야외 및 빵집 카운터에, 일반 초상은 대화에 사용한다.
+
+worldMaps.downtown.doors의 clinic은 계단 (166,279)에서 출입하며 나가기는 downtown의 해당 문 앞으로 돌아간다. 실내 버튼은 interior.js/screens.js/interiors.css, 시간대 창문은 lighting.json이다. 기존 시설을 city 또는 town으로 내보내던 규칙에 clinic의 downtown 출구를 따로 적용했다.
+
+선택 저장 필드 clinic={bread:none|active|done, gift:none|baking|wrapped|delivered|done, report:null|thanks|annoyed}를 v8에서 검증/보충한다. clinicBread는 밀빵 부탁, clinicGift는 캐서린의 전체 부탁, clinicDelivery는 포장 후 생성되어 미하일 전달 시 완료하는 하위 부탁이다. 포장에 베리 빵 1개를 소비하고 이후에는 상태로 운반하므로 재판매·재사용할 수 없다. clinicAction의 단계/재고 조건을 진입 및 대사 완료 때 확인하며 보상은 reward 결산으로만 기록한다. clinicJournal이 현재 단계 설명을 제공한다.
+
+검사: node --test tests/clinic.test.js, node tools/check-clinic-browser.mjs. 브라우저 도구는 격리 저장을 사용해 실제 출입·원본 초상/MP3 재생·취소/부족·전체 퀘스트·단계별 저장·퇴근/일요일·네 손님 판매·모바일 화면을 확인한다. 다른 정적 브라우저 검사와는 순서대로 실행한다. 원본 이미지/MP3를 편집하지 않고 알파 bounds만 데이터로 지정한다.
+
+### 음악/음성 독립 음량과 캐서린 첫 출력
+
+Music의 volume/setVolume은 음악·연주·기존 노크음을 유지하고 voiceVolume/setVoiceVolume은 DialogueVoice의 소스 gain만 제어한다. 두 값과 전체 muted는 기존 hearth-audio 로컬 설정 키에 저장한다. voiceVolume 누락/잘못된 값은 정규화한 이전 volume을 사용해 옛 소리 균형을 유지한다. 게임 세이브 버전/슬롯에는 음량을 넣지 않는다. settings.js가 각각의 슬라이더와 백분율을 표시하며 음소거는 모든 소리에 적용한다. 새 채널 추가로 인물별 voices.json gain을 우회하지 않는다.
+
+캐서린 intro는 speech/narration 두 페이지이며 immediateChoices를 설정하지 않는다. 새 TXT와 비교하면 출력 지시 한 곳만 변경됐다. 원문 TXT와 발레리아 MP3는 새 첨부 원본으로 교체했다. 검사는 tests/audio.test.js·dialogueVoice.test.js·clinic.test.js, 실제 UI/오디오/이전 설정 이관·모바일·연주 회귀는 tools/check-audio-settings-browser.mjs다. 의원 검사 도구도 새 인사를 끝까지 읽고 선택하도록 갱신했다.

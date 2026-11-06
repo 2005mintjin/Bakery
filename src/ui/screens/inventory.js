@@ -21,7 +21,7 @@ export function showInventory(ui) {
     icon = (id) =>
       productIds.includes(id) ? foodIcon(id) : "assets/ui/ingredient.svg";
   ui.panel(
-    `<div class="panel-eyebrow">INVENTORY · 나의 작은 가방</div><h2>나의 가방</h2><nav class="inventory-filters" aria-label="가방 분류">${[
+    `<div class="panel-eyebrow">INVENTORY · 나의 작은 가방</div><h2>나의 가방</h2>${s.clinic?.gift === "wrapped" ? "<p>부탁 물품 · 리본으로 포장한 베리 빵 1개 — 번화가의 미하일에게 전하세요.</p>" : ""}<nav class="inventory-filters" aria-label="가방 분류">${[
       ["all", "전체"],
       ["materials", "재료"],
       ["products", "완성품"],

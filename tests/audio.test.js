@@ -86,6 +86,7 @@ test("volume and mute persist, and autoplay denial waits for an explicit retry",
   assert.equal(audio.muted, true);
   assert.deepEqual(JSON.parse(records["hearth-audio"]), {
     volume: 0.4,
+    voiceVolume: 0.35,
     muted: true,
   });
   music.start("town");
@@ -162,4 +163,38 @@ test("a performance holds background music through tab suspension and resumes wi
   assert.equal(audio.paused, true); assert.equal(audio.currentTime, 12);
   music.holdForPerformance(false); music.update("city"); await tick();
   assert.equal(audio.paused, false); assert.equal(audio.currentTime, 12);
+});
+
+test("music and voice volumes remain independent, clamp safely and persist across reloads", () => {
+  const {music, audio, storage, records} = setup();
+  music.setVoiceVolume(.8);
+  music.setVolume(0);
+  assert.equal(audio.volume, 0);
+  assert.equal(music.voiceVolume, .8);
+  music.setVoiceVolume(0);
+  music.setVolume(.7);
+  assert.equal(music.voiceVolume, 0);
+  assert.equal(audio.volume, .7);
+  const loaded = new Music(config, {createAudio:()=>({}), storage});
+  assert.equal(loaded.volume, .7);
+  assert.equal(loaded.voiceVolume, 0);
+  loaded.setVoiceVolume(2);assert.equal(loaded.voiceVolume, 1);
+  loaded.setVoiceVolume(-1);assert.equal(loaded.voiceVolume, 0);
+  const before=records["hearth-audio"];
+  loaded.setVoiceVolume(NaN);loaded.setVolume(Infinity);
+  assert.equal(records["hearth-audio"],before);
+});
+test("legacy shared audio preferences migrate without changing either channel or mute", () => {
+  for(const volume of [0,.2,1]){
+    const music=new Music(config,{createAudio:()=>({}),storage:{getItem:()=>JSON.stringify({volume,muted:true})}});
+    assert.equal(music.volume,volume);assert.equal(music.voiceVolume,volume);assert.equal(music.muted,true);
+  }
+  for(const voiceVolume of [null,"bad",{},-3,5]){
+    const music=new Music(config,{createAudio:()=>({}),storage:{getItem:()=>JSON.stringify({volume:.3,voiceVolume})}});
+    assert.equal(music.voiceVolume,typeof voiceVolume==="number"?Math.max(0,Math.min(1,voiceVolume)):.3);
+  }
+  for(const storage of [{getItem:()=>"broken"},{getItem(){throw Error("denied");},setItem(){throw Error("denied");}}]){
+    const music=new Music(config,{createAudio:()=>({}),storage});
+    assert.equal(music.voiceVolume,.35);music.setVoiceVolume(.6);assert.equal(music.voiceVolume,.6);
+  }
 });

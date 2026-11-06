@@ -338,7 +338,16 @@
         "h": 170
       }
     ],
-    "doors": [],
+    "doors": [
+      {
+        "scene": "clinic",
+        "name": "해봄 의원",
+        "x": 166,
+        "y": 279,
+        "w": 50,
+        "h": 40
+      }
+    ],
     "safeSpawn": [480, 310]
   },
   "downtownEast": {

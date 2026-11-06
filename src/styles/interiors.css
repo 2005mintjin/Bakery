@@ -196,3 +196,8 @@
 #interior-actions .spot-lotusTalk { left: 43%; top: 48%; }
 #interior-actions .spot-hendelTalk { left: 6%; top: 74%; }
 #interior-actions .spot-adelTalk { right: 4%; top: 74%; }
+
+/* The original clinic background already contains all three staff members. */
+#interior-actions .spot-konstanzeTalk { left: 19%; top: 72%; max-width: 27%; }
+#interior-actions .spot-valeriaTalk { left: 50%; top: 56%; max-width: 27%; }
+#interior-actions .spot-catherineTalk { right: 2%; top: 78%; max-width: 29%; }

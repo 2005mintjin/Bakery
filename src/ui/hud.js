@@ -45,6 +45,7 @@ export function updateHud(ui, hint) {
     store: "✦ 해봄 잡화점",
     cafe: "☕ 햇살 카페",
     hall: "마을회관 · 이장과 조합 창구",
+    clinic: "해봄 의원 · 진료실",
     workshop: "⚒ 해봄 공방",
     city: "❀ 해봄 소도시 · 상점 거리",
     downtown: "번화가 · 병원·책방 거리",

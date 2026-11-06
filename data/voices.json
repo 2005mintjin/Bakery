@@ -96,6 +96,35 @@
         "charlotte",
         "reader"
       ]
+    },
+    "konstanze": {
+      "asset": "assets/audio/voices/konstanze.mp3",
+      "aliases": [
+        "콘스탄체",
+        "konstanze"
+      ]
+    },
+    "valeria": {
+      "asset": "assets/audio/voices/valeria.mp3",
+      "aliases": [
+        "발레리아",
+        "valeria"
+      ]
+    },
+    "catherine": {
+      "asset": "assets/audio/voices/catherine.mp3",
+      "aliases": [
+        "캐서린",
+        "catherine"
+      ]
+    },
+    "mikhail": {
+      "asset": "assets/audio/voices/mikhail.mp3",
+      "aliases": [
+        "미하일",
+        "mikhail",
+        "downtown-listener"
+      ]
     }
   }
 }

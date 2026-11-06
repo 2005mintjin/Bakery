@@ -1,9 +1,15 @@
+import { ClinicStory } from "./clinicStory.js";
 import { CharlotteStory } from "./charlotteStory.js";
 import { CivicStory } from "./civicStory.js";
 import { AnastasiaStory } from "./anastasiaStory.js";
 import { TownStory } from "./townStory.js";
 import { accept, complete } from "./quest.js";
 export function talk(game, n) {
+  if (n.story === "mikhail") {
+    const story = new ClinicStory(game, "mikhail", n);
+    story.start();
+    return story;
+  }
   if (n.id === "reader") {
     const story = new CharlotteStory(game, n);
     story.start();

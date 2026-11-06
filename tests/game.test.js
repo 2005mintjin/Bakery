@@ -63,7 +63,7 @@ test("three recipes consume ingredients, display and settle exactly once", () =>
 });
 test("all three quests require acceptance and pay rewards only once", () => {
   const s = fresh();
-  for (const q of quests) {
+  for (const q of quests.filter(q => ["delivery", "berries", "friend"].includes(q.id))) {
     assert.equal(complete(s, q), false);
     assert.ok(accept(s, q));
     if (q.item) {
