@@ -67,7 +67,7 @@ function setup() {
       return gain;
     },
   };
-  const music = { muted: false, volume: 0.4 },
+  const music = { muted: false, volume: 0.4, voiceVolume: 0.4 },
     errors = [];
   const voices = new DialogueVoice(config, music, {
     getContext: () => ctx,
@@ -194,10 +194,10 @@ test("mute, zero volume, blocked context and cancellation stop current and queue
   assert.equal(t.voices.active.size, 0);
   assert.ok(t.sources.every((s) => s.stopped === true));
   t.music.muted = false;
-  t.music.volume = 0;
+  t.music.voiceVolume = 0;
   t.voices.type(id, ["maria"]);
   assert.equal(t.sources.length, 2);
-  t.music.volume = 0.4;
+  t.music.voiceVolume = 0.4;
   t.ctx.state = "suspended";
   t.voices.type(id, ["maria"]);
   assert.equal(t.sources.length, 2);
@@ -269,7 +269,7 @@ test("speaker gains preserve configured voice balancing", async () => {
     const gain = t.gains.at(-1).ramps[1][0];
     assert.equal(
       gain,
-      t.music.volume *
+      t.music.voiceVolume *
         config.gain *
         ({arien:2,sasha:2.5,erina:2,adel:3,isidoro:1.25,"post-clerk":1.3}[key] || 1),
     );
@@ -334,4 +334,15 @@ test("strongest slice considers both stereo channels and short clips", () => {
     getChannelData: (i) => channels[i] };
   assert.deepEqual(audibleWindow(b, .02), { start: .03, end: .05 });
   assert.equal(audibleWindow(buffer([0, 0, 0]), .028), null);
+});
+
+test("dialogue sources use only voice volume while music is zero and respect voice-only silence", async()=>{
+  const t=setup();await t.voices.unlock();const id=t.voices.begin();
+  t.music.volume=0;t.music.voiceVolume=.65;t.voices.type(id,["valeria"]);
+  assert.equal(t.sources.length,1);assert.equal(t.gains.at(-1).ramps[1][0],.65*config.gain);
+  t.music.volume=.9;t.music.voiceVolume=0;t.voices.type(id,["valeria"]);
+  assert.equal(t.sources.length,1);assert.equal(t.voices.active.size,0);
+  t.music.voiceVolume=.25;t.voices.type(id,["catherine"]);
+  assert.equal(t.sources.length,2);assert.equal(t.gains.at(-1).ramps[1][0],.25*config.gain);
+  t.music.muted=true;t.voices.type(id,["catherine"]);assert.equal(t.voices.active.size,0);
 });

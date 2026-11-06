@@ -75,7 +75,7 @@ try {
   await p.screenshot({path:"/tmp/bakery-clinic-interior.png",fullPage:true});
   for(const key of ["konstanze","valeria","catherine"]){
     await speak(key);
-    if(key==="catherine")await choose("도와드릴 게 있을까요.");
+    if(key==="catherine"){await drain();await choose("도와드릴 게 있을까요.");}
     await voice(key);await drain();
     await p.screenshot({path:`/tmp/bakery-clinic-${key}.png`,fullPage:true});
     await p.keyboard.press("Escape");
@@ -93,7 +93,7 @@ try {
   await speak("konstanze");await drain();await choose("혹시 몇 살인가요?");await drain();await choose("20대 초반 같아요!");await drain();await p.keyboard.press("Escape");
   await speak("valeria");await drain();await choose("무슨 일을 하시나요?");await drain();await choose("자신감을 가지세요!");await drain();await choose("혹시 간호사인가요?");await drain();await p.keyboard.press("Escape");
   // Gift: accept, package, persist, deliver to the replaced outdoor resident, report.
-  await speak("catherine");await choose("도와드릴 게 있을까요.");await drain();await choose("미하일이 누군데요?");await drain();await choose("당연하죠.");await drain();
+  await speak("catherine");await drain();await choose("도와드릴 게 있을까요.");await drain();await choose("미하일이 누군데요?");await drain();await choose("당연하죠.");await drain();
   await speak("catherine");await drain();await choose("여기 있어요.");await drain();assert.match(await p.locator("#toast").textContent(),/베리 빵/);await p.keyboard.press("Escape");
   await p.evaluate(()=>window.clinicGame.state.items.berrybread=1);
   await speak("catherine");await drain();await choose("여기 있어요.");await drain();

@@ -21,12 +21,17 @@ export class Music {
     this.token = 0;
     this.onError = onError;
     this.volume = 0.35;
+    this.voiceVolume = 0.35;
     this.muted = false;
     try {
       this.storage = storage ?? globalThis.localStorage;
       const saved = JSON.parse(this.storage?.getItem("hearth-audio") || "null");
       if (saved && Number.isFinite(saved.volume))
         this.volume = Math.max(0, Math.min(1, saved.volume));
+      // Older versions used one volume for every sound. Preserve that balance.
+      this.voiceVolume = Number.isFinite(saved?.voiceVolume)
+        ? Math.max(0, Math.min(1, saved.voiceVolume))
+        : this.volume;
       this.muted = saved?.muted === true;
     } catch {}
     this.apply();
@@ -39,7 +44,7 @@ export class Music {
     try {
       this.storage?.setItem(
         "hearth-audio",
-        JSON.stringify({ volume: this.volume, muted: this.muted }),
+        JSON.stringify({ volume: this.volume, voiceVolume: this.voiceVolume, muted: this.muted }),
       );
     } catch {}
   }
@@ -47,6 +52,11 @@ export class Music {
     if (!Number.isFinite(value)) return;
     this.volume = Math.max(0, Math.min(1, value));
     this.apply();
+    this.persist();
+  }
+  setVoiceVolume(value) {
+    if (!Number.isFinite(value)) return;
+    this.voiceVolume = Math.max(0, Math.min(1, value));
     this.persist();
   }
   setMuted(value) {
@@ -98,7 +108,7 @@ export class Music {
           this.failed = !this.blocked;
           this.onError(
             this.blocked
-              ? "음악 설정에서 재생 버튼을 눌러 주세요."
+              ? "소리 설정에서 재생 버튼을 눌러 주세요."
               : "음악을 읽지 못했어요. 파일과 브라우저를 확인하세요.",
           );
         });
@@ -106,7 +116,7 @@ export class Music {
       this.pending = false;
       this.failed = true;
       this.onError(
-        "음악을 재생할 수 없어요. 음악 설정에서 다시 시도해 주세요.",
+        "음악을 재생할 수 없어요. 소리 설정에서 다시 시도해 주세요.",
       );
     }
   }

@@ -78,9 +78,10 @@ test("unread/cancelled/stale or closed-clinic dialogue cannot accept, consume or
   }
   const h=harness("konstanze");clinicAction(h.s,"acceptBread");h.s.items.loaf=3;h.start();h.choose("여기 있어요.");h.s.items.loaf=2;h.finish();assert.equal(h.s.money,60);assert.equal(h.s.items.loaf,2);assert.equal(h.s.clinic.bread,"active");
 });
-test("Catherine offer supports refusal and explanation without accepting; greeting appears together",()=>{
-  const h=harness("catherine");h.start();assert.equal(h.shown.pages.length,1);assert.equal(h.shown.options.immediateChoices,true);
-  const plan=voicePlan(h.shown.pages[0],data.clinic.actors.catherine,data.voices);assert.ok(plan.slice(h.shown.pages[0].text.indexOf("이야기:")).every(v=>v===null));
+test("Catherine offer supports refusal and explanation without accepting; greeting and narration advance separately",()=>{
+  const h=harness("catherine");h.start();assert.equal(h.shown.pages.length,2);assert.equal(h.shown.options.immediateChoices,undefined);
+  assert.ok(voicePlan(h.shown.pages[0],data.clinic.actors.catherine,data.voices).some(v=>v==="catherine"));
+  assert.ok(voicePlan(h.shown.pages[1],data.clinic.actors.catherine,data.voices).every(v=>v===null));
   h.choose("도와드릴 게 있을까요.");h.finish();h.choose("미하일이 누군데요?");h.finish();
   assert.equal(h.s.clinic.gift,"none");h.choose("..그건 안 되겠는데요.");assert.equal(h.g.ui.open,false);
   assert.equal(h.s.quests.clinicGift,undefined);
