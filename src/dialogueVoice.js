@@ -154,7 +154,7 @@ export class DialogueVoice {
       ctx.state !== "running" ||
       globalThis.document?.hidden ||
       this.music.muted ||
-      this.music.volume <= 0
+      this.music.voiceVolume <= 0
     ) {
       this.silence(session);
       return;
@@ -176,7 +176,7 @@ export class DialogueVoice {
           gain = ctx.createGain(),
           time = this.nextTime;
         const volume =
-          this.music.volume *
+          this.music.voiceVolume *
           this.config.gain *
           (this.config.speakers[key]?.gain ?? 1);
         source.buffer = entry.buffer;

@@ -1,8 +1,10 @@
+import { freshClinic } from "../clinicQuests.js";
 import { productCounts } from "../recipeBook.js";
 import { freshEquipment } from "../equipment.js";
 export function fresh() {
   return {
     version: 8,
+    clinic: freshClinic(),
     civic: { lotusTaste: false, martinGift: "none" },
     guild: { grade: "D", joinedDay: 1, evaluated: 1, average: 0, sales: {} },
     tutorial: { bakeryIntroSeen: false },

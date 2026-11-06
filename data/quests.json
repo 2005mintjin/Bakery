@@ -28,5 +28,25 @@
     "name": "하트 스티커가 붙은 선물",
     "description": "마틴의 선물을 마리아에게 전하고 마을회관 앞의 마틴에게 돌아가 답을 전하세요.",
     "reward": 0
+  },
+  {
+    "id": "clinicBread",
+    "name": "환자들을 위한 밀빵",
+    "description": "의원의 콘스탄체에게 가방에 든 밀빵 3개를 전해 주세요. 보상 60G.",
+    "item": "loaf",
+    "count": 3,
+    "reward": 60
+  },
+  {
+    "id": "clinicGift",
+    "name": "간호사의 리본 선물",
+    "description": "캐서린에게 베리 빵 1개를 맡기고, 포장한 선물을 번화가의 미하일에게 전한 뒤 캐서린에게 돌아가세요.",
+    "reward": 0
+  },
+  {
+    "id": "clinicDelivery",
+    "name": "미하일에게 전할 빵",
+    "description": "캐서린이 포장한 리본 선물을 번화가의 미하일에게 전하세요.",
+    "reward": 0
   }
 ]

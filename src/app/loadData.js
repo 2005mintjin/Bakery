@@ -1,3 +1,4 @@
+import { validateClinicStories } from "../clinicStory.js";
 import { validateCivicStories } from "../civicStory.js";
 import { validateTownStories } from "../townStory.js";
 import { validateStaffStories } from "../staffStory.js";
@@ -12,6 +13,7 @@ export async function loadGameData() {
     "dialogues",
     "city",
     "charlotte",
+    "clinic",
     "staffSchedule",
     "downtown",
     "playerAtlas",
@@ -34,6 +36,7 @@ export async function loadGameData() {
     if (!r.ok) throw Error(key);
     data[key] = await r.json();
   }
+  validateClinicStories(data.clinic);
   validateCivicStories(data.civicStories);
   validateStaffStories(data.staffStories);
   validateTownStories(data.townStories);

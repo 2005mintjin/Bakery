@@ -177,5 +177,62 @@
       246,
       470
     ]
+  },
+  {
+    "name": "콘스탄체",
+    "portrait": "konstanze",
+    "portraitAsset": "assets/characters/residents/konstanze-portrait.png",
+    "spriteAsset": "assets/characters/residents/konstanze-sd.png",
+    "spriteBounds": [
+      185,
+      8,
+      1019,
+      1269
+    ],
+    "workplace": "clinic"
+  },
+  {
+    "name": "발레리아",
+    "portrait": "valeria",
+    "portraitAsset": "assets/characters/residents/valeria-portrait.png",
+    "spriteAsset": "assets/characters/residents/valeria-sd.png",
+    "spriteBounds": [
+      27,
+      15,
+      1128,
+      1297
+    ],
+    "workplace": "clinic"
+  },
+  {
+    "name": "캐서린",
+    "portrait": "catherine",
+    "portraitAsset": "assets/characters/residents/catherine-portrait.png",
+    "spriteAsset": "assets/characters/residents/catherine-sd.png",
+    "spriteBounds": [
+      0,
+      9,
+      1120,
+      1371
+    ],
+    "workplace": "clinic",
+    "preferences": {
+      "berrybread": 3
+    }
+  },
+  {
+    "name": "미하일",
+    "portrait": "mikhail",
+    "portraitAsset": "assets/characters/residents/mikhail-portrait.png",
+    "spriteAsset": "assets/characters/residents/mikhail-sd.png",
+    "spriteBounds": [
+      33,
+      8,
+      1146,
+      1285
+    ],
+    "preferences": {
+      "berrybread": 3
+    }
   }
 ]

@@ -16,7 +16,7 @@ export function updateHint(g) {
               : g.state.scene === "city"
                 ? "← 달빛마을 · 오른쪽 길 → 번화가"
                 : g.state.scene === "downtown"
-                  ? "← 상점가 · 오른쪽 길 → 쉼터 광장 · 건물 내부는 준비 중"
+                  ? "← 상점가 · 오른쪽 길 → 쉼터 광장 · 십자가 간판 의원에서 대화해 보세요"
                   : g.state.scene === "downtownEast"
                     ? "← 병원·책방 거리 · 오른쪽 길 → 공원"
                     : g.state.scene === "park"
