@@ -19,5 +19,8 @@
   },
   "hall": {
     "asset": "assets/backgrounds/interiors/town-hall.png"
+  },
+  "clinic": {
+    "asset": "assets/backgrounds/interiors/clinic.png"
   }
 }

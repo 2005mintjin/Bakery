@@ -79,8 +79,8 @@ function setup() {
   });
   return { ctx, voices, music, sources, gains, calls, errors };
 }
-test("all fifteen named MP3s are bundled with explicit character aliases and unknown people stay silent", () => {
-  assert.equal(Object.keys(config.speakers).length, 15);
+test("all nineteen named MP3s are bundled with explicit character aliases and unknown people stay silent", () => {
+  assert.equal(Object.keys(config.speakers).length, 19);
   for (const [key, record] of Object.entries(config.speakers)) {
     assert.ok(existsSync(new URL("../" + record.asset, import.meta.url)));
     for (const name of record.aliases)

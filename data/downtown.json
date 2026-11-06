@@ -7,7 +7,7 @@
         "x": 270,
         "y": 335,
         "color": "#8bacc1",
-        "line": "병원과 파출소가 있는 번화가예요. 책방과 음반가게도 이 길에 있어요. 건물 안은 아직 준비 중이랍니다.",
+        "line": "빨간 십자가 간판이 있는 의원이 문을 열었어요. 입구 계단으로 다가가 보세요. 다른 건물 안은 아직 준비 중이랍니다.",
         "spriteAsset": "assets/characters/townsfolk/downtown-nurse.svg",
         "portraitAsset": "assets/characters/townsfolk/downtown-nurse.svg",
         "spriteHeight": 64
@@ -25,21 +25,31 @@
       },
       {
         "id": "downtown-listener",
-        "name": "소율",
+        "name": "미하일",
+        "portrait": "mikhail",
+        "portraitAsset": "assets/characters/residents/mikhail-portrait.png",
+        "spriteAsset": "assets/characters/residents/mikhail-sd.png",
+        "spriteBounds": [
+          33,
+          8,
+          1146,
+          1285
+        ],
+        "spriteHeight": 74,
+        "role": "마을 주민",
+        "story": "mikhail",
         "x": 740,
         "y": 358,
-        "color": "#bd9167",
-        "line": "음반가게 간판이 보이죠? 오늘은 거리를 구경하고 있어요. 나중에 가게 안도 둘러볼 수 있으면 좋겠네요.",
-        "spriteAsset": "assets/characters/townsfolk/downtown-listener.svg",
-        "portraitAsset": "assets/characters/townsfolk/downtown-listener.svg",
-        "spriteHeight": 64
+        "color": "#ab8d6e",
+        "quest": "clinicGift"
       }
     ],
     "buildings": [
       {
         "id": "hospital",
-        "name": "병원",
-        "available": false
+        "name": "의원",
+        "available": true,
+        "scene": "clinic"
       },
       {
         "id": "police",

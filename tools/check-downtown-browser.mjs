@@ -86,6 +86,7 @@ try {
       assert.equal(await p.locator("#dialogue-speaker").textContent(),npc.name);
       assert.equal(await p.locator(".dialogue-portrait img").getAttribute("src"),npc.portraitAsset);
       await advanceDialogue(p,12);
+      if (npc.story === "mikhail") await choose("..됐어.");
       await p.locator("#overlay").waitFor({state:"hidden"});
     }
   }
@@ -122,7 +123,7 @@ try {
   await walk("a","city");
   assert.equal(await p.locator("#interior-actions").isVisible(),false);
   assert.deepEqual(errors,[]);
-  console.log("PASS: correct two-map order, real keyboard/touch round trips, original backgrounds, all six NPC conversations/portraits, building and fence collision, save/reload in both new scenes, night lighting and 390px layout; no active building interiors or JS errors.");
+  console.log("PASS: correct two-map order, real keyboard/touch round trips, original backgrounds, all six NPC conversations/portraits, building and fence collision, save/reload in both new scenes, night lighting and 390px layout; no JS errors; clinic interior is covered by check-clinic-browser.");
 } finally {
   await browser?.close(); await new Promise((r)=>server.close(r));
 }

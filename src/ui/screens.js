@@ -1,3 +1,4 @@
+import { openClinicDialogue } from "../clinicStory.js";
 import { openCivicDialogue } from "../civicStory.js";
 import { showNightReport } from "./screens/nightReport.js";
 import { showFishing } from "./screens/fishing.js";
@@ -18,6 +19,9 @@ import {
 } from "./screens/workshop.js";
 import { showBakeryGuide } from "./screens/guide.js";
 export const screens = {
+  konstanzeTalk: (ui) => openClinicDialogue(ui.g, "konstanze"),
+  valeriaTalk: (ui) => openClinicDialogue(ui.g, "valeria"),
+  catherineTalk: (ui) => openClinicDialogue(ui.g, "catherine"),
   lotusTalk: (ui) => openCivicDialogue(ui.g, "lotus"),
   hendelTalk: (ui) => openCivicDialogue(ui.g, "hendel"),
   adelTalk: (ui) => openCivicDialogue(ui.g, "adel"),

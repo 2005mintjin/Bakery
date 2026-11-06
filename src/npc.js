@@ -1,6 +1,9 @@
+import { clinicState } from "./clinicQuests.js";
 import { offDutyResidents } from "./schedule.js";
 import { anastasiaStatus } from "./anastasiaQuests.js";
 export function residentQuestStatus(s, npc) {
+  if (npc.story === "mikhail")
+    return clinicState(s).gift === "wrapped" ? "active" : "done";
   return npc.id === "mira" ? anastasiaStatus(s) : s.quests[npc.quest];
 }
 export function residents(g) {

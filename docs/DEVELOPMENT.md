@@ -272,3 +272,13 @@ city.reader는 샬롯이다. spriteAnimation/원본 GIF 기반 아틀라스는 r
 공원은 worldMaps/downtown/lighting JSON의 park 항목과 sceneManager의 동서 출입구를 사용한다. 원본 배경은 assets/backgrounds/park.png다. 광장 서쪽 전환은 중앙 길의 왼쪽 건물 충돌 전에 실행하며 도착 위치와 출입구를 겹치지 않게 유지한다. NPC 이동 시 문 앞뿐 아니라 중앙 길과 일요일 휴식 직원의 충돌도 확인한다.
 
 charlotte.json의 performance.imageAsset은 연주 화면 전용이다. performance.js는 해당 필드가 없으면 기존 일반 초상으로 돌아간다. 거리 GIF/일반 대화/빵집 초상과 혼용하지 않는다. 가독성 스타일은 PC 20px·모바일 18px다. 회귀 검사는 tests/park.test.js, 실제 키보드/터치 왕복·주민 대화·저장·야간 조명·연주 이미지는 tools/check-park-browser.mjs로 확인한다. 정적 빌드를 공유하는 다른 브라우저 도구와 순서대로 실행한다.
+
+### 의원·미하일·리본 선물 (데모)
+
+인물과 원문 기반 대화 그래프는 data/clinic.json, 진행/정산/저장 검증은 clinicQuests.js, 대화 제어는 clinicStory.js다. 원문 TXT는 data/source의 konstanze/valeria/catherine/mikhail-dialogue.txt로 보관한다. 월~토 06~18시 일정과 퇴근 위치는 staffSchedule.json을 사용한다. 진료실에는 원본 배경에 세 직원이 포함되어 있으므로 중복 SD를 덧그리지 않는다. SD는 퇴근/미하일 야외 및 빵집 카운터에, 일반 초상은 대화에 사용한다.
+
+worldMaps.downtown.doors의 clinic은 계단 (166,279)에서 출입하며 나가기는 downtown의 해당 문 앞으로 돌아간다. 실내 버튼은 interior.js/screens.js/interiors.css, 시간대 창문은 lighting.json이다. 기존 시설을 city 또는 town으로 내보내던 규칙에 clinic의 downtown 출구를 따로 적용했다.
+
+선택 저장 필드 clinic={bread:none|active|done, gift:none|baking|wrapped|delivered|done, report:null|thanks|annoyed}를 v8에서 검증/보충한다. clinicBread는 밀빵 부탁, clinicGift는 캐서린의 전체 부탁, clinicDelivery는 포장 후 생성되어 미하일 전달 시 완료하는 하위 부탁이다. 포장에 베리 빵 1개를 소비하고 이후에는 상태로 운반하므로 재판매·재사용할 수 없다. clinicAction의 단계/재고 조건을 진입 및 대사 완료 때 확인하며 보상은 reward 결산으로만 기록한다. clinicJournal이 현재 단계 설명을 제공한다.
+
+검사: node --test tests/clinic.test.js, node tools/check-clinic-browser.mjs. 브라우저 도구는 격리 저장을 사용해 실제 출입·원본 초상/MP3 재생·취소/부족·전체 퀘스트·단계별 저장·퇴근/일요일·네 손님 판매·모바일 화면을 확인한다. 다른 정적 브라우저 검사와는 순서대로 실행한다. 원본 이미지/MP3를 편집하지 않고 알파 bounds만 데이터로 지정한다.

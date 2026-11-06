@@ -114,7 +114,7 @@ try {
     }
     g.state.shop.open=false;return cycles;
   });
-  for(const ids of cycles){assert.equal(ids.length,14);assert.equal(new Set(ids).size,14);assert.ok(!ids.includes("lotus"));}
+  for(const ids of cycles){assert.equal(ids.length,18);assert.equal(new Set(ids).size,18);assert.ok(!ids.includes("lotus"));}
   assert.notDeepEqual(cycles[0],cycles[1]);
   assert.notEqual(cycles[0].at(-1),cycles[1][0]);
   assert.deepEqual(errors,[]);
