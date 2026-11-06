@@ -1,6 +1,10 @@
+import { facilityOpen } from "./schedule.js";
 export const obstacles = {
   town: [],
   city: [],
+  downtown: [],
+  downtownEast: [],
+  park: [],
   field: [],
   pond: [],
   bakery: [],
@@ -23,7 +27,7 @@ export function nearbyDoor(s) {
   );
 }
 export function enterBuilding(s, door) {
-  if (!(worldMaps[s.scene]?.doors || []).includes(door)) return false;
+  if (!(worldMaps[s.scene]?.doors || []).includes(door) || !facilityOpen(s, door.scene)) return false;
   s.scene = door.scene;
   s.x = 480;
   s.y = 500;
@@ -68,6 +72,18 @@ export function transition(s) {
     dest = ["city", 48, 295];
   else if (s.scene === "city" && s.x < 39 && s.y > 275 && s.y < 365)
     dest = ["town", 905, 310];
+  else if (s.scene === "city" && s.x > 920 && s.y > 275 && s.y < 365)
+    dest = ["downtown", 48, 310];
+  else if (s.scene === "downtown" && s.x < 39 && s.y > 275 && s.y < 365)
+    dest = ["city", 905, 310];
+  else if (s.scene === "downtown" && s.x > 920 && s.y > 275 && s.y < 365)
+    dest = ["downtownEast", 180, 310];
+  else if (s.scene === "downtownEast" && s.x < 160 && s.y > 275 && s.y < 345)
+    dest = ["downtown", 905, 310];
+  else if (s.scene === "downtownEast" && s.x > 920 && s.y > 275 && s.y < 330)
+    dest = ["park", 48, 310];
+  else if (s.scene === "park" && s.x < 39 && s.y > 275 && s.y < 330)
+    dest = ["downtownEast", 905, 310];
   if (dest) {
     [s.scene, s.x, s.y] = dest;
     return true;

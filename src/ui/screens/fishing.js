@@ -1,3 +1,4 @@
+import { fishTypes, fishCounts } from "../../fishStock.js";
 import {
   castLine,
   reelLine,
@@ -15,12 +16,12 @@ export function showFishing(ui) {
   const messages = {
     waiting: "찌가 움직일 때까지 기다려 주세요…",
     bite: "물고기가 물었어요! 지금 낚아채세요!",
-    caught: "생선 1마리를 잡았어요! 재료 가방에 넣었어요.",
+    caught: `${s.fishing?.size ? fishTypes[s.fishing.size].name : "생선"} 1마리를 잡았어요! 재료 가방에 넣었어요.`,
     early: "조금 빨랐어요. 찌가 움직인 뒤 낚아채세요.",
     missed: "물고기가 달아났어요. 다시 도전해 볼까요?",
   };
   ui.panel(
-    `<h2>서쪽 호숫가 · 낚시</h2><div class="fishing-water ${phase === "bite" ? "has-bite" : ""}" aria-hidden="true"><span>〰</span><b>🎣</b><span>〰</span></div><p role="status">${messages[phase] || "공용 낚싯대를 사용해 물고기를 잡아 보세요."}</p><p>가진 생선 ${s.items.fish}마리 · 기력 ${s.stamina}/100</p><p>한 번 던질 때 기력 ${fishingRules.stamina} · 게임 시간 ${fishingRules.minutes}분 소모<br>입질이 오면 ${fishingRules.biteSeconds}초 안에 버튼 또는 스페이스 바!<br>생선 2마리로 생선파이 속을 만들 수 있어요. 파이 틀은 공방에서 구매해요.</p><p>닫으면 현재 낚시는 취소돼요. 소모한 기력은 돌아오지 않아요.</p>`,
+    `<h2>서쪽 호숫가 · 낚시</h2><div class="fishing-water ${phase === "bite" ? "has-bite" : ""}" aria-hidden="true"><span>〰</span><b>🎣</b><span>〰</span></div><p role="status">${messages[phase] || "공용 낚싯대를 사용해 물고기를 잡아 보세요."}</p><p>가진 생선 ${s.items.fish}마리 (대 ${fishCounts(s).large} · 중 ${fishCounts(s).medium} · 소 ${fishCounts(s).small}) · 기력 ${s.stamina}/100</p><p>한 번 던질 때 기력 ${fishingRules.stamina} · 게임 시간 ${fishingRules.minutes}분 소모<br>입질이 오면 ${fishingRules.biteSeconds}초 안에 버튼 또는 스페이스 바!<br>대 20% · 중 50% · 소 30% 확률로 잡혀요. 잡화점에서 대 24G · 중 12G · 소 6G에 팔 수 있어요.<br>생선 2마리로 생선파이 속을 만들 수 있어요. 파이 틀은 공방에서 구매해요.</p><p>닫으면 현재 낚시는 취소돼요. 소모한 기력은 돌아오지 않아요.</p>`,
     [
       [
         active ? "낚아채기 · Space" : "낚싯대 던지기",

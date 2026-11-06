@@ -22,6 +22,14 @@ export function drawSceneLighting(r, scene, minutes) {
       c.fillStyle = `rgba(255,164,61,${light.warmth})`;
       c.fillRect(0, 0, 960, 576);
     }
+    if (light.warmth && windows.length) {
+      c.fillStyle = `rgba(255,125,35,${Math.min(.65, light.warmth * 2)})`;
+      for (const points of windows) {
+        c.beginPath();
+        polygon(c, points);
+        c.fill();
+      }
+    }
     if (light.darkness) {
       c.fillStyle = `rgba(13,24,54,${light.darkness * 0.78})`;
       c.fillRect(0, 0, 960, 576);

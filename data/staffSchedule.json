@@ -1,0 +1,121 @@
+{
+  "facilities": {
+    "post": {
+      "name": "우체국",
+      "open": 360,
+      "close": 1080
+    },
+    "hall": {
+      "name": "마을회관",
+      "open": 360,
+      "close": 1080
+    },
+    "workshop": {
+      "name": "공방",
+      "open": 360,
+      "close": 1140
+    },
+    "store": {
+      "name": "잡화점",
+      "open": 360,
+      "close": 1200
+    },
+    "cafe": {
+      "name": "카페",
+      "open": 360,
+      "close": 1200
+    }
+  },
+  "residents": [
+    {
+      "id": "off-duty-post-clerk",
+      "portrait": "post-clerk",
+      "workplace": "post",
+      "scene": "town",
+      "x": 600,
+      "y": 310,
+      "line": "오늘 일은 다 끝났다 아이가. 소포는 다음 영업시간에 찾아오이소."
+    },
+    {
+      "id": "off-duty-arien",
+      "portrait": "arien",
+      "workplace": "store",
+      "scene": "city",
+      "x": 180,
+      "y": 290,
+      "line": "오늘은 가게 일이 끝났어요! 동생들이랑 산책하고 있어요!"
+    },
+    {
+      "id": "off-duty-sasha",
+      "portrait": "sasha",
+      "workplace": "store",
+      "scene": "city",
+      "x": 430,
+      "y": 260,
+      "line": "...오늘은 쉬는 중이에요. 장보러 오셨다면 다음 영업시간에 와 주세요."
+    },
+    {
+      "id": "off-duty-erina",
+      "portrait": "erina",
+      "workplace": "store",
+      "scene": "city",
+      "x": 430,
+      "y": 410,
+      "line": "...언니들이랑... 산책 중이에요..."
+    },
+    {
+      "id": "off-duty-barista",
+      "portrait": "barista",
+      "workplace": "cafe",
+      "scene": "downtown",
+      "x": 350,
+      "y": 535,
+      "line": "...오늘 커피는 다 내렸슴다. 쉬는 시간도 필요하지 말임다."
+    },
+    {
+      "id": "off-duty-soma",
+      "portrait": "soma",
+      "workplace": "workshop",
+      "scene": "downtownEast",
+      "x": 170,
+      "y": 400,
+      "line": "오늘은 틀 다듬는 일 끝! 산책이나 하려고 나왔어."
+    },
+    {
+      "id": "off-duty-crematory",
+      "portrait": "crematory",
+      "workplace": "workshop",
+      "scene": "downtownEast",
+      "x": 730,
+      "y": 485,
+      "line": "화로도 쉬어야지. 개량할 게 있으면 다음 영업시간에 공방으로 와."
+    },
+    {
+      "id": "off-duty-hendel",
+      "portrait": "hendel",
+      "workplace": "hall",
+      "scene": "downtown",
+      "x": 480,
+      "y": 535,
+      "line": "으음, 오늘 서류는 다 정리했어요. 잠깐 바람을 쐬니 좋네요."
+    },
+    {
+      "id": "off-duty-adel",
+      "portrait": "adel",
+      "workplace": "hall",
+      "scene": "town",
+      "x": 390,
+      "y": 330,
+      "line": "...오늘 조합 일은 끝났어. 등급은 회관 열었을 때 확인해 주겠니."
+    },
+    {
+      "id": "off-duty-lotus",
+      "portrait": "lotus",
+      "workplace": "hall",
+      "scene": "city",
+      "x": 520,
+      "y": 440,
+      "line": "쉬는 시간에도 마을을 살피는 중이에요. ...그렇다고 지금 업무를 보겠다는 뜻은 아니랍니다."
+    }
+  ]
+}

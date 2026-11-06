@@ -8,6 +8,7 @@ export function validateFishingState(s) {
   if (
     s.scene !== "pond" ||
     !["waiting", "bite", "caught", "early", "missed"].includes(f.phase) ||
+    (f.size !== undefined && !["large", "medium", "small"].includes(f.size)) ||
     !Number.isFinite(f.elapsed) ||
     f.elapsed < 0 ||
     f.elapsed > fishingRules.waitMax + fishingRules.biteSeconds ||

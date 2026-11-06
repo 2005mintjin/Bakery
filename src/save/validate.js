@@ -1,3 +1,5 @@
+import { validateFishStock } from "../fishStock.js";
+import { customerPortraits } from "../visitorOrder.js";
 import { validateCivicState } from "./civicState.js";
 import { validateAnastasiaState } from "./anastasiaState.js";
 import { validateDailyState } from "./dailyState.js";
@@ -18,6 +20,9 @@ export function validate(input) {
       "bakeryKitchen",
       "post",
       "city",
+      "downtown",
+      "downtownEast",
+      "park",
       "store",
       "field",
       "pond",
@@ -73,24 +78,23 @@ export function validate(input) {
     )
       throw Error("손상된 소포");
   }
+  if (s.shop) {
+    if (s.shop.visitorQueue === undefined) s.shop.visitorQueue = [];
+    if (s.shop.lastVisitor === undefined) s.shop.lastVisitor = s.shop.customer?.portrait || null;
+    if (
+      !Array.isArray(s.shop.visitorQueue) ||
+      new Set(s.shop.visitorQueue).size !== s.shop.visitorQueue.length ||
+      s.shop.visitorQueue.some((id) => !customerPortraits.includes(id)) ||
+      (s.shop.lastVisitor !== null && !customerPortraits.includes(s.shop.lastVisitor))
+    ) throw Error("손상된 손님 방문 순서");
+  }
   if (s.version >= 3) {
     const customer = s.shop.customer;
     if (
       customer &&
       (!["knocking", "waiting"].includes(customer.phase) ||
         !nonnegative(customer.arrival) ||
-        ![
-          "mira",
-          "jun",
-          "sora",
-          "post-clerk",
-          "arien",
-          "sasha",
-          "erina",
-          "barista",
-          "soma",
-          "crematory",
-        ].includes(customer.portrait))
+        !customerPortraits.includes(customer.portrait))
     )
       throw Error("손상된 손님");
     if (
@@ -152,6 +156,7 @@ export function validate(input) {
     s.shop.customer.name = "아나스타샤";
   validateDailyState(s);
   validateFishingState(s);
+  validateFishStock(s);
   validateProgression(s);
   validateBakingState(s);
   return {

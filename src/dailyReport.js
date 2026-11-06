@@ -27,6 +27,12 @@ export function recordSale(s, id, quantity, amount, order = true) {
   day.sold[id] = (day.sold[id] || 0) + quantity;
   if (order) day.customers++;
 }
+export function recordFishSale(s, amount) {
+  if (Number.isFinite(amount) && amount > 0) {
+    const day = ledger(s);
+    day.fishSales = (day.fishSales || 0) + amount;
+  }
+}
 export function recordExpense(s, amount) {
   if (Number.isFinite(amount) && amount > 0) ledger(s).expenses += amount;
 }

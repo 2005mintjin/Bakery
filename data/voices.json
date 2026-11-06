@@ -9,7 +9,12 @@
     },
     "isidoro": {
       "asset": "assets/audio/voices/isidoro.mp3",
-      "aliases": ["이시도로", "준", "jun"]
+      "aliases": [
+        "이시도로",
+        "준",
+        "jun"
+      ],
+      "gain": 1.25
     },
     "barista": {
       "asset": "assets/audio/voices/barista.mp3",
@@ -17,7 +22,12 @@
     },
     "post-clerk": {
       "asset": "assets/audio/voices/ryo.mp3",
-      "aliases": ["료", "ryo", "우체국 직원"]
+      "aliases": [
+        "료",
+        "ryo",
+        "우체국 직원"
+      ],
+      "gain": 1.3
     },
     "arien": {
       "asset": "assets/audio/voices/arien.mp3",
@@ -26,8 +36,10 @@
     },
     "sasha": {
       "asset": "assets/audio/voices/sasha.mp3",
-      "aliases": ["사샤"],
-      "gain": 2
+      "aliases": [
+        "사샤"
+      ],
+      "gain": 2.5
     },
     "erina": {
       "asset": "assets/audio/voices/erina.mp3",
@@ -75,6 +87,14 @@
       "aliases": [
         "마틴",
         "martin"
+      ]
+    },
+    "charlotte": {
+      "asset": "assets/audio/voices/charlotte.mp3",
+      "aliases": [
+        "샬롯",
+        "charlotte",
+        "reader"
       ]
     }
   }

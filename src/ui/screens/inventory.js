@@ -1,3 +1,4 @@
+import { fishCounts } from "../../fishStock.js";
 import { names } from "../../inventory.js";
 import { productIds } from "../../recipeBook.js";
 import { foodIcon } from "../craftWidgets.js";
@@ -32,7 +33,7 @@ export function showInventory(ui) {
       )
       .join(
         "",
-      )}</nav><div class="inventory-layout"><div class="inventory-grid">${items.map((id) => `<button class="inventory-slot ${id === selected ? "selected" : ""}" data-item="${id}" aria-label="${names[id]} ${s.items[id]}개"><img src="${icon(id)}" alt=""><b>${s.items[id]}</b><span>${names[id]}</span></button>`).join("") || '<p class="empty-state">이 칸에 보관한 물건이 없어요.</p>'}</div><aside class="item-detail">${selected ? `<img src="${icon(selected)}" alt=""><h3>${names[selected]}</h3><span class="item-kind">${r ? "완성품" : selected === "berrySeeds" ? "씨앗" : "재료"}</span><p>${r ? "따뜻하게 구워 창고와 진열대에 놓을 수 있어요." : selected === "berrySeeds" ? "서쪽 텃밭에 심고 물을 주면 베리가 자라요." : "반죽과 속재료를 준비할 때 사용하는 재료예요."}</p><dl><dt>보유 수량</dt><dd>${s.items[selected]}개</dd>${r ? `<dt>판매가</dt><dd>${r.price}G / 1개</dd>` : ""}</dl>` : "<p>물건을 고르면 자세히 볼 수 있어요.</p>"}</aside></div>`,
+      )}</nav><div class="inventory-layout"><div class="inventory-grid">${items.map((id) => `<button class="inventory-slot ${id === selected ? "selected" : ""}" data-item="${id}" aria-label="${names[id]} ${s.items[id]}개"><img src="${icon(id)}" alt=""><b>${s.items[id]}</b><span>${names[id]}</span></button>`).join("") || '<p class="empty-state">이 칸에 보관한 물건이 없어요.</p>'}</div><aside class="item-detail">${selected ? `<img src="${icon(selected)}" alt=""><h3>${names[selected]}</h3><span class="item-kind">${r ? "완성품" : selected === "berrySeeds" ? "씨앗" : "재료"}</span><p>${r ? "따뜻하게 구워 창고와 진열대에 놓을 수 있어요." : selected === "berrySeeds" ? "서쪽 텃밭에 심고 물을 주면 베리가 자라요." : selected === "fish" ? `대형 ${fishCounts(s).large}마리 · 중형 ${fishCounts(s).medium}마리 · 소형 ${fishCounts(s).small}마리 · 기존 ${fishCounts(s).legacy}마리. 잡화점에서 팔거나 생선파이에 사용해요.` : "반죽과 속재료를 준비할 때 사용하는 재료예요."}</p><dl><dt>보유 수량</dt><dd>${s.items[selected]}개</dd>${r ? `<dt>판매가</dt><dd>${r.price}G / 1개</dd>` : ""}</dl>` : "<p>물건을 고르면 자세히 볼 수 있어요.</p>"}</aside></div>`,
   );
   for (const b of ui.overlay.querySelectorAll("[data-inventory-filter]"))
     b.onclick = () => {

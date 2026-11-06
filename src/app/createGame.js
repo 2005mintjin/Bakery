@@ -1,3 +1,4 @@
+import { configureSchedule, buildOffDutyActors } from "../schedule.js";
 import { DialogueVoice } from "../dialogueVoice.js";
 import { loadResidentArt } from "../residentArt.js";
 import { loadStaffArt } from "../staffArt.js";
@@ -13,6 +14,8 @@ import { fresh } from "../saveSystem.js";
 import { UI } from "../ui.js";
 import { Renderer } from "../renderer.js";
 export async function createGame(data) {
+  configureSchedule(data.staffSchedule);
+  data.offDutyActors = buildOffDutyActors(data);
   const g = { state: fresh(), keys: new Set(), data };
   g.ui = new UI(g);
   g.music = new Music(data.music, {
@@ -38,7 +41,10 @@ export async function createGame(data) {
       ]),
       loadScenery(gardenAssets),
       loadStaffArt(data.serviceDialogues.staff),
-      loadResidentArt([...data.npcs, ...data.city.residents]),
+      loadResidentArt([
+        ...data.npcs, ...data.city.residents, ...data.offDutyActors,
+        ...Object.values(data.downtown).flatMap((area) => area.residents),
+      ]),
     ]);
   const renderer = new Renderer(
     document.querySelector("canvas"),

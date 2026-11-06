@@ -1,3 +1,4 @@
+import { facilityOpen, closedMessage } from "./schedule.js";
 import { names } from "./inventory.js";
 import { syncGuild, guildSupplies, guildRules } from "./guild.js";
 export function civicState(s) {
@@ -41,7 +42,7 @@ export class CivicStory {
     this.go(this.key === "martin" && status !== "none" ? status : "entry");
   }
   valid() {
-    return this.g.state === this.state && this.g.state.scene === this.scene;
+    return this.g.state === this.state && this.g.state.scene === this.scene && facilityOpen(this.g.state, this.scene);
   }
   go(id) {
     if (!this.valid()) return;
@@ -90,6 +91,7 @@ export class CivicStory {
 }
 export function openCivicDialogue(g, key) {
   if (g.state.scene !== "hall") return;
+  if (!facilityOpen(g.state, "hall")) { g.ui.notify(closedMessage(g.state, "hall")); return; }
   const story = new CivicStory(g, key);
   story.start();
   return story;

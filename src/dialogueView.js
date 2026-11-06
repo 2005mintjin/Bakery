@@ -30,6 +30,7 @@ export function presentDialogue(ui, actor, pages, actions = [], options = {}) {
     `<div class="portrait-scene indoor dialogue-portrait">${art}</div><div class="speaker-chips">${chips}</div><h2><span id="dialogue-speaker"></span> <small class="muted">${escape(options.role || actor.role || "")}</small></h2><div id="typed-dialogue" class="dialogue-text" aria-live="polite"></div><div class="dialogue-next-row"><span id="dialogue-page" class="muted"></span><button id="dialogue-next" type="button" aria-label="다음">다음 <kbd>SPACE</kbd></button></div><div id="dialogue-choices" class="actions" hidden></div>`,
     [],
   );
+  ui.overlay.querySelector(".panel").classList.add("dialogue-panel");
   drawDialoguePortrait(
     ui.overlay,
     asset,

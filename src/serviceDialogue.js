@@ -1,3 +1,4 @@
+import { facilityOpen, closedMessage } from "./schedule.js";
 import { StaffStory } from "./staffStory.js";
 import { serve } from "./shop.js";
 import { names } from "./inventory.js";
@@ -29,6 +30,7 @@ export function resolveCustomerReply(s, action, recipes) {
 export const staffServices = {
   parcel: { key: "post", scene: "post" },
   supplies: { key: "store", scene: "store" },
+  fishMarket: { key: "store", scene: "store" },
   cafe: { key: "cafe", scene: "cafe" },
   workshopMolds: { key: "mold", scene: "workshop" },
   workshopOven: { key: "furnace", scene: "workshop" },
@@ -38,7 +40,7 @@ export function hasStaffAccess(g, panel) {
   return (
     !!target &&
     g.state.scene === target.scene &&
-    g.ui.serviceAccess === target.key
+    g.ui.serviceAccess === target.key && facilityOpen(g.state, target.scene)
   );
 }
 function escape(text) {
@@ -133,6 +135,10 @@ export function openStaffDialogue(g, scene) {
   const staff = g.data.serviceDialogues.staff[scene];
   if (!staff || g.state.scene !== (staff.location || scene)) {
     g.ui.notify("해당 장소의 직원에게 먼저 말을 걸어 주세요");
+    return;
+  }
+  if (!facilityOpen(g.state, staff.location || scene)) {
+    g.ui.notify(closedMessage(g.state, staff.location || scene));
     return;
   }
   const conversation = new StaffStory(g, scene);

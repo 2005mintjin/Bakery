@@ -9,10 +9,10 @@ export function showNightReport(ui) {
     return;
   }
   const count = Object.values(report.sold).reduce((a, b) => a + b, 0);
-  const net = report.sales + report.rewards - report.expenses;
+  const net = report.sales + (report.fishSales || 0) + report.rewards - report.expenses;
   const art = ui.g.data.restScene;
   ui.panel(
-    `<div class="panel-eyebrow">GOOD NIGHT · 펜서의 하루</div><h2>${report.day}일째 · 하루 결산</h2><div class="night-report"><figure class="sleep-picture"><img src="${art.asset}" alt="${art.alt}"><figcaption>오늘도 수고했어요, 펜서. 좋은 꿈 꾸세요.</figcaption></figure><div class="night-totals"><dl><div><dt>빵 판매 수익</dt><dd data-night="sales">${report.sales} G</dd></div><div><dt>퀘스트 보상</dt><dd>${report.rewards} G</dd></div><div><dt>구입·개량 지출</dt><dd data-night="expenses">${report.expenses ? "−" : ""}${report.expenses} G</dd></div><div class="night-net"><dt>오늘의 수입 − 지출</dt><dd data-night="net">${net > 0 ? "+" : ""}${net} G</dd></div><div><dt>판매 수량 · 응대한 손님</dt><dd>${count}개 · ${report.customers}명</dd></div><div><dt>마감 소지금</dt><dd>${report.money} G</dd></div></dl><h3>오늘 판매한 빵</h3><ul class="night-products">${
+    `<div class="panel-eyebrow">GOOD NIGHT · 펜서의 하루</div><h2>${report.day}일째 · 하루 결산</h2><div class="night-report"><figure class="sleep-picture"><img src="${art.asset}" alt="${art.alt}"><figcaption>오늘도 수고했어요, 펜서. 좋은 꿈 꾸세요.</figcaption></figure><div class="night-totals"><dl><div><dt>빵 판매 수익</dt><dd data-night="sales">${report.sales} G</dd></div><div><dt>생선 판매 수익</dt><dd>${report.fishSales || 0} G</dd></div><div><dt>퀘스트 보상</dt><dd>${report.rewards} G</dd></div><div><dt>구입·개량 지출</dt><dd data-night="expenses">${report.expenses ? "−" : ""}${report.expenses} G</dd></div><div class="night-net"><dt>오늘의 수입 − 지출</dt><dd data-night="net">${net > 0 ? "+" : ""}${net} G</dd></div><div><dt>판매 수량 · 응대한 손님</dt><dd>${count}개 · ${report.customers}명</dd></div><div><dt>마감 소지금</dt><dd>${report.money} G</dd></div></dl><h3>오늘 판매한 빵</h3><ul class="night-products">${
       Object.entries(report.sold)
         .filter(([, n]) => n > 0)
         .map(([id, n]) => `<li><span>${names[id]}</span><b>${n}개</b></li>`)
